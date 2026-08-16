@@ -1,0 +1,76 @@
+/**
+ * Portable shadcn/ui defaults for bpmn.io component adapters.
+ *
+ * Apply `bpmn-io-shadcn-theme` to a common ancestor of the components to
+ * theme. Add `dark` to that element or one of its ancestors for dark mode.
+ * Import `c4.css` after component adapters to align them with C4 instead.
+ */
+.bpmn-io-shadcn-theme {
+  --shadcn-background: 0 0% 100%;
+  --shadcn-foreground: 240 10% 3.9%;
+
+  --shadcn-card: 0 0% 100%;
+  --shadcn-card-foreground: 240 10% 3.9%;
+
+  --shadcn-popover: 0 0% 100%;
+  --shadcn-popover-foreground: 240 10% 3.9%;
+
+  --shadcn-primary: 240 5.9% 10%;
+  --shadcn-primary-foreground: 0 0% 98%;
+
+  --shadcn-secondary: 240 4.8% 95.9%;
+  --shadcn-secondary-foreground: 240 5.9% 10%;
+
+  --shadcn-muted: 240 4.8% 95.9%;
+  --shadcn-muted-foreground: 240 3.8% 46.1%;
+
+  --shadcn-accent: 240 4.8% 95.9%;
+  --shadcn-accent-foreground: 240 5.9% 10%;
+
+  --shadcn-destructive: 0 84.2% 60.2%;
+  --shadcn-destructive-foreground: 0 0% 98%;
+
+  --shadcn-border: 240 5.9% 90%;
+  --shadcn-input: 240 5.9% 90%;
+  --shadcn-ring: 240 10% 3.9%;
+
+  --shadcn-radius: 0.5rem;
+  --shadcn-control-height: 2rem;
+
+  --shadcn-input-fill: hsl(var(--shadcn-background));
+  --shadcn-ring-alpha: 0.35;
+}
+
+.dark .bpmn-io-shadcn-theme,
+.bpmn-io-shadcn-theme.dark {
+  --shadcn-background: 240 10% 3.9%;
+  --shadcn-foreground: 0 0% 98%;
+
+  --shadcn-card: 240 10% 3.9%;
+  --shadcn-card-foreground: 0 0% 98%;
+
+  --shadcn-popover: 240 10% 3.9%;
+  --shadcn-popover-foreground: 0 0% 98%;
+
+  --shadcn-primary: 0 0% 98%;
+  --shadcn-primary-foreground: 240 5.9% 10%;
+
+  --shadcn-secondary: 240 3.7% 15.9%;
+  --shadcn-secondary-foreground: 0 0% 98%;
+
+  --shadcn-muted: 240 3.7% 15.9%;
+  --shadcn-muted-foreground: 240 5% 64.9%;
+
+  --shadcn-accent: 240 3.7% 15.9%;
+  --shadcn-accent-foreground: 0 0% 98%;
+
+  --shadcn-destructive: 0 72% 55%;
+  --shadcn-destructive-foreground: 0 0% 98%;
+
+  --shadcn-border: 240 3.7% 15.9%;
+  --shadcn-input: 240 3.7% 15.9%;
+  --shadcn-ring: 240 4.9% 83.9%;
+
+  --shadcn-input-fill: hsl(var(--shadcn-input) / 0.3);
+  --shadcn-ring-alpha: 0.5;
+}

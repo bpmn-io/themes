@@ -1,0 +1,64 @@
+{
+  "name": "@bpmn-io/shadcn-theme",
+  "version": "0.0.0",
+  "description": "A shadcn theme for bpmn.io",
+  "files": [
+    "assets"
+  ],
+  "exports": {
+    "./assets/*.css": "./assets/*.css",
+    "./package.json": "./package.json"
+  },
+  "keywords": [
+    "shadcn",
+    "bpmn.io",
+    "theme"
+  ],
+  "homepage": "https://github.com/bpmn-io/shadcn-theme#readme",
+  "bugs": {
+    "url": "https://github.com/bpmn-io/shadcn-theme/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bpmn-io/shadcn-theme.git"
+  },
+  "license": "MIT",
+  "author": "bpmn.io Contributors",
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@babel/plugin-transform-react-jsx": "^7.28.6",
+    "@bpmn-io/element-template-chooser": "^3.0.0",
+    "@bpmn-io/properties-panel": "^3.49.1",
+    "@bpmn-io/variable-resolver": "^3.3.0",
+    "@camunda/design-system": "^0.45.0",
+    "@camunda/example-data-properties-provider": "^1.5.0",
+    "@codemirror/view": "^6.43.8",
+    "bpmn-js": "^18.22.1",
+    "bpmn-js-element-templates": "^2.30.0",
+    "bpmn-js-properties-panel": "^5.64.0",
+    "camunda-bpmn-js-behaviors": "^1.18.0",
+    "chai": "^6.2.2",
+    "cross-env": "^10.1.0",
+    "eslint": "^9.39.5",
+    "eslint-plugin-bpmn-io": "^2.3.1",
+    "karma": "^6.4.4",
+    "karma-chrome-launcher-2": "^3.3.0",
+    "karma-debug-launcher": "^0.0.5",
+    "karma-env-preprocessor": "^0.1.1",
+    "karma-mocha": "^2.0.1",
+    "karma-tldr-reporter": "^1.0.0",
+    "karma-webpack": "^5.0.1",
+    "mocha": "^11.8.0",
+    "mocha-test-container-support": "^0.2.0",
+    "npm-run-all2": "^9.0.3",
+    "raw-loader": "^4.0.2",
+    "webpack": "^5.109.2",
+    "zeebe-bpmn-moddle": "^1.17.0"
+  }
+}

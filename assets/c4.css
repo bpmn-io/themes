@@ -1,0 +1,137 @@
+/**
+ * Camunda Design System overrides for the properties-panel adapter.
+ *
+ * Load this after tokens.css and properties-panel.css, inside a C4Provider.
+ */
+.c4-ui .bpmn-io-shadcn-theme {
+  --shadcn-radius: var(--radius);
+}
+
+.c4-ui .bpmn-io-shadcn-theme .bio-properties-panel {
+  --font-family: var(--font-sans);
+  --font-family-monospace: var(--font-mono);
+  --text-base-color: var(--foreground);
+  --text-error-color: var(--danger-action-default);
+  --link-color: var(--primary-action-default);
+  --description-color: var(--neutral-foreground-subtle);
+  --description-code-background-color: var(--neutral-background-medium);
+  --description-code-border-color: var(--border);
+  --description-list-item-color: var(--neutral-foreground-subtle);
+  --tooltip-underline-color: var(--neutral-foreground-subtle);
+  --placeholder-color: var(--neutral-foreground-subtle);
+  --placeholder-background-color: var(--neutral-background-medium);
+  --header-background-color: var(--neutral-background-subtle);
+  --header-icon-fill-color: var(--foreground);
+  --header-bottom-border-color: var(--border);
+  --group-background-color: var(--background);
+  --group-bottom-border-color: var(--border);
+  --sticky-group-background-color: var(--neutral-background-subtle);
+  --sticky-group-bottom-border-color: var(--border);
+  --open-group-header-background-color: var(--neutral-background-medium);
+  --add-entry-fill-color: var(--neutral-foreground-subtle);
+  --add-entry-hover-fill-color: var(--primary-action-foreground);
+  --add-entry-hover-background-color: var(--primary-action-default);
+  --add-entry-label-color: var(--primary-action-foreground);
+  --secondary-action-background-color: var(--neutral-background-medium);
+  --secondary-action-hover-background-color: var(--neutral-background-strong);
+  --secondary-action-foreground-color: var(--foreground);
+  --secondary-action-border-color: var(--border);
+  --remove-entry-fill-color: var(--danger-action-default);
+  --remove-entry-hover-background-color: color-mix(in srgb, var(--danger-action-default) 10%, transparent);
+  --arrow-fill-color: var(--neutral-foreground-subtle);
+  --arrow-hover-background-color: var(--neutral-background-medium);
+  --dot-color: var(--neutral-foreground-subtle);
+  --dot-color-error: var(--danger-action-default);
+  --list-badge-color: var(--primary-action-foreground);
+  --list-badge-background-color: var(--primary-action-default);
+  --input-background-color: var(--input-background);
+  --input-border-color: var(--input);
+  --input-border-radius: calc(var(--radius) - 2px);
+  --input-height: var(--shadcn-control-height);
+  --checkbox-border-radius: calc(var(--radius) - 4px);
+  --checkbox-border-color: var(--input);
+  --checkbox-background-color: var(--input-background);
+  --checkbox-checked-background-color: var(--primary-action-default);
+  --checkbox-checked-border-color: var(--primary-action-default);
+  --input-focus-background-color: var(--input-background);
+  --input-focus-border-color: var(--ring);
+  --focus-outline-color: var(--ring);
+  --focus-ring-color: color-mix(in srgb, var(--ring) 65%, transparent);
+  --focus-ring-error-color: color-mix(in srgb, var(--danger-action-default) 65%, transparent);
+  --focus-ring-width: 3px;
+  --input-error-background-color: var(--input-background);
+  --input-error-border-color: var(--danger-action-default);
+  --input-error-focus-border-color: var(--danger-action-default);
+  --input-disabled-color: var(--neutral-foreground-subtle);
+  --input-disabled-background-color: var(--neutral-background-medium);
+  --input-disabled-border-color: var(--border);
+  --toggle-switch-on-background-color: var(--primary-action-default);
+  --toggle-switch-off-background-color: var(--input);
+  --toggle-switch-switcher-background-color: var(--background);
+  --side-line-background-color: var(--border);
+  --side-line-extension-background-color: var(--border);
+  --list-entry-dot-background-color: var(--neutral-foreground-subtle);
+  --list-entry-header-button-fill-color: var(--neutral-foreground-subtle);
+  --list-entry-add-entry-empty-background-color: var(--primary-action-default);
+  --list-entry-add-entry-empty-hover-background-color: var(--primary-action-hover);
+  --list-entry-add-entry-label-color: var(--primary-action-foreground);
+  --list-entry-add-entry-background-color: var(--primary-action-default);
+  --list-entry-add-entry-fill-color: var(--primary-action-foreground);
+  --dropdown-item-background-color: var(--popover);
+  --dropdown-item-hover-background-color: var(--neutral-background-medium);
+  --dropdown-separator-background-color: var(--border);
+  --feel-background-color: transparent;
+  --feel-active-color: var(--primary-action-default);
+  --feel-inactive-color: var(--neutral-foreground-subtle);
+  --feel-hover-color: var(--foreground);
+  --feel-hover-background-color: var(--neutral-background-medium);
+  --feel-active-background-color: transparent;
+  --feel-required-color: var(--neutral-foreground-subtle);
+  --feel-open-popup-color: var(--neutral-foreground-subtle);
+  --feel-open-popup-background-color: var(--popover);
+  --feel-open-popup-hover-color: var(--primary-action-default);
+  --feel-indicator-background-color: var(--neutral-background-medium);
+  --feelers-select-color: color-mix(in srgb, var(--primary-action-default) 15%, transparent);
+}
+
+.c4-ui .bpmn-io-shadcn-theme .bio-properties-panel-input,
+.c4-ui .bpmn-io-shadcn-theme select.bio-properties-panel-input,
+.c4-ui .bpmn-io-shadcn-theme textarea.bio-properties-panel-input {
+  color: var(--foreground);
+}
+
+.c4-ui .bpmn-io-shadcn-theme .bio-properties-panel-input::placeholder {
+  color: var(--neutral-foreground-subtle);
+}
+
+.c4-ui .bpmn-io-shadcn-theme .bio-properties-panel-input[type="checkbox"],
+.c4-ui .bpmn-io-shadcn-theme .bio-properties-panel-input[type="radio"] {
+  accent-color: var(--primary-action-default);
+}
+
+.c4-ui .bpmn-io-shadcn-theme .bio-properties-panel-dropdown-button__menu,
+.c4-ui .bpmn-io-shadcn-theme .bio-properties-panel-tooltip-content {
+  box-shadow: var(--shadow-md);
+}
+
+.c4-ui .bpmn-io-shadcn-theme .bio-properties-panel-popup {
+  box-shadow: var(--shadow-lg);
+}
+
+.c4-ui .bpmn-io-shadcn-theme .bio-properties-panel-tooltip {
+  --tooltip-background-color: var(--primary-action-default);
+  --tooltip-link: var(--primary-action-foreground);
+  --tooltip-code-background-color: color-mix(in srgb, var(--primary-action-default) 60%, transparent);
+  --tooltip-code-border-color: color-mix(in srgb, var(--primary-action-foreground) 20%, transparent);
+
+  color: var(--primary-action-foreground);
+}
+
+.c4-ui .bpmn-io-shadcn-theme .bio-properties-panel-popup {
+  --popup-background-color: var(--background);
+  --popup-header-background-color: var(--neutral-background-subtle);
+  --popup-font-color: var(--foreground);
+  --popup-title-color: var(--foreground);
+  --feel-popup-close-background-color: var(--primary-action-default);
+  --feel-popup-gutters-background-color: var(--neutral-background-medium);
+}

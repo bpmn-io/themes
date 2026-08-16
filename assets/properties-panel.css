@@ -1,0 +1,372 @@
+/**
+ * shadcn/ui adapter for @bpmn-io/properties-panel.
+ *
+ * Load this after properties-panel.css and assets/tokens.css.
+ */
+.bpmn-io-shadcn-theme .bio-properties-panel {
+  --font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-family-monospace: ui-monospace, SFMono-Regular, "SF Mono", Menlo,
+    Consolas, "Liberation Mono", monospace;
+
+  --text-base-color: hsl(var(--shadcn-foreground));
+  --text-error-color: hsl(var(--shadcn-destructive));
+  --link-color: hsl(var(--shadcn-primary));
+
+  --description-color: hsl(var(--shadcn-muted-foreground));
+  --description-code-background-color: hsl(var(--shadcn-muted));
+  --description-code-border-color: hsl(var(--shadcn-border));
+  --description-list-item-color: hsl(var(--shadcn-muted-foreground));
+  --tooltip-underline-color: hsl(var(--shadcn-muted-foreground));
+
+  --placeholder-color: hsl(var(--shadcn-muted-foreground));
+  --placeholder-background-color: hsl(var(--shadcn-muted));
+
+  --header-background-color: hsl(var(--shadcn-muted));
+  --header-icon-fill-color: hsl(var(--shadcn-foreground));
+  --header-bottom-border-color: hsl(var(--shadcn-border));
+
+  --group-background-color: hsl(var(--shadcn-card));
+  --group-bottom-border-color: hsl(var(--shadcn-border));
+
+  --sticky-group-background-color: hsl(var(--shadcn-card));
+  --sticky-group-bottom-border-color: hsl(var(--shadcn-border));
+  --open-group-header-background-color: hsl(var(--shadcn-muted));
+
+  --add-entry-fill-color: hsl(var(--shadcn-muted-foreground));
+  --add-entry-hover-fill-color: hsl(var(--shadcn-primary-foreground));
+  --add-entry-hover-background-color: hsl(var(--shadcn-primary));
+  --add-entry-label-color: hsl(var(--shadcn-primary-foreground));
+  --secondary-action-background-color: hsl(var(--shadcn-secondary));
+  --secondary-action-hover-background-color: hsl(var(--shadcn-accent));
+  --secondary-action-foreground-color: hsl(var(--shadcn-secondary-foreground));
+  --secondary-action-border-color: hsl(var(--shadcn-border));
+
+  --remove-entry-fill-color: hsl(var(--shadcn-destructive));
+  --remove-entry-hover-background-color: hsl(var(--shadcn-destructive) / 0.1);
+
+  --arrow-fill-color: hsl(var(--shadcn-muted-foreground));
+  --arrow-hover-background-color: hsl(var(--shadcn-accent));
+
+  --dot-color: hsl(var(--shadcn-muted-foreground));
+  --dot-color-error: hsl(var(--shadcn-destructive));
+
+  --list-badge-color: hsl(var(--shadcn-primary-foreground));
+  --list-badge-background-color: hsl(var(--shadcn-primary));
+
+  --input-background-color: var(--shadcn-input-fill);
+  --input-border-color: hsl(var(--shadcn-input));
+  --input-border-radius: calc(var(--shadcn-radius) - 2px);
+  --input-height: var(--shadcn-control-height);
+
+  --checkbox-border-radius: calc(var(--shadcn-radius) - 4px);
+  --checkbox-border-color: hsl(var(--shadcn-input));
+  --checkbox-background-color: var(--shadcn-input-fill);
+  --checkbox-checked-background-color: hsl(var(--shadcn-primary));
+  --checkbox-checked-border-color: hsl(var(--shadcn-primary));
+
+  --input-focus-background-color: var(--shadcn-input-fill);
+  --input-focus-border-color: hsl(var(--shadcn-ring));
+  --focus-outline-color: hsl(var(--shadcn-ring));
+  --focus-ring-color: hsl(var(--shadcn-ring) / var(--shadcn-ring-alpha));
+  --focus-ring-error-color: hsl(var(--shadcn-destructive) / var(--shadcn-ring-alpha));
+  --focus-ring-width: 3px;
+
+  --input-error-background-color: var(--shadcn-input-fill);
+  --input-error-border-color: hsl(var(--shadcn-destructive));
+  --input-error-focus-border-color: hsl(var(--shadcn-destructive));
+
+  --input-disabled-color: hsl(var(--shadcn-muted-foreground));
+  --input-disabled-background-color: hsl(var(--shadcn-muted));
+  --input-disabled-border-color: hsl(var(--shadcn-border));
+
+  --toggle-switch-on-background-color: hsl(var(--shadcn-primary));
+  --toggle-switch-off-background-color: hsl(var(--shadcn-input));
+  --toggle-switch-switcher-background-color: hsl(var(--shadcn-background));
+
+  --side-line-background-color: hsl(var(--shadcn-border));
+  --side-line-extension-background-color: hsl(var(--shadcn-border));
+
+  --list-entry-dot-background-color: hsl(var(--shadcn-muted-foreground));
+  --list-entry-header-button-fill-color: hsl(var(--shadcn-muted-foreground));
+  --list-entry-add-entry-empty-background-color: hsl(var(--shadcn-primary));
+  --list-entry-add-entry-empty-hover-background-color: hsl(var(--shadcn-primary) / 0.9);
+  --list-entry-add-entry-label-color: hsl(var(--shadcn-primary-foreground));
+  --list-entry-add-entry-background-color: hsl(var(--shadcn-primary));
+  --list-entry-add-entry-fill-color: hsl(var(--shadcn-primary-foreground));
+
+  --dropdown-item-background-color: hsl(var(--shadcn-popover));
+  --dropdown-item-hover-background-color: hsl(var(--shadcn-accent));
+  --dropdown-separator-background-color: hsl(var(--shadcn-border));
+
+  --feel-background-color: transparent;
+  --feel-active-color: hsl(var(--shadcn-primary));
+  --feel-inactive-color: hsl(var(--shadcn-muted-foreground));
+  --feel-hover-color: hsl(var(--shadcn-foreground));
+  --feel-hover-background-color: hsl(var(--shadcn-accent));
+  --feel-active-background-color: transparent;
+  --feel-required-color: hsl(var(--shadcn-muted-foreground));
+  --feel-open-popup-color: hsl(var(--shadcn-muted-foreground));
+  --feel-open-popup-background-color: hsl(var(--shadcn-popover));
+  --feel-open-popup-hover-color: hsl(var(--shadcn-primary));
+
+  --feel-indicator-background-color: hsl(var(--shadcn-muted));
+  --feelers-select-color: hsl(var(--shadcn-primary) / 0.15);
+
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-input,
+.bpmn-io-shadcn-theme select.bio-properties-panel-input,
+.bpmn-io-shadcn-theme textarea.bio-properties-panel-input {
+  color: hsl(var(--shadcn-foreground));
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-input::placeholder {
+  color: hsl(var(--shadcn-muted-foreground));
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-input[type="checkbox"],
+.bpmn-io-shadcn-theme .bio-properties-panel-input[type="radio"] {
+  accent-color: hsl(var(--shadcn-primary));
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-input,
+.bpmn-io-shadcn-theme .bio-properties-panel-feel-editor-container .bio-properties-panel-feel-editor__open-popup-placeholder,
+.bpmn-io-shadcn-theme .bio-properties-panel-feelers-editor-container .bio-properties-panel-feelers-editor__open-popup-placeholder {
+  border-radius: calc(var(--shadcn-radius) - 2px);
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-list-entry-item:first-child .bio-properties-panel-simple .bio-properties-panel-input {
+  border-top-left-radius: calc(var(--shadcn-radius) - 2px);
+  border-top-right-radius: calc(var(--shadcn-radius) - 2px);
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-list-entry-item:last-child .bio-properties-panel-simple .bio-properties-panel-input {
+  border-bottom-left-radius: calc(var(--shadcn-radius) - 2px);
+  border-bottom-right-radius: calc(var(--shadcn-radius) - 2px);
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-feel-indicator {
+  border-radius: calc(var(--shadcn-radius) - 2px) 0 0 calc(var(--shadcn-radius) - 2px);
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-group-header.open {
+  background-color: var(--open-group-header-background-color);
+  border-bottom: 0;
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-group-header.open
+  .bio-properties-panel-group-header-title {
+  font-weight: 600;
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-collapsible-entry.open
+  > .bio-properties-panel-collapsible-entry-header
+  .bio-properties-panel-collapsible-entry-header-title,
+.bpmn-io-shadcn-theme .bio-properties-panel-list-entry-header-title.open {
+  font-weight: 600;
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-description code,
+.bpmn-io-shadcn-theme .bio-properties-panel-feel-icon,
+.bpmn-io-shadcn-theme .bio-properties-panel-tooltip-content code,
+.bpmn-io-shadcn-theme .bio-properties-panel-tooltip-content pre {
+  border-radius: calc(var(--shadcn-radius) - 4px);
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-add-entry,
+.bpmn-io-shadcn-theme .bio-properties-panel-arrow,
+.bpmn-io-shadcn-theme .bio-properties-panel-group-header-button,
+.bpmn-io-shadcn-theme .bio-properties-panel-list-entry-header-buttons > button {
+  border-radius: calc(var(--shadcn-radius) - 2px);
+  transition: background-color 150ms ease, color 150ms ease, fill 150ms ease;
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-add-entry,
+.bpmn-io-shadcn-theme .bio-properties-panel-list-entry-header-buttons > button {
+  color: var(--secondary-action-foreground-color);
+  fill: currentColor;
+  border: 1px solid var(--secondary-action-border-color);
+  background-color: var(--secondary-action-background-color);
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-add-entry:hover,
+.bpmn-io-shadcn-theme .bio-properties-panel-add-entry:focus-visible,
+.bpmn-io-shadcn-theme .bio-properties-panel-list-entry-header-buttons > button:hover,
+.bpmn-io-shadcn-theme .bio-properties-panel-list-entry-header-buttons > button:focus-visible {
+  color: var(--secondary-action-foreground-color);
+  fill: currentColor;
+  background-color: var(--secondary-action-hover-background-color);
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-arrow {
+  color: var(--add-entry-fill-color);
+  fill: currentColor;
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-arrow:hover,
+.bpmn-io-shadcn-theme .bio-properties-panel-arrow:focus-visible {
+  color: var(--text-base-color);
+  fill: currentColor;
+  background-color: var(--arrow-hover-background-color);
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-group-header-button:focus-visible,
+.bpmn-io-shadcn-theme .bio-properties-panel-list-entry-header-buttons > button:focus-visible {
+  outline: 2px solid var(--focus-outline-color);
+  outline-offset: 1px;
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-remove-entry,
+.bpmn-io-shadcn-theme .bio-properties-panel-remove-list-entry {
+  color: var(--remove-entry-fill-color);
+  fill: currentColor;
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-remove-entry:hover,
+.bpmn-io-shadcn-theme .bio-properties-panel-remove-entry:focus-visible,
+.bpmn-io-shadcn-theme .bio-properties-panel-remove-list-entry:hover,
+.bpmn-io-shadcn-theme .bio-properties-panel-remove-list-entry:focus-visible {
+  background-color: var(--remove-entry-hover-background-color);
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-select-template-button,
+.bpmn-io-shadcn-theme .bio-properties-panel-applied-template-button
+  .bio-properties-panel-group-header-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  width: auto;
+  padding: 0 6px;
+  color: var(--list-entry-add-entry-label-color);
+  fill: var(--list-entry-add-entry-fill-color);
+  background-color: var(--list-entry-add-entry-background-color);
+  border-radius: calc(var(--shadcn-radius) - 2px);
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-templates-group
+  .bio-properties-panel-group-header-button.bio-properties-panel-select-template-button {
+  border-radius: calc(var(--shadcn-radius) - 2px);
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-select-template-button:hover,
+.bpmn-io-shadcn-theme .bio-properties-panel-select-template-button:focus-visible,
+.bpmn-io-shadcn-theme .bio-properties-panel-applied-template-button
+  .bio-properties-panel-group-header-button:hover,
+.bpmn-io-shadcn-theme .bio-properties-panel-applied-template-button
+  .bio-properties-panel-group-header-button:focus-visible {
+  background-color: var(--list-entry-add-entry-empty-hover-background-color);
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-select-template-button svg {
+  fill: currentColor;
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-applied-template-button.open {
+  z-index: 11;
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-input[type="text"],
+.bpmn-io-shadcn-theme .bio-properties-panel-input[type="number"],
+.bpmn-io-shadcn-theme select.bio-properties-panel-input,
+.bpmn-io-shadcn-theme textarea.bio-properties-panel-input,
+.bpmn-io-shadcn-theme .bio-properties-panel-feelers-input .cm-editor {
+  min-height: var(--shadcn-control-height);
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-feelers-editor-container .bio-properties-panel-open-feel-popup,
+.bpmn-io-shadcn-theme .bio-properties-panel-feel-container .bio-properties-panel-open-feel-popup,
+.bpmn-io-shadcn-theme .bio-properties-panel-textarea-container .bio-properties-panel-open-feel-popup {
+  width: 1.75rem;
+  height: 1.75rem;
+  margin: 2px;
+  padding: 0;
+  line-height: 1;
+  text-align: center;
+  border-radius: calc(var(--shadcn-radius) - 4px);
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-feelers-editor-container .bio-properties-panel-open-feel-popup:hover,
+.bpmn-io-shadcn-theme .bio-properties-panel-feel-container .bio-properties-panel-open-feel-popup:hover,
+.bpmn-io-shadcn-theme .bio-properties-panel-textarea-container .bio-properties-panel-open-feel-popup:hover {
+  background-color: hsl(var(--shadcn-accent));
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-dropdown-button__menu {
+  border: 1px solid hsl(var(--shadcn-border));
+  border-radius: calc(var(--shadcn-radius) - 2px);
+  box-shadow: 0 4px 6px -1px hsl(var(--shadcn-foreground) / 0.1),
+    0 2px 4px -2px hsl(var(--shadcn-foreground) / 0.1);
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-list-entry-header.sticky {
+  background-color: hsl(var(--shadcn-card));
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-feelers-editor-container .bio-properties-panel-feelers-editor__open-popup-placeholder,
+.bpmn-io-shadcn-theme .bio-properties-panel-feel-editor-container .bio-properties-panel-feel-editor__open-popup-placeholder {
+  color: hsl(var(--shadcn-muted-foreground));
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-tooltip {
+  --tooltip-background-color: hsl(var(--shadcn-primary));
+  --tooltip-link: hsl(var(--shadcn-primary-foreground));
+  --tooltip-code-background-color: hsl(var(--shadcn-primary) / 0.6);
+  --tooltip-code-border-color: hsl(var(--shadcn-primary-foreground) / 0.2);
+
+  color: hsl(var(--shadcn-primary-foreground));
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-tooltip-content {
+  border: 1px solid hsl(var(--shadcn-border));
+  border-radius: calc(var(--shadcn-radius) - 2px);
+  box-shadow: 0 4px 6px -1px hsl(var(--shadcn-foreground) / 0.1),
+    0 2px 4px -2px hsl(var(--shadcn-foreground) / 0.1);
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-tooltip-content code,
+.bpmn-io-shadcn-theme .bio-properties-panel-tooltip-content pre {
+  color: hsl(var(--shadcn-primary-foreground));
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-popup {
+  --popup-background-color: hsl(var(--shadcn-background));
+  --popup-header-background-color: hsl(var(--shadcn-card));
+  --popup-font-color: hsl(var(--shadcn-foreground));
+  --popup-title-color: hsl(var(--shadcn-foreground));
+
+  --feel-popup-close-background-color: hsl(var(--shadcn-primary));
+  --feel-popup-gutters-background-color: hsl(var(--shadcn-muted));
+
+  border: 1px solid hsl(var(--shadcn-border));
+  border-radius: calc(var(--shadcn-radius) - 2px);
+  box-shadow: 0 10px 15px -3px hsl(var(--shadcn-foreground) / 0.1),
+    0 4px 6px -4px hsl(var(--shadcn-foreground) / 0.1);
+  font-family: var(--font-family);
+}
+
+
+.bpmn-io-shadcn-theme .bio-properties-panel-popup .bio-properties-panel-feel-popup__close-btn {
+  color: hsl(var(--shadcn-primary-foreground));
+  border-radius: calc(var(--shadcn-radius) - 2px);
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-popup .bio-properties-panel-popup__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: calc(var(--shadcn-radius) - 4px);
+  color: hsl(var(--shadcn-muted-foreground));
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-popup .bio-properties-panel-popup__close:hover,
+.bpmn-io-shadcn-theme .bio-properties-panel-popup .bio-properties-panel-popup__close:focus-visible {
+  color: hsl(var(--shadcn-foreground));
+  background-color: hsl(var(--shadcn-accent));
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-feel-popup .bio-properties-panel-feel-editor-container {
+  border: 1px solid hsl(var(--shadcn-border));
+  border-radius: calc(var(--shadcn-radius) - 2px);
+}
