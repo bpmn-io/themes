@@ -27,3 +27,11 @@ The fixed switcher flips every mounted scenario between Original, Shadcn, and C4
 so C4 needs no duplicate scenarios. Any portaled surface (popups, tooltips,
 menus, overlays) must render into the scenario container rather than the document
 body, so it stays within the theme scope and is captured.
+
+## Capturing theme comparisons
+
+`npm run capture` renders the real specs (the single source of truth) to the
+gitignored `.captures/` — one side-by-side comparison image per scenario
+(Original / shadcn light / shadcn dark). `--no-shots` exports HTML only;
+`--grep <pattern>` selects a subset. The capture hook
+(`test/spec/capture.spec.js`) is gated by `CAPTURE` and no-ops during `npm run all`.

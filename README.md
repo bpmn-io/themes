@@ -46,10 +46,6 @@ import '@bpmn-io/shadcn-theme/assets/c4.css';
 
 ## Build and Run
 
-The test suite doubles as live playgrounds backed by the released component
-packages: in start mode each scenario stays mounted and the fixed **Theme**
-switcher (persisted as `?theme=`) flips it between Original, Shadcn, and C4.
-
 Prepare the project by installing all dependencies:
 
 ```sh
@@ -67,7 +63,14 @@ npm run start:properties-panel
 npm run start:diagram
 npm run start:bpmn
 npm run start:element-template-chooser
+
+# capture side-by-side theme comparison screenshots into .captures/
+npm run capture
 ```
+
+The test suite doubles as live playgrounds backed by the released component
+packages: in start mode each scenario stays mounted and the fixed **Theme**
+switcher (persisted as `?theme=`) flips it between Original, Shadcn, and C4.
 
 ## License
 
