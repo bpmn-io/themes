@@ -50,7 +50,7 @@ function styles() {
   return STYLESHEETS.map(read).map(css => `<style>${css}</style>`).join('\n');
 }
 
-function cell(theme, panelHtml) {
+function cell(theme, { panel, overlays }) {
   const rootClasses = [ 'playground', 'capture-cell-panel' ];
 
   if (theme.shadcn) {
@@ -61,27 +61,33 @@ function cell(theme, panelHtml) {
     rootClasses.push('dark');
   }
 
+  const overlayHtml = overlays && overlays.length
+    ? `<div class="capture-overlays bio-properties-panel">${overlays.join('\n')}</div>`
+    : '';
+
   return `<figure class="capture-cell ${theme.dark ? 'dark' : 'light'}">
     <figcaption>${theme.label}</figcaption>
     <div class="${rootClasses.join(' ')}">
-      <div class="playground-properties" style="width: ${PANEL_WIDTH}px;">${panelHtml}</div>
+      <div class="playground-properties" style="width: ${PANEL_WIDTH}px;">${panel}</div>
+      ${overlayHtml}
     </div>
   </figure>`;
 }
 
 /**
  * Render a single, self-contained comparison document for one scenario: the same
- * captured panel markup shown side by side under every theme, under a heading.
+ * captured markup shown side by side under every theme, under a heading.
  *
  * A screenshot of this page is the one comparison image per scenario.
  *
  * @param {string} name scenario name
- * @param {string} panelHtml captured `.playground-properties` markup
+ * @param {{ panel: string, overlays: string[] }} capture captured panel markup
+ * plus any portaled overlays (feel/text popup, tooltip), stacked below the panel
  *
  * @return {string}
  */
-function buildComparisonHtml(name, panelHtml) {
-  const cells = THEMES.map(theme => cell(theme, panelHtml)).join('\n');
+function buildComparisonHtml(name, capture) {
+  const cells = THEMES.map(theme => cell(theme, capture)).join('\n');
 
   return `<!DOCTYPE html><html><head><meta charset="utf-8"/>
 <title>${name}</title>
@@ -101,12 +107,52 @@ ${styles()}
     font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #3f3f46;
   }
   .capture-cell-panel {
-    width: ${PANEL_WIDTH}px;
+    width: max-content;
+    min-width: ${PANEL_WIDTH}px;
     border: 1px solid rgba(0, 0, 0, .12);
     background: #ffffff;
   }
   .capture-cell.dark .capture-cell-panel { border-color: #27272a; background: #18181b; }
   .capture-cell-panel .bio-properties-panel { height: auto; }
+
+  /*
+   * Portaled overlays position themselves against the live viewport. In the
+   * static export we stack them below the panel instead, so strip the
+   * positioning (the .playground rules use !important, hence the specificity).
+   * The wrapper carries the bio-properties-panel class purely for its CSS
+   * variable scope (the vendor --color-* tokens) so overlays lifted out of the
+   * panel keep their theming; its panel layout is reset here.
+   */
+  .capture-overlays {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px;
+    border-top: 1px dashed rgba(0, 0, 0, .12);
+  }
+  .capture-overlays.bio-properties-panel {
+    position: static;
+    flex: none;
+    width: auto;
+    height: auto;
+    overflow: visible;
+  }
+  .capture-cell.dark .capture-overlays { border-top-color: #3f3f46; }
+  .playground .capture-overlays > *,
+  .playground .capture-overlays .bio-properties-panel-popup,
+  .playground .capture-overlays .bio-properties-panel-tooltip {
+    position: static !important;
+    inset: auto !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    margin: 0 !important;
+    max-width: 520px !important;
+    max-height: none !important;
+  }
 </style>
 </head>
 <body>

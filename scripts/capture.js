@@ -124,7 +124,7 @@ function screenshotAll() {
         '--no-sandbox',
         '--hide-scrollbars',
         '--force-device-scale-factor=2',
-        '--window-size=1200,1400',
+        '--window-size=1800,2600',
         `--screenshot=${pngFile}`,
         htmlFile
       ], { stdio: 'ignore' });

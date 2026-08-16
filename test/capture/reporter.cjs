@@ -58,7 +58,7 @@ function CaptureReporter(baseReporterDecorator, config, logger) {
 
       fs.writeFileSync(
         path.join(dir, 'comparison.html'),
-        buildComparisonHtml(name, captures.get(name))
+        buildComparisonHtml(name, JSON.parse(captures.get(name)))
       );
     }
 
