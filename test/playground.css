@@ -1,0 +1,152 @@
+body {
+  box-sizing: border-box;
+  height: calc(100vh - 16px);
+  margin: 8px;
+  background: #f4f4f5;
+}
+
+.test-container:has(.playground) {
+  box-sizing: border-box;
+  height: 100% !important;
+  min-height: 600px;
+  margin: 0 0 16px;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+}
+
+.test-content-container:has(.playground) {
+  flex: 1;
+  min-height: 0;
+  height: auto;
+}
+
+.test-content-container:has(.playground) > .playground {
+  height: 100%;
+  min-height: 0;
+}
+
+.playground {
+  --playground-border: hsl(var(--shadcn-border, 240 5.9% 90%));
+
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  position: relative;
+  isolation: isolate;
+  color: hsl(var(--shadcn-foreground, 240 10% 3.9%));
+  background: hsl(var(--shadcn-background, 0 0% 100%));
+  border: 1px solid var(--playground-border);
+}
+
+.playground.dark {
+  --playground-border: hsl(var(--shadcn-border));
+}
+
+.playground-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  height: 100%;
+  min-height: 0;
+}
+
+.playground-canvas {
+  position: relative;
+  min-width: 0;
+  transform: translateZ(0);
+  background: hsl(var(--shadcn-muted, 240 4.8% 95.9%) / 0.25);
+  border-radius: 0;
+}
+
+.playground-canvas .djs-container,
+.playground-canvas .djs-container svg {
+  border-radius: 0;
+}
+
+.playground-canvas .djs-container svg:focus {
+  outline: 2px solid hsl(var(--shadcn-ring, 240 10% 3.9%));
+  outline-offset: -2px;
+}
+
+/*
+ * Components use viewport coordinates for application-level overlays. Each
+ * scenario instead renders in a finite test container, so center overlays
+ * inside their owning scenario to keep retained playgrounds independent.
+ */
+.playground-canvas .djs-popup.element-template-chooser {
+  position: absolute;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) scale(1) !important;
+}
+
+.playground .bio-properties-panel-popup {
+  box-sizing: border-box;
+  position: absolute;
+  top: 50% !important;
+  left: 50% !important;
+  max-width: calc(100% - 32px);
+  max-height: calc(100% - 32px);
+  transform: translate(-50%, -50%);
+}
+
+.playground-properties {
+  min-height: 0;
+  overflow: auto;
+  border-left: 1px solid var(--playground-border);
+  background: hsl(var(--shadcn-card, 0 0% 100%));
+}
+
+.playground-properties > .bio-properties-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.playground .bio-properties-panel-group-header.open
+  .bio-properties-panel-group-header-title {
+  font-weight: 600;
+}
+
+.playground.dark .djs-container,
+.playground.dark .djs-palette,
+.playground.dark .djs-context-pad {
+  background: hsl(var(--shadcn-background));
+}
+
+.theme-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 1000;
+  padding: 6px;
+  color: #18181b;
+  background: #ffffff;
+  border: 1px solid #e4e4e7;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.12);
+}
+
+.theme-switcher__label {
+  margin: 0 4px 0 2px;
+  font: 500 12px/1 ui-sans-serif, system-ui, sans-serif;
+}
+
+.theme-switcher button {
+  padding: 4px 8px;
+  color: #3f3f46;
+  font: 500 12px/1 ui-sans-serif, system-ui, sans-serif;
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.theme-switcher button[aria-pressed="true"] {
+  color: #ffffff;
+  background: #18181b;
+}

@@ -14,3 +14,16 @@ Two-layer contract:
 
 New adapters follow the same split — keep base component packages design-system
 neutral; brand-specific mappings live here.
+
+## Testing
+
+Each visual Mocha test is one scenario, rendered into a titled container and
+left mounted in start mode. Cover every styled interactive surface using the
+component's real interaction path: establish state in test code (never via
+manual controls), and give each container ≥600px with `min-height: 0` flex so
+panel bodies scroll instead of clipping.
+
+The fixed switcher flips every mounted scenario between Original, Shadcn, and C4,
+so C4 needs no duplicate scenarios. Any portaled surface (popups, tooltips,
+menus, overlays) must render into the scenario container rather than the document
+body, so it stays within the theme scope and is captured.

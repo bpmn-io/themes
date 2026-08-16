@@ -1,0 +1,327 @@
+import { expect } from 'chai';
+
+import { EditorView } from '@codemirror/view';
+
+import {
+  createPlayground,
+  isPlaygroundEnabled,
+  shouldKeepPlayground
+} from '../TestHelper.js';
+
+describe('properties-panel', function() {
+  let playground;
+
+  before(function() {
+    if (!isPlaygroundEnabled('properties-panel')) {
+      this.skip();
+    }
+  });
+
+  afterEach(function() {
+    if (!shouldKeepPlayground()) {
+      playground.destroy();
+    }
+  });
+
+  it('should apply the properties-panel adapter', async function() {
+    playground = await createPlayground(this, 'properties-panel');
+
+    const panel = playground.root.querySelector('.bio-properties-panel');
+    const testContainer = playground.root.closest('.test-container');
+
+    // then
+    expect(panel).to.exist;
+    expect(testContainer.getBoundingClientRect().height).to.be.at.least(600);
+    expect(panel.getBoundingClientRect().height).to.be.at.least(
+      playground.root.getBoundingClientRect().height - 2
+    );
+    expect(getComputedStyle(panel).getPropertyValue('--input-border-color')).to.equal(
+      'hsl(240 5.9% 90%)'
+    );
+    expect(getComputedStyle(panel).getPropertyValue('--focus-ring-width')).to.equal('3px');
+    expect(getComputedStyle(panel).getPropertyValue('--checkbox-checked-background-color')).to.equal(
+      'hsl(240 5.9% 10%)'
+    );
+  });
+
+  it('should persist the global theme selection in the URL', async function() {
+    playground = await createPlayground(this, 'properties-panel-theme-switcher');
+
+    const originalButton = document.querySelector(
+      '.theme-switcher button[data-theme="original"]'
+    );
+    const shadcnButton = document.querySelector(
+      '.theme-switcher button[data-theme="shadcn"]'
+    );
+    const c4Button = document.querySelector('.theme-switcher button[data-theme="c4"]');
+
+    // when
+    originalButton.click();
+
+    // then
+    expect([ ...playground.root.classList ]).to.not.include('bpmn-io-shadcn-theme');
+    expect(new URLSearchParams(window.location.search).get('theme')).to.equal('original');
+
+    // when
+    shadcnButton.click();
+
+    // then
+    expect([ ...playground.root.classList ]).to.include('bpmn-io-shadcn-theme');
+    expect(new URLSearchParams(window.location.search).get('theme')).to.equal('shadcn');
+
+    // when
+    c4Button.click();
+
+    // then
+    expect([ ...playground.root.classList ]).to.include('bpmn-io-shadcn-theme');
+    expect([ ...playground.root.parentElement.classList ]).to.include('c4-ui');
+    expect(new URLSearchParams(window.location.search).get('theme')).to.equal('c4');
+
+    window.history.pushState(null, '', '?theme=original');
+    window.dispatchEvent(new PopStateEvent('popstate'));
+
+    expect([ ...playground.root.classList ]).to.not.include('bpmn-io-shadcn-theme');
+
+    shadcnButton.click();
+  });
+
+  it('should distinguish open and closed group headers', async function() {
+    playground = await createPlayground(this, 'properties-panel-section-hierarchy');
+
+    // when
+    await playground.setup.settle();
+    const openGroup = playground.setup['open-group']('taskDefinition');
+    await playground.setup.settle();
+
+    const openHeader = openGroup.querySelector('.bio-properties-panel-group-header');
+    const closedHeader = playground.root.querySelector(
+      '[data-group-id="group-jobPriorityDefinition"] .bio-properties-panel-group-header'
+    );
+
+    // then
+    expect([ ...openHeader.classList ]).to.include('open');
+    expect([ ...closedHeader.classList ]).to.not.include('open');
+    expect(getComputedStyle(openHeader).backgroundColor).to.not.equal(
+      getComputedStyle(closedHeader).backgroundColor
+    );
+    expect(getComputedStyle(openHeader).borderBottomWidth).to.equal('0px');
+    expect(getComputedStyle(
+      openHeader.querySelector('.bio-properties-panel-group-header-title')
+    ).fontWeight).to.equal('600');
+  });
+
+  it('should render focused, invalid and disabled input states', async function() {
+    playground = await createPlayground(this, 'properties-panel-input-states', {
+      themeControls: true
+    });
+
+    // when
+    await playground.setup.settle();
+    playground.setup['focus-theme-input']();
+    playground.setup['invalidate-theme-input']();
+    await playground.setup.settle();
+
+    const focusedInput = playground.root.querySelector('[data-entry-id="theme-focus"] input');
+    const errorEntry = playground.root.querySelector('[data-entry-id="theme-error"]');
+    const disabledInput = playground.root.querySelector('[data-entry-id="theme-disabled"] input');
+
+    // then
+    expect(focusedInput).to.exist;
+    expect([ ...errorEntry.classList ]).to.include('has-error');
+    expect(errorEntry.querySelector('.bio-properties-panel-error')).to.exist;
+    expect(disabledInput.disabled).to.be.true;
+  });
+
+  it('should render select, checkbox, toggle and list states', async function() {
+    playground = await createPlayground(this, 'properties-panel-controls', {
+      themeControls: true
+    });
+
+    await playground.setup.settle();
+
+    const select = playground.root.querySelector('[data-entry-id="theme-select"] select');
+    const checkbox = playground.root.querySelector('[data-entry-id="theme-checkbox"] input');
+    const toggle = playground.root.querySelector('[data-entry-id="theme-toggle"] input');
+    const list = playground.root.querySelector('[data-entry-id="theme-list"]');
+
+    // then
+    expect(select.value).to.equal('first');
+    expect(checkbox.checked).to.be.true;
+    expect(toggle.checked).to.be.true;
+    expect([ ...list.classList ]).to.include('open');
+    expect(list.querySelectorAll('.bio-properties-panel-list-entry-item')).to.have.length(2);
+  });
+
+  it('should distinguish primary and ghost header actions', async function() {
+    playground = await createPlayground(this, 'properties-panel-button-hierarchy', {
+      themeControls: true
+    });
+
+    const templateSelector = playground.root.querySelector(
+      '[data-group-id="group-ElementTemplates__Template"] .bio-properties-panel-select-template-button'
+    );
+    const createButton = playground.root.querySelector(
+      '[data-group-id="group-inputs"] .bio-properties-panel-add-entry'
+    );
+
+    // when
+    createButton.focus();
+    await playground.setup.settle();
+
+    const templateStyles = getComputedStyle(templateSelector);
+    const createStyles = getComputedStyle(createButton);
+    const headerStyles = getComputedStyle(
+      createButton.closest('.bio-properties-panel-group-header')
+    );
+
+    // then
+    expect(templateStyles.backgroundColor).to.not.equal(createStyles.backgroundColor);
+    expect(createStyles.backgroundColor).to.not.equal(headerStyles.backgroundColor);
+    expect(createStyles.borderTopLeftRadius).to.equal(templateStyles.borderTopLeftRadius);
+    expect(createStyles.color).to.not.equal(templateStyles.color);
+    expect(createStyles.outlineWidth).to.equal('2px');
+  });
+
+  it('should render a themed tooltip', async function() {
+    playground = await createPlayground(this, 'properties-panel-tooltip');
+
+    // when
+    await playground.setup.settle();
+    playground.setup['show-task-definition-tooltip']();
+    await playground.setup.settle();
+
+    const tooltip = playground.root.querySelector('.bio-properties-panel-tooltip');
+
+    // then
+    expect(tooltip).to.exist;
+    expect(tooltip.textContent).to.contain('Specify which job workers');
+    expect(tooltip.closest('.bpmn-io-shadcn-theme')).to.equal(playground.root);
+  });
+
+  it('should render an open themed dropdown', async function() {
+    playground = await createPlayground(this, 'properties-panel-dropdown', {
+      themeControls: true
+    });
+
+    // when
+    playground.setup['open-theme-actions']();
+    await playground.setup.settle();
+
+    const dropdown = playground.root.querySelector('.bio-properties-panel-dropdown-button');
+
+    // then
+    expect([ ...dropdown.classList ]).to.include('open');
+    expect(dropdown.querySelectorAll('.bio-properties-panel-dropdown-button__menu-item')).to.have.length(3);
+  });
+
+  it('should render the example data JSON editor', async function() {
+    playground = await createPlayground(this, 'properties-panel-example-data', {
+      exampleData: true
+    });
+
+    // when
+    playground.setup['open-example-data']();
+    await playground.setup.settle();
+
+    const group = playground.root.querySelector('[data-group-id="group-additionalDataGroup"]');
+    const editor = group.querySelector('.cm-editor');
+    const view = EditorView.findFromDOM(editor);
+
+    // then
+    expect(group).to.exist;
+    expect(view.state.doc.toString()).to.equal(
+      '{"order": { "id": "123" }, "approved": true}'
+    );
+  });
+
+  it('should align FEEL editor and input font sizing', async function() {
+    playground = await createPlayground(this, 'properties-panel-feel-typography');
+
+    // when
+    const entry = playground.setup['activate-job-type-feel']();
+    await playground.setup.settle();
+
+    const input = playground.root.querySelector(
+      '[data-entry-id="taskDefinitionRetries"] .bio-properties-panel-input'
+    );
+    const editorContent = entry.querySelector('.cm-content');
+    const inputStyles = getComputedStyle(input);
+    const editorStyles = getComputedStyle(editorContent);
+
+    // then
+    expect([ ...entry.querySelector('.bio-properties-panel-feel-entry').classList ]).to.include('feel-active');
+    expect(editorStyles.fontSize).to.equal(inputStyles.fontSize);
+    expect(editorStyles.lineHeight).to.equal(inputStyles.lineHeight);
+  });
+
+  it('should render the example data JSON validation error', async function() {
+    playground = await createPlayground(this, 'properties-panel-validation', {
+      exampleData: true
+    });
+
+    // when
+    playground.setup['open-example-data']();
+    await playground.setup.settle();
+
+    const entry = playground.root.querySelector('[data-entry-id="exampleJson"]');
+    const editor = entry.querySelector('.cm-editor');
+    const view = EditorView.findFromDOM(editor);
+
+    view.dispatch({
+      changes: {
+        from: 0,
+        to: view.state.doc.length,
+        insert: '{"order": '
+      }
+    });
+
+    await playground.setup.settle();
+
+    // then
+    expect([ ...entry.classList ]).to.include('has-error');
+    expect(entry.querySelector('.bio-properties-panel-error')).to.exist;
+  });
+
+  it('should mount the text popup inside the stock theme root', async function() {
+    playground = await createPlayground(this, 'popup');
+
+    // when
+    playground.setup['text-popup']();
+    await playground.setup.settle();
+
+    const popup = playground.root.querySelector('.bio-properties-panel-popup');
+
+    // then
+    expect(popup).to.exist;
+    expect(popup.closest('.bpmn-io-shadcn-theme')).to.equal(playground.root);
+    expect(popup.querySelector('.bio-properties-panel-popup__close')).to.exist;
+    expectContainedInScenario(popup, playground.root);
+  });
+
+  it('should render the FEEL popup editor with an embedded border', async function() {
+    playground = await createPlayground(this, 'feel-popup');
+
+    // when
+    playground.setup['feel-popup']();
+    await playground.setup.settle();
+
+    const popup = playground.root.querySelector('.bio-properties-panel-feel-popup');
+    const editor = popup.querySelector('.bio-properties-panel-feel-editor-container');
+
+    // then
+    expect(popup.querySelector('.bio-properties-panel-popup__close')).to.exist;
+    expect(getComputedStyle(editor).borderTopWidth).to.equal('1px');
+    expectContainedInScenario(popup, playground.root);
+  });
+
+});
+
+function expectContainedInScenario(popup, scenario) {
+  const popupBounds = popup.getBoundingClientRect();
+  const scenarioBounds = scenario.getBoundingClientRect();
+
+  expect(popupBounds.left).to.be.at.least(scenarioBounds.left);
+  expect(popupBounds.right).to.be.at.most(scenarioBounds.right);
+  expect(popupBounds.top).to.be.at.least(scenarioBounds.top);
+  expect(popupBounds.bottom).to.be.at.most(scenarioBounds.bottom);
+}
