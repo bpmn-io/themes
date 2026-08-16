@@ -32,16 +32,14 @@
 
   --sticky-group-background-color: hsl(var(--shadcn-card));
   --sticky-group-bottom-border-color: hsl(var(--shadcn-border));
-  --open-group-header-background-color: hsl(var(--shadcn-muted));
+  /* Open group headers stay flush with their content (like the stock panel);
+     the bold title alone carries the hierarchy. C4 opts back into a fill. */
+  --open-group-header-background-color: transparent;
 
   --add-entry-fill-color: hsl(var(--shadcn-muted-foreground));
-  --add-entry-hover-fill-color: hsl(var(--shadcn-primary-foreground));
-  --add-entry-hover-background-color: hsl(var(--shadcn-primary));
-  --add-entry-label-color: hsl(var(--shadcn-primary-foreground));
-  --secondary-action-background-color: hsl(var(--shadcn-secondary));
-  --secondary-action-hover-background-color: hsl(var(--shadcn-accent));
-  --secondary-action-foreground-color: hsl(var(--shadcn-secondary-foreground));
-  --secondary-action-border-color: hsl(var(--shadcn-border));
+  --add-entry-hover-fill-color: hsl(var(--shadcn-foreground));
+  --add-entry-hover-background-color: hsl(var(--shadcn-accent));
+  --add-entry-label-color: hsl(var(--shadcn-foreground));
 
   --remove-entry-fill-color: hsl(var(--shadcn-destructive));
   --remove-entry-hover-background-color: hsl(var(--shadcn-destructive) / 0.1);
@@ -52,8 +50,8 @@
   --dot-color: hsl(var(--shadcn-muted-foreground));
   --dot-color-error: hsl(var(--shadcn-destructive));
 
-  --list-badge-color: hsl(var(--shadcn-primary-foreground));
-  --list-badge-background-color: hsl(var(--shadcn-primary));
+  --list-badge-color: hsl(var(--shadcn-background));
+  --list-badge-background-color: hsl(var(--shadcn-muted-foreground));
 
   --input-background-color: var(--shadcn-input-fill);
   --input-border-color: hsl(var(--shadcn-input));
@@ -85,8 +83,8 @@
   --toggle-switch-off-background-color: hsl(var(--shadcn-input));
   --toggle-switch-switcher-background-color: hsl(var(--shadcn-background));
 
-  --side-line-background-color: hsl(var(--shadcn-border));
-  --side-line-extension-background-color: hsl(var(--shadcn-border));
+  --side-line-background-color: hsl(var(--shadcn-muted-foreground));
+  --side-line-extension-background-color: hsl(var(--shadcn-muted-foreground));
 
   --list-entry-dot-background-color: hsl(var(--shadcn-muted-foreground));
   --list-entry-header-button-fill-color: hsl(var(--shadcn-muted-foreground));
@@ -183,28 +181,23 @@
   transition: background-color 150ms ease, color 150ms ease, fill 150ms ease;
 }
 
+/*
+ * The expand arrow (>) and the add (+) control are the same family of
+ * borderless icon buttons, so style them identically as shadcn "ghost" buttons:
+ * a muted glyph that gets a subtle accent background on hover. This keeps the
+ * header controls consistent and, crucially, pairs the add-entry hover label
+ * with a readable foreground colour (it was white-on-light before).
+ */
 .bpmn-io-shadcn-theme .bio-properties-panel-add-entry,
-.bpmn-io-shadcn-theme .bio-properties-panel-list-entry-header-buttons > button {
-  color: var(--secondary-action-foreground-color);
+.bpmn-io-shadcn-theme .bio-properties-panel-arrow {
+  color: var(--add-entry-fill-color);
   fill: currentColor;
-  border: 1px solid var(--secondary-action-border-color);
-  background-color: var(--secondary-action-background-color);
+  border: none;
+  background-color: transparent;
 }
 
 .bpmn-io-shadcn-theme .bio-properties-panel-add-entry:hover,
 .bpmn-io-shadcn-theme .bio-properties-panel-add-entry:focus-visible,
-.bpmn-io-shadcn-theme .bio-properties-panel-list-entry-header-buttons > button:hover,
-.bpmn-io-shadcn-theme .bio-properties-panel-list-entry-header-buttons > button:focus-visible {
-  color: var(--secondary-action-foreground-color);
-  fill: currentColor;
-  background-color: var(--secondary-action-hover-background-color);
-}
-
-.bpmn-io-shadcn-theme .bio-properties-panel-arrow {
-  color: var(--add-entry-fill-color);
-  fill: currentColor;
-}
-
 .bpmn-io-shadcn-theme .bio-properties-panel-arrow:hover,
 .bpmn-io-shadcn-theme .bio-properties-panel-arrow:focus-visible {
   color: var(--text-base-color);
@@ -278,9 +271,11 @@
 .bpmn-io-shadcn-theme .bio-properties-panel-feelers-editor-container .bio-properties-panel-open-feel-popup,
 .bpmn-io-shadcn-theme .bio-properties-panel-feel-container .bio-properties-panel-open-feel-popup,
 .bpmn-io-shadcn-theme .bio-properties-panel-textarea-container .bio-properties-panel-open-feel-popup {
+  top: 0;
+  bottom: 0;
   width: 1.75rem;
   height: 1.75rem;
-  margin: 2px;
+  margin: auto 2px;
   padding: 0;
   line-height: 1;
   text-align: center;
@@ -307,6 +302,16 @@
 .bpmn-io-shadcn-theme .bio-properties-panel-feelers-editor-container .bio-properties-panel-feelers-editor__open-popup-placeholder,
 .bpmn-io-shadcn-theme .bio-properties-panel-feel-editor-container .bio-properties-panel-feel-editor__open-popup-placeholder {
   color: hsl(var(--shadcn-muted-foreground));
+}
+
+/*
+ * Clip the FEEL / feelers editor to the same rounded box the focus ring follows
+ * so a long expression can't spill past the outline at the rounded corners.
+ */
+.bpmn-io-shadcn-theme .bio-properties-panel-feel-container .cm-editor,
+.bpmn-io-shadcn-theme .bio-properties-panel-feelers-input .cm-editor {
+  border-radius: calc(var(--shadcn-radius) - 2px);
+  overflow: hidden;
 }
 
 .bpmn-io-shadcn-theme .bio-properties-panel-tooltip {

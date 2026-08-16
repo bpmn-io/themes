@@ -101,13 +101,21 @@ describe('properties-panel', function() {
     // then
     expect([ ...openHeader.classList ]).to.include('open');
     expect([ ...closedHeader.classList ]).to.not.include('open');
-    expect(getComputedStyle(openHeader).backgroundColor).to.not.equal(
-      getComputedStyle(closedHeader).backgroundColor
-    );
+
+    // The hierarchy is carried by the bold title and a flush, border-less header
+    // (as in the stock panel) rather than an extra header fill.
+    expect(getComputedStyle(openHeader).backgroundColor).to.equal('rgba(0, 0, 0, 0)');
     expect(getComputedStyle(openHeader).borderBottomWidth).to.equal('0px');
-    expect(getComputedStyle(
+
+    const openTitleWeight = getComputedStyle(
       openHeader.querySelector('.bio-properties-panel-group-header-title')
-    ).fontWeight).to.equal('600');
+    ).fontWeight;
+    const closedTitleWeight = getComputedStyle(
+      closedHeader.querySelector('.bio-properties-panel-group-header-title')
+    ).fontWeight;
+
+    expect(openTitleWeight).to.equal('600');
+    expect(closedTitleWeight).to.not.equal('600');
   });
 
   it('should render focused, invalid and disabled input states', async function() {
@@ -170,15 +178,19 @@ describe('properties-panel', function() {
 
     const templateStyles = getComputedStyle(templateSelector);
     const createStyles = getComputedStyle(createButton);
-    const headerStyles = getComputedStyle(
-      createButton.closest('.bio-properties-panel-group-header')
-    );
+    const arrow = playground.root.querySelector('.bio-properties-panel-arrow');
 
     // then
+    // the template selector is the primary (filled) action...
     expect(templateStyles.backgroundColor).to.not.equal(createStyles.backgroundColor);
-    expect(createStyles.backgroundColor).to.not.equal(headerStyles.backgroundColor);
-    expect(createStyles.borderTopLeftRadius).to.equal(templateStyles.borderTopLeftRadius);
     expect(createStyles.color).to.not.equal(templateStyles.color);
+
+    // ...while the add (+) control is a ghost button: transparent at rest and
+    // sharing its styling with the expand arrow it belongs to the same family as.
+    expect(createStyles.backgroundColor).to.equal('rgba(0, 0, 0, 0)');
+    expect(getComputedStyle(arrow).backgroundColor).to.equal(createStyles.backgroundColor);
+
+    expect(createStyles.borderTopLeftRadius).to.equal(templateStyles.borderTopLeftRadius);
     expect(createStyles.outlineWidth).to.equal('2px');
   });
 
@@ -238,6 +250,7 @@ describe('properties-panel', function() {
     playground = await createPlayground(this, 'properties-panel-feel-typography');
 
     // when
+    playground.setup['open-group']('taskDefinition');
     const entry = playground.setup['activate-job-type-feel']();
     await playground.setup.settle();
 
