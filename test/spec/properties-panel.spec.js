@@ -267,6 +267,50 @@ describe('properties-panel', function() {
     expect(editorStyles.lineHeight).to.equal(inputStyles.lineHeight);
   });
 
+  it('should vertically centre single-line FEEL editor content', async function() {
+    playground = await createPlayground(this, 'properties-panel-feel-typography');
+
+    // when
+    playground.setup['open-group']('taskDefinition');
+    const entry = playground.setup['activate-job-type-feel']();
+    await playground.setup.settle();
+
+    const container = entry.querySelector('.bio-properties-panel-feel-container');
+    const content = entry.querySelector('.cm-content');
+    const indicator = entry.querySelector('.bio-properties-panel-feel-indicator');
+    const indicatorStyles = getComputedStyle(indicator);
+
+    // then — the code line sits centred within the control height, and the `=`
+    // indicator centres its glyph (rather than pinning it to the top)
+    expectVerticallyCentered(content, container);
+    expect(indicatorStyles.display).to.equal('flex');
+    expect(indicatorStyles.alignItems).to.equal('center');
+    expect(indicatorStyles.justifyContent).to.equal('center');
+  });
+
+  it('should vertically centre a single-line auto-resize textarea', async function() {
+    playground = await createPlayground(this, 'properties-panel');
+
+    // when
+    const group = playground.setup['open-group']('documentation');
+    await playground.setup.settle();
+
+    const textarea = group.querySelector('textarea.bio-properties-panel-input');
+
+    textarea.value = 'a single line';
+    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+    await playground.setup.settle();
+
+    const styles = getComputedStyle(textarea);
+    const paddingTop = parseFloat(styles.paddingTop);
+    const paddingBottom = parseFloat(styles.paddingBottom);
+
+    // then — one line renders at the shared control height with balanced
+    // padding, so the text sits centred like a plain input
+    expect(textarea.getBoundingClientRect().height).to.be.closeTo(32, 2);
+    expect(Math.abs(paddingTop - paddingBottom)).to.be.at.most(1);
+  });
+
   it('should render the example data JSON validation error', async function() {
     playground = await createPlayground(this, 'properties-panel-validation', {
       exampleData: true
@@ -303,11 +347,18 @@ describe('properties-panel', function() {
     await playground.setup.settle();
 
     const popup = playground.root.querySelector('.bio-properties-panel-popup');
+    const textarea = popup.querySelector('.bio-properties-panel-input');
 
     // then
     expect(popup).to.exist;
     expect(popup.closest('.bpmn-io-shadcn-theme')).to.equal(playground.root);
     expect(popup.querySelector('.bio-properties-panel-popup__close')).to.exist;
+
+    // portaled popups miss the vendor border-box reset; without it the
+    // full-height padded textarea overflows its body and spawns a scrollbar
+    expect(getComputedStyle(textarea).boxSizing).to.equal('border-box');
+    expect(textarea.scrollHeight).to.be.at.most(textarea.clientHeight + 1);
+
     expectContainedInScenario(popup, playground.root);
   });
 
@@ -342,4 +393,14 @@ function expectContainedInScenario(popup, scenario) {
   expect(popupBounds.right).to.be.at.most(scenarioBounds.right);
   expect(popupBounds.top).to.be.at.least(scenarioBounds.top);
   expect(popupBounds.bottom).to.be.at.most(scenarioBounds.bottom);
+}
+
+function expectVerticallyCentered(inner, outer, tolerance = 3) {
+  const innerBounds = inner.getBoundingClientRect();
+  const outerBounds = outer.getBoundingClientRect();
+
+  const innerCenter = innerBounds.top + innerBounds.height / 2;
+  const outerCenter = outerBounds.top + outerBounds.height / 2;
+
+  expect(Math.abs(innerCenter - outerCenter)).to.be.at.most(tolerance);
 }

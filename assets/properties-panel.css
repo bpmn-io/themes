@@ -158,7 +158,14 @@
   border-bottom-right-radius: calc(var(--shadcn-radius) - 2px);
 }
 
+/*
+ * Centre the `=` glyph within the full-height indicator so it lines up with the
+ * vertically-centred editor content next to it (rather than sitting at the top).
+ */
 .bpmn-io-shadcn-theme .bio-properties-panel-feel-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: calc(var(--shadcn-radius) - 2px) 0 0 calc(var(--shadcn-radius) - 2px);
 }
 
@@ -282,6 +289,17 @@
 }
 
 /*
+ * Auto-resizing textareas grow from their content and don't centre text like a
+ * plain input, so a single line sits at the top of the taller shadcn control.
+ * Balance the vertical padding so one line centres within the control height;
+ * extra lines just flow down from there.
+ */
+.bpmn-io-shadcn-theme textarea.bio-properties-panel-input {
+  padding-top: 5px;
+  padding-bottom: 4px;
+}
+
+/*
  * A little more air below labels so the (thicker) shadcn focus ring on the
  * control beneath them doesn't crowd the label. Inline checkbox/toggle labels
  * sit beside their control, so keep those flush.
@@ -345,14 +363,18 @@
 
 /*
  * Clip inline FEEL / feelers / JSON editors to the focus-ring radius and
- * vertically centre their content within the shared control height, so a single
- * line sits centred (not pinned to the top) like a plain input. Scoped to
- * entries so the portaled FEEL popup editor (which fills its body) is untouched.
+ * vertically centre their single-line content within the shared control height
+ * (via the scroller's cross-axis alignment) so it sits centred and fully inside
+ * the ring instead of pinned to the top. Scoped to entries so the portaled FEEL
+ * popup editor (which fills its body top-aligned) is untouched.
  */
 .bpmn-io-shadcn-theme .bio-properties-panel-entry .cm-editor {
-  justify-content: center;
   border-radius: calc(var(--shadcn-radius) - 2px);
   overflow: hidden;
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-entry .cm-scroller {
+  align-items: center;
 }
 
 .bpmn-io-shadcn-theme .bio-properties-panel-tooltip {
@@ -389,6 +411,16 @@
   box-shadow: 0 10px 15px -3px hsl(var(--shadcn-foreground) / 0.1),
     0 4px 6px -4px hsl(var(--shadcn-foreground) / 0.1);
   font-family: var(--font-family);
+}
+
+/*
+ * The popup is portaled outside `.bio-properties-panel`, so it misses the
+ * vendor's `.bio-properties-panel * { box-sizing: border-box }` reset. Without
+ * it the text-popup textarea (height:100% + padding) overflows its body and
+ * spawns a spurious scrollbar; restore border-box for the whole popup subtree.
+ */
+.bpmn-io-shadcn-theme .bio-properties-panel-popup * {
+  box-sizing: border-box;
 }
 
 
