@@ -406,6 +406,28 @@
   flex: 1;
 }
 
+/*
+ * Give the CodeMirror gutter the same muted fill and left rounding as the FEEL
+ * `=` indicator: it is the semantic equivalent — a prefix column down the left
+ * of the field — so it should read the same and sit flush inside the rounded
+ * focus ring rather than showing a square-cornered band.
+ *
+ * `align-self: stretch` makes it span the full field height: core's scroller is
+ * a flex row with `align-items: flex-start`, so an under-filled gutter collapses
+ * to its content height (a short notch). CodeMirror's own `height: 100%` on the
+ * gutter misresolves against the content height here, so we reset it to `auto` —
+ * only then can `align-self: stretch` fill the field. Core's gutter carries no
+ * distinct fill, so this notch only surfaces once we tint it.
+ */
+.bpmn-io-shadcn-theme .bio-properties-panel-entry .bio-properties-panel-feelers-editor .cm-gutters,
+.bpmn-io-shadcn-theme .bio-properties-panel-entry .bio-properties-panel-json-editor .cm-gutters {
+  background: hsl(var(--shadcn-muted));
+  border: none;
+  border-radius: calc(var(--shadcn-radius) - 2px) 0 0 calc(var(--shadcn-radius) - 2px);
+  height: auto;
+  align-self: stretch;
+}
+
 .bpmn-io-shadcn-theme .bio-properties-panel-entry .cm-editor {
   border-radius: calc(var(--shadcn-radius) - 2px);
   overflow: hidden;

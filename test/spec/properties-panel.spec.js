@@ -275,7 +275,7 @@ describe('properties-panel', function() {
     );
   });
 
-  it('should fill the container height in the example data JSON editor', async function() {
+  it('should give the JSON editor gutter the muted indicator fill', async function() {
     playground = await createPlayground(this, 'properties-panel-example-data', {
       exampleData: true
     });
@@ -288,28 +288,42 @@ describe('properties-panel', function() {
     const editor = group.querySelector('.cm-editor');
     const view = EditorView.findFromDOM(editor);
 
+    // empty editor renders the `{ }` placeholder and the gutter spans the field
     view.dispatch({
-      changes: { from: 0, to: view.state.doc.length, insert: '{ }' }
+      changes: { from: 0, to: view.state.doc.length, insert: '' }
     });
     view.focus();
     await playground.setup.settle();
 
     // then
-    // the editor fills the field wrapper and the scrollable editing surface
-    // fills the editor, so the code area uses the full container height rather
-    // than floating a single line in the middle
-    const wrap = group.querySelector('.bio-properties-panel-input');
+    // the gutter is the semantic prefix column (like the FEEL `=` indicator),
+    // so it carries the same muted fill and left rounding and sits flush inside
+    // the rounded focus ring rather than showing a square-cornered band
+    const gutters = group.querySelector('.cm-gutters');
     const scroller = group.querySelector('.cm-scroller');
+    const editorStyle = getComputedStyle(editor);
 
-    const wrapBox = wrap.getBoundingClientRect();
-    const editorBox = editor.getBoundingClientRect();
-    const scrollerBox = scroller.getBoundingClientRect();
+    // resolve the muted token the FEEL `=` indicator uses, in the themed context
+    const probe = document.createElement('div');
+    probe.style.background = 'hsl(var(--shadcn-muted))';
+    gutters.appendChild(probe);
+    const mutedColor = getComputedStyle(probe).backgroundColor;
+    probe.remove();
 
-    // editor fills the wrapper (minus its 1px border on each side)
-    expect(editorBox.height).to.be.closeTo(wrapBox.height - 2, 1);
+    const gutterStyle = getComputedStyle(gutters);
+    expect(gutterStyle.backgroundColor).to.equal(mutedColor);
+    expect(gutterStyle.borderTopLeftRadius).to.not.equal('0px');
+    expect(editorStyle.overflow).to.equal('hidden');
+    expect(editorStyle.borderTopLeftRadius).to.not.equal('0px');
 
-    // scroller fills the editor
-    expect(scrollerBox.height).to.be.closeTo(editorBox.height, 1);
+    // the editing surface fills the editor, using the full field height
+    expect(scroller.getBoundingClientRect().height)
+      .to.be.closeTo(editor.getBoundingClientRect().height, 1);
+
+    // and the muted gutter spans that full height rather than collapsing to a
+    // short notch when the content underfills the field
+    expect(gutters.getBoundingClientRect().height)
+      .to.be.closeTo(editor.getBoundingClientRect().height, 1);
   });
 
   it('should align FEEL editor and input font sizing', async function() {
