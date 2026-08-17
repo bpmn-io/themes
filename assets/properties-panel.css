@@ -37,7 +37,13 @@
   --group-background-color: hsl(var(--shadcn-card));
   --group-bottom-border-color: hsl(var(--shadcn-border));
 
-  --sticky-group-background-color: hsl(var(--shadcn-card));
+  /* A stuck (scrolled) group header needs a solid fill to occlude content
+     sliding underneath AND to read as "stuck". The app background equals the
+     card in the light palette, so it would occlude but not mark the header;
+     the muted surface (as used by the panel header) stands apart from the card
+     content the way the stock panel's grey does. Core applies fill + separator
+     via these variables. */
+  --sticky-group-background-color: hsl(var(--shadcn-muted));
   --sticky-group-bottom-border-color: hsl(var(--shadcn-border));
   /* Open group headers stay flush with their content (like the stock panel);
      the bold title alone carries the hierarchy. C4 opts back into a fill. */
@@ -176,7 +182,12 @@
   border-radius: calc(var(--shadcn-radius) - 2px) 0 0 calc(var(--shadcn-radius) - 2px);
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-group-header.open {
+/* Open group headers stay flush with their content, but only while not stuck:
+ * a scrolled header is `.open.sticky`, and this rule would otherwise outweigh
+ * core's lower-specificity `.sticky` fill + separator and leave the stuck header
+ * transparent (content showing through). Scoping to :not(.sticky) lets core's
+ * sticky treatment mark the header once it sticks. */
+.bpmn-io-shadcn-theme .bio-properties-panel-group-header.open:not(.sticky) {
   background-color: var(--open-group-header-background-color);
   border-bottom: 0;
 }
@@ -346,18 +357,10 @@
     0 2px 4px -2px hsl(var(--shadcn-foreground) / 0.1);
 }
 
+/* Core hardcodes --color-white for the stuck list-entry header (no variable to
+   theme), so this selector override is the only way to give it a solid fill. */
 .bpmn-io-shadcn-theme .bio-properties-panel-list-entry-header.sticky {
   background-color: hsl(var(--shadcn-card));
-}
-
-/*
- * A stuck (scrolled) group header needs a solid background and separator so it
- * occludes the content sliding underneath — otherwise the flush, transparent
- * open header (above) would let text show through and clash.
- */
-.bpmn-io-shadcn-theme .bio-properties-panel-group-header.sticky {
-  background-color: hsl(var(--shadcn-background));
-  border-bottom: 1px solid hsl(var(--shadcn-border));
 }
 
 .bpmn-io-shadcn-theme .bio-properties-panel-feelers-editor-container .bio-properties-panel-feelers-editor__open-popup-placeholder,

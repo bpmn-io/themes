@@ -483,6 +483,32 @@ describe('properties-panel', function() {
     expectContainedInScenario(popup, playground.root);
   });
 
+  it('should mark a stuck (sticky) group header with a fill and separator', async function() {
+    playground = await createPlayground(this, 'properties-panel');
+    await playground.setup.settle();
+
+    // a scrolled-away open group header gains the `.sticky` class from core; the
+    // theme must still fill + separate it so it reads as stuck rather than letting
+    // content show through. Open a group, then simulate the stuck state directly.
+    const header = playground.root.querySelector('.bio-properties-panel-group-header:not(.open)');
+    header.click();
+    await playground.setup.settle();
+    header.classList.add('sticky');
+
+    // resolve the muted token (the panel header surface) in the themed context
+    const probe = document.createElement('div');
+    probe.style.background = 'hsl(var(--shadcn-muted))';
+    header.appendChild(probe);
+    const mutedColor = getComputedStyle(probe).backgroundColor;
+    probe.remove();
+
+    // then — stuck header carries the muted fill (not transparent) and a separator
+    const style = getComputedStyle(header);
+    expect(style.backgroundColor).to.equal(mutedColor);
+    expect(style.backgroundColor).to.not.equal('rgba(0, 0, 0, 0)');
+    expect(style.borderBottomWidth).to.equal('1px');
+  });
+
   it('should render the FEEL popup editor edge-to-edge (no border)', async function() {
     playground = await createPlayground(this, 'feel-popup');
 
