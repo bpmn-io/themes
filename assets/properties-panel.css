@@ -472,6 +472,14 @@
   font-family: var(--font-family);
 }
 
+/* shadcn separates a dialog/card header from its content with a divider rather
+   than a distinct fill — and here --shadcn-card and --shadcn-background resolve
+   to the same value in the light palette, so the header and the editor text run
+   together without one. Core exposes no header-border variable, so the
+   separator lives on the selector. */
+.bpmn-io-shadcn-theme .bio-properties-panel-popup .bio-properties-panel-popup__header {
+  border-bottom: 1px solid hsl(var(--shadcn-border));
+}
 
 .bpmn-io-shadcn-theme .bio-properties-panel-popup .bio-properties-panel-feel-popup__close-btn {
   color: hsl(var(--shadcn-primary-foreground));
