@@ -23,6 +23,35 @@ describe('properties-panel', function() {
     }
   });
 
+  it('should keep expanded list-item titles at a consistent standard weight', async function() {
+    playground = await createPlayground(this, 'properties-panel');
+    const root = playground.root;
+    await playground.setup.settle();
+
+    // open every group and expand every collapsible list item
+    root.querySelectorAll('.bio-properties-panel-group-header').forEach((h) => {
+      if (![ ...h.classList ].includes('open')) h.click();
+    });
+    await playground.setup.settle();
+    root.querySelectorAll('.bio-properties-panel-collapsible-entry-header').forEach((h) => h.click());
+    await playground.setup.settle();
+
+    const itemTitles = [
+      ...root.querySelectorAll(
+        '.bio-properties-panel-collapsible-entry.open .bio-properties-panel-collapsible-entry-header-title'
+      )
+    ];
+
+    // there is at least one expanded item to assert on
+    expect(itemTitles.length).to.be.above(0);
+
+    // every expanded item label renders at the same standard weight (matching
+    // the stock panel, which never bolds collapsible entry titles)
+    itemTitles.forEach((title) => {
+      expect(getComputedStyle(title).fontWeight).to.equal('400');
+    });
+  });
+
   it('should apply the properties-panel adapter', async function() {
     playground = await createPlayground(this, 'properties-panel');
 
