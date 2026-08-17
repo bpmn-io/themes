@@ -283,8 +283,7 @@
 .bpmn-io-shadcn-theme .bio-properties-panel-input[type="text"],
 .bpmn-io-shadcn-theme .bio-properties-panel-input[type="number"],
 .bpmn-io-shadcn-theme select.bio-properties-panel-input,
-.bpmn-io-shadcn-theme textarea.bio-properties-panel-input,
-.bpmn-io-shadcn-theme .bio-properties-panel-feelers-input .cm-editor {
+.bpmn-io-shadcn-theme textarea.bio-properties-panel-input {
   min-height: var(--shadcn-control-height);
 }
 
@@ -362,19 +361,20 @@
 }
 
 /*
- * Clip inline FEEL / feelers / JSON editors to the focus-ring radius and
- * vertically centre their single-line content within the shared control height
- * (via the scroller's cross-axis alignment) so it sits centred and fully inside
- * the ring instead of pinned to the top. Scoped to entries so the portaled FEEL
- * popup editor (which fills its body top-aligned) is untouched.
+ * Inline CodeMirror editors (FEEL / feelers / JSON) render at their natural
+ * content height, and the vendor's `.cm-editor { min-height: 100% }` can't
+ * stretch them because the wrapper only sets `min-height` (a percentage
+ * min-height has no resolvable base), so a single line is pinned to the top of
+ * the taller shadcn control. Give the editor a real min-height equal to the
+ * control and centre its content block within it (the `.cm-editor` is already a
+ * flex column). Scoped to entries so the portaled popup editor — which fills its
+ * body top-aligned — is untouched.
  */
 .bpmn-io-shadcn-theme .bio-properties-panel-entry .cm-editor {
+  min-height: var(--shadcn-control-height);
+  justify-content: center;
   border-radius: calc(var(--shadcn-radius) - 2px);
   overflow: hidden;
-}
-
-.bpmn-io-shadcn-theme .bio-properties-panel-entry .cm-scroller {
-  align-items: center;
 }
 
 .bpmn-io-shadcn-theme .bio-properties-panel-tooltip {

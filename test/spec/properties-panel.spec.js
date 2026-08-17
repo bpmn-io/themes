@@ -276,16 +276,47 @@ describe('properties-panel', function() {
     await playground.setup.settle();
 
     const container = entry.querySelector('.bio-properties-panel-feel-container');
-    const content = entry.querySelector('.cm-content');
+    const editor = entry.querySelector('.cm-editor');
+
+    // measure the actual text line, not `.cm-content` (which fills the height)
+    const line = entry.querySelector('.cm-line');
     const indicator = entry.querySelector('.bio-properties-panel-feel-indicator');
     const indicatorStyles = getComputedStyle(indicator);
 
-    // then — the code line sits centred within the control height, and the `=`
-    // indicator centres its glyph (rather than pinning it to the top)
-    expectVerticallyCentered(content, container);
+    // then — the editor fills the control height and the code line + the `=`
+    // indicator sit centred within it (rather than pinned to the top)
+    expect(editor.getBoundingClientRect().height).to.be.closeTo(32, 2);
+    expectVerticallyCentered(line, container);
     expect(indicatorStyles.display).to.equal('flex');
     expect(indicatorStyles.alignItems).to.equal('center');
     expect(indicatorStyles.justifyContent).to.equal('center');
+  });
+
+  it('should vertically centre single-line JSON editor content', async function() {
+    playground = await createPlayground(this, 'properties-panel-validation', {
+      exampleData: true
+    });
+
+    // when
+    playground.setup['open-example-data']();
+    await playground.setup.settle();
+
+    const entry = playground.root.querySelector('[data-entry-id="exampleJson"]');
+    const view = EditorView.findFromDOM(entry.querySelector('.cm-editor'));
+
+    view.dispatch({
+      changes: { from: 0, to: view.state.doc.length, insert: '{"order": ' }
+    });
+    await playground.setup.settle();
+
+    const wrapper = entry.querySelector('.bio-properties-panel-input');
+    const editor = entry.querySelector('.cm-editor');
+    const line = entry.querySelector('.cm-line');
+
+    // then — a single JSON line fills and centres within the control height, so
+    // it sits fully inside the (error) focus ring instead of overflowing the top
+    expect(editor.getBoundingClientRect().height).to.be.closeTo(32, 2);
+    expectVerticallyCentered(line, wrapper);
   });
 
   it('should vertically centre a single-line auto-resize textarea', async function() {
