@@ -275,6 +275,43 @@ describe('properties-panel', function() {
     );
   });
 
+  it('should fill the container height in the example data JSON editor', async function() {
+    playground = await createPlayground(this, 'properties-panel-example-data', {
+      exampleData: true
+    });
+
+    // when
+    playground.setup['open-example-data']();
+    await playground.setup.settle();
+
+    const group = playground.root.querySelector('[data-group-id="group-additionalDataGroup"]');
+    const editor = group.querySelector('.cm-editor');
+    const view = EditorView.findFromDOM(editor);
+
+    view.dispatch({
+      changes: { from: 0, to: view.state.doc.length, insert: '{ }' }
+    });
+    view.focus();
+    await playground.setup.settle();
+
+    // then
+    // the editor fills the field wrapper and the scrollable editing surface
+    // fills the editor, so the code area uses the full container height rather
+    // than floating a single line in the middle
+    const wrap = group.querySelector('.bio-properties-panel-input');
+    const scroller = group.querySelector('.cm-scroller');
+
+    const wrapBox = wrap.getBoundingClientRect();
+    const editorBox = editor.getBoundingClientRect();
+    const scrollerBox = scroller.getBoundingClientRect();
+
+    // editor fills the wrapper (minus its 1px border on each side)
+    expect(editorBox.height).to.be.closeTo(wrapBox.height - 2, 1);
+
+    // scroller fills the editor
+    expect(scrollerBox.height).to.be.closeTo(editorBox.height, 1);
+  });
+
   it('should align FEEL editor and input font sizing', async function() {
     playground = await createPlayground(this, 'properties-panel-feel-typography');
 
@@ -305,17 +342,16 @@ describe('properties-panel', function() {
     await playground.setup.settle();
 
     const container = entry.querySelector('.bio-properties-panel-feel-container');
-    const editor = entry.querySelector('.cm-editor');
 
     // measure the actual text line, not `.cm-content` (which fills the height)
     const line = entry.querySelector('.cm-line');
     const indicator = entry.querySelector('.bio-properties-panel-feel-indicator');
     const indicatorStyles = getComputedStyle(indicator);
 
-    // then — the editor fills the control height and the code line + the `=`
-    // indicator sit centred within the first row (rather than pinned to the raw
-    // top, or centred over the full multi-line height)
-    expect(editor.getBoundingClientRect().height).to.be.closeTo(32, 2);
+    // then — the field matches a plain control's height and the code line + the
+    // `=` indicator sit centred within that single row (rather than pinned to the
+    // raw top, overshooting the control height, or centred over a multi-line box)
+    expect(container.getBoundingClientRect().height).to.be.closeTo(32, 2);
     expectVerticallyCentered(line, container);
     expect(indicatorStyles.display).to.equal('flex');
     expect(indicatorStyles.alignItems).to.equal('flex-start');
@@ -347,9 +383,14 @@ describe('properties-panel', function() {
     const editor = entry.querySelector('.cm-editor');
     const line = entry.querySelector('.cm-line');
 
-    // then — a single JSON line fills and centres within the control height, so
-    // it sits fully inside the (error) focus ring instead of overflowing the top
-    expect(editor.getBoundingClientRect().height).to.be.closeTo(32, 2);
+    // then — the field matches a plain control's height, the editor fills the
+    // wrapper (so its background, diagnostics and focus ring stay flush with the
+    // field box), and a single JSON line centres within it instead of pinning to
+    // the top
+    expect(wrapper.getBoundingClientRect().height).to.be.closeTo(32, 2);
+    expect(editor.getBoundingClientRect().height).to.be.closeTo(
+      wrapper.clientHeight, 1
+    );
     expectVerticallyCentered(line, wrapper);
   });
 

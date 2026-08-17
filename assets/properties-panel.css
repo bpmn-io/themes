@@ -373,18 +373,47 @@
 }
 
 /*
- * Inline CodeMirror editors (FEEL / feelers / JSON) render at their natural
- * content height, and the vendor's `.cm-editor { min-height: 100% }` can't
- * stretch them because the wrapper only sets `min-height` (a percentage
- * min-height has no resolvable base), so a single line is pinned to the top of
- * the taller shadcn control. Give the editor a real min-height equal to the
- * control and centre its content block within it (the `.cm-editor` is already a
- * flex column). Scoped to entries so the portaled popup editor — which fills its
- * body top-aligned — is untouched.
+ * Inline CodeMirror editors don't auto-centre a single line within the taller
+ * shadcn control, and the core `.cm-content` padding that normalises them to a
+ * plain input only balances at the vendor's shorter default height. They fall
+ * into two shapes that `properties-panel.css` themes differently, so we follow
+ * suit:
+ *
+ * FEEL — a single inline expression on a padded, bordered wrapper (already
+ * sized to the control height). Centre the editor within the wrapper; giving
+ * the editor its own min-height would stack on the wrapper's padding + border
+ * and overshoot the control height.
  */
-.bpmn-io-shadcn-theme .bio-properties-panel-entry .cm-editor {
-  min-height: var(--shadcn-control-height);
+.bpmn-io-shadcn-theme .bio-properties-panel-entry .bio-properties-panel-feel-editor-container .bio-properties-panel-input {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
+}
+
+/*
+ * feelers / JSON — full code-editor surfaces on a zero-padding wrapper. The
+ * editor (and its scroller) must fill the wrapper so the editing surface,
+ * background, gutter diagnostics and focus ring stay flush with the field box
+ * and span its full height (core sizes them with an editor/scroller min-height,
+ * not wrapper padding). Content stays top-aligned, as in the untethered editor.
+ */
+.bpmn-io-shadcn-theme .bio-properties-panel-entry .bio-properties-panel-feelers-editor.bio-properties-panel-input,
+.bpmn-io-shadcn-theme .bio-properties-panel-entry .bio-properties-panel-json-editor .bio-properties-panel-input {
+  display: flex;
+  flex-direction: column;
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-entry .bio-properties-panel-feelers-editor .cm-editor,
+.bpmn-io-shadcn-theme .bio-properties-panel-entry .bio-properties-panel-json-editor .cm-editor {
+  flex: 1;
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-entry .bio-properties-panel-feelers-editor .cm-scroller,
+.bpmn-io-shadcn-theme .bio-properties-panel-entry .bio-properties-panel-json-editor .cm-scroller {
+  flex: 1;
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-entry .cm-editor {
   border-radius: calc(var(--shadcn-radius) - 2px);
   overflow: hidden;
 }
