@@ -76,6 +76,24 @@ describe('execution listeners', function() {
     expect(parseFloat(sideLine.width)).to.be.greaterThan(0);
   });
 
+  it('should paint the nested list dot in the side-line colour', async function() {
+    const scenario = await createExecutionListeners(this, 'execution-listeners');
+    playground = scenario.playground;
+
+    // the nested Headers list-entry carries the ::before dot that sits on the
+    // side line of its enclosing listener entries
+    const listEntry = scenario.headerList;
+    const entries = listEntry.closest('.bio-properties-panel-collapsible-entry-entries');
+
+    const dotColor = getComputedStyle(listEntry, '::before').backgroundColor;
+    const sideLineColor = getComputedStyle(entries, '::before').backgroundColor;
+
+    // the original paints the dot and its side line with a single grey; matching
+    // them keeps the line from looking like it cuts through a mismatched dot
+    expect(dotColor).to.not.equal('rgba(0, 0, 0, 0)');
+    expect(dotColor).to.equal(sideLineColor);
+  });
+
   it('should keep listener titles at a consistent weight, separating open state structurally', async function() {
     const scenario = await createExecutionListeners(this, 'execution-listeners-hierarchy');
     playground = scenario.playground;
