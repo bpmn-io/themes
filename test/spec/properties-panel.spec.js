@@ -474,6 +474,19 @@ describe('properties-panel', function() {
     expect(popup.closest('.bpmn-io-shadcn-theme')).to.equal(playground.root);
     expect(popup.querySelector('.bio-properties-panel-popup__close')).to.exist;
 
+    // the header carries a divider so it stays distinct from the editor content
+    // (card and background resolve to the same fill in the light palette)
+    const header = popup.querySelector('.bio-properties-panel-popup__header');
+    const headerStyle = getComputedStyle(header);
+    expect(headerStyle.borderBottomWidth).to.equal('1px');
+
+    const probe = document.createElement('div');
+    probe.style.borderColor = 'hsl(var(--shadcn-border))';
+    header.appendChild(probe);
+    const borderColor = getComputedStyle(probe).borderTopColor;
+    probe.remove();
+    expect(headerStyle.borderBottomColor).to.equal(borderColor);
+
     // the portaled popup gets border-box from the upstream popup reset
     // (properties-panel #541); without it the full-height padded textarea would
     // overflow its body and spawn a spurious scrollbar
