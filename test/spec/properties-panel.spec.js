@@ -436,15 +436,21 @@ describe('properties-panel', function() {
     await playground.setup.settle();
 
     const popup = playground.root.querySelector('.bio-properties-panel-feel-popup');
-    const editor = popup.querySelector('.bio-properties-panel-feel-editor-container');
+    const container = popup.querySelector('.bio-properties-panel-feel-editor-container');
+
+    // the FEEL editor reuses .bio-properties-panel-input as its wrapper; inside
+    // the popup that wrapper is what would otherwise round + clip the gutter
+    const editorInput = container.querySelector('.bio-properties-panel-input');
 
     // then
     expect(popup.querySelector('.bio-properties-panel-popup__close')).to.exist;
 
-    // editor fills the popup body without a border/radius of its own, so it
-    // does not overflow and spawn spurious scrollbars
-    expect(getComputedStyle(editor).borderTopWidth).to.equal('0px');
-    expect(getComputedStyle(editor).borderTopLeftRadius).to.equal('0px');
+    // editor wrapper fills the popup body without a border/radius of its own, so
+    // it sits flush and does not clip the gutter corner or spawn spurious
+    // scrollbars
+    expect(getComputedStyle(container).borderTopWidth).to.equal('0px');
+    expect(getComputedStyle(editorInput).borderTopLeftRadius).to.equal('0px');
+    expect(getComputedStyle(editorInput).borderTopRightRadius).to.equal('0px');
 
     expectContainedInScenario(popup, playground.root);
   });

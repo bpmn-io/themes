@@ -445,8 +445,16 @@
 /*
  * The FEEL popup editor fills the popup body edge-to-edge (no border or radius
  * of its own — adding one made the 100%-sized editor overflow and spawn
- * scrollbars). Keep any genuinely-needed scrollbars thin and muted, shadcn-style.
+ * scrollbars). The FEEL editor reuses `.bio-properties-panel-input`, which the
+ * theme rounds for inline controls; inside the popup that rounded,
+ * `overflow: hidden` wrapper clips the gutter's top corner and exposes the popup
+ * background behind it. Square it off so the editor sits flush in the body.
  */
+.bpmn-io-shadcn-theme .bio-properties-panel-feel-popup .bio-properties-panel-feel-editor-container .bio-properties-panel-input {
+  border-radius: 0;
+}
+
+/* Keep any genuinely-needed scrollbars thin and muted, shadcn-style. */
 .bpmn-io-shadcn-theme .bio-properties-panel-feel-popup .cm-scroller {
   scrollbar-width: thin;
   scrollbar-color: hsl(var(--shadcn-border)) transparent;
