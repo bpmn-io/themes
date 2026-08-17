@@ -419,8 +419,9 @@ describe('properties-panel', function() {
     expect(popup.closest('.bpmn-io-shadcn-theme')).to.equal(playground.root);
     expect(popup.querySelector('.bio-properties-panel-popup__close')).to.exist;
 
-    // portaled popups miss the vendor border-box reset; without it the
-    // full-height padded textarea overflows its body and spawns a scrollbar
+    // the portaled popup gets border-box from the upstream popup reset
+    // (properties-panel #541); without it the full-height padded textarea would
+    // overflow its body and spawn a spurious scrollbar
     expect(getComputedStyle(textarea).boxSizing).to.equal('border-box');
     expect(textarea.scrollHeight).to.be.at.most(textarea.clientHeight + 1);
 

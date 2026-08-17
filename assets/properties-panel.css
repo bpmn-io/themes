@@ -422,16 +422,6 @@
   font-family: var(--font-family);
 }
 
-/*
- * The popup is portaled outside `.bio-properties-panel`, so it misses the
- * vendor's `.bio-properties-panel * { box-sizing: border-box }` reset. Without
- * it the text-popup textarea (height:100% + padding) overflows its body and
- * spawns a spurious scrollbar; restore border-box for the whole popup subtree.
- */
-.bpmn-io-shadcn-theme .bio-properties-panel-popup * {
-  box-sizing: border-box;
-}
-
 
 .bpmn-io-shadcn-theme .bio-properties-panel-popup .bio-properties-panel-feel-popup__close-btn {
   color: hsl(var(--shadcn-primary-foreground));
