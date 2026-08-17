@@ -3,13 +3,20 @@
  *
  * Load this after properties-panel.css and assets/tokens.css.
  */
-.bpmn-io-shadcn-theme .bio-properties-panel {
+/*
+ * Font stacks live on the theme root (not only the panel) so portaled surfaces
+ * — the FEEL popup and tooltips — inherit them too instead of falling back to
+ * the browser serif default.
+ */
+.bpmn-io-shadcn-theme {
   --font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-family-monospace: ui-monospace, SFMono-Regular, "SF Mono", Menlo,
     Consolas, "Liberation Mono", monospace;
+}
 
+.bpmn-io-shadcn-theme .bio-properties-panel {
   --text-base-color: hsl(var(--shadcn-foreground));
   --text-error-color: hsl(var(--shadcn-destructive));
   --link-color: hsl(var(--shadcn-primary));
@@ -268,17 +275,33 @@
   min-height: var(--shadcn-control-height);
 }
 
+/*
+ * A little more air below labels so the (thicker) shadcn focus ring on the
+ * control beneath them doesn't crowd the label. Inline checkbox/toggle labels
+ * sit beside their control, so keep those flush.
+ */
+.bpmn-io-shadcn-theme .bio-properties-panel-label {
+  margin-bottom: 5px;
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-checkbox > .bio-properties-panel-label,
+.bpmn-io-shadcn-theme .bio-properties-panel-toggle-switch > .bio-properties-panel-label {
+  margin-bottom: 0;
+}
+
+/*
+ * Keep the pop-out toggle contained on a single input line: a compact square
+ * (16px glyph + 4px padding = 24px) sitting 4px from the top and right borders,
+ * which centres it vertically in the shared 2rem control height.
+ */
 .bpmn-io-shadcn-theme .bio-properties-panel-feelers-editor-container .bio-properties-panel-open-feel-popup,
 .bpmn-io-shadcn-theme .bio-properties-panel-feel-container .bio-properties-panel-open-feel-popup,
 .bpmn-io-shadcn-theme .bio-properties-panel-textarea-container .bio-properties-panel-open-feel-popup {
   top: 0;
-  bottom: 0;
-  width: 1.75rem;
-  height: 1.75rem;
-  margin: auto 2px;
-  padding: 0;
-  line-height: 1;
-  text-align: center;
+  right: 0;
+  margin: 4px;
+  padding: 4px;
+  line-height: 0;
   border-radius: calc(var(--shadcn-radius) - 4px);
 }
 
@@ -299,17 +322,29 @@
   background-color: hsl(var(--shadcn-card));
 }
 
+/*
+ * A stuck (scrolled) group header needs a solid background and separator so it
+ * occludes the content sliding underneath — otherwise the flush, transparent
+ * open header (above) would let text show through and clash.
+ */
+.bpmn-io-shadcn-theme .bio-properties-panel-group-header.sticky {
+  background-color: hsl(var(--shadcn-background));
+  border-bottom: 1px solid hsl(var(--shadcn-border));
+}
+
 .bpmn-io-shadcn-theme .bio-properties-panel-feelers-editor-container .bio-properties-panel-feelers-editor__open-popup-placeholder,
 .bpmn-io-shadcn-theme .bio-properties-panel-feel-editor-container .bio-properties-panel-feel-editor__open-popup-placeholder {
   color: hsl(var(--shadcn-muted-foreground));
 }
 
 /*
- * Clip the FEEL / feelers editor to the same rounded box the focus ring follows
- * so a long expression can't spill past the outline at the rounded corners.
+ * Clip inline FEEL / feelers / JSON editors to the focus-ring radius and
+ * vertically centre their content within the shared control height, so a single
+ * line sits centred (not pinned to the top) like a plain input. Scoped to
+ * entries so the portaled FEEL popup editor (which fills its body) is untouched.
  */
-.bpmn-io-shadcn-theme .bio-properties-panel-feel-container .cm-editor,
-.bpmn-io-shadcn-theme .bio-properties-panel-feelers-input .cm-editor {
+.bpmn-io-shadcn-theme .bio-properties-panel-entry .cm-editor {
+  justify-content: center;
   border-radius: calc(var(--shadcn-radius) - 2px);
   overflow: hidden;
 }
@@ -324,7 +359,6 @@
 }
 
 .bpmn-io-shadcn-theme .bio-properties-panel-tooltip-content {
-  border: 1px solid hsl(var(--shadcn-border));
   border-radius: calc(var(--shadcn-radius) - 2px);
   box-shadow: 0 4px 6px -1px hsl(var(--shadcn-foreground) / 0.1),
     0 2px 4px -2px hsl(var(--shadcn-foreground) / 0.1);
@@ -371,7 +405,33 @@
   background-color: hsl(var(--shadcn-accent));
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-feel-popup .bio-properties-panel-feel-editor-container {
-  border: 1px solid hsl(var(--shadcn-border));
-  border-radius: calc(var(--shadcn-radius) - 2px);
+/*
+ * The FEEL popup editor fills the popup body edge-to-edge (no border or radius
+ * of its own — adding one made the 100%-sized editor overflow and spawn
+ * scrollbars). Keep any genuinely-needed scrollbars thin and muted, shadcn-style.
+ */
+.bpmn-io-shadcn-theme .bio-properties-panel-feel-popup .cm-scroller {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--shadcn-border)) transparent;
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-feel-popup .cm-scroller::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-feel-popup .cm-scroller::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-feel-popup .cm-scroller::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--shadcn-border));
+  background-clip: padding-box;
+  border: 3px solid transparent;
+  border-radius: 9999px;
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-feel-popup .cm-scroller::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(var(--shadcn-muted-foreground));
+  background-clip: padding-box;
 }

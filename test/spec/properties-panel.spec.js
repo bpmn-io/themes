@@ -311,7 +311,7 @@ describe('properties-panel', function() {
     expectContainedInScenario(popup, playground.root);
   });
 
-  it('should render the FEEL popup editor with an embedded border', async function() {
+  it('should render the FEEL popup editor edge-to-edge (no border)', async function() {
     playground = await createPlayground(this, 'feel-popup');
 
     // when
@@ -323,7 +323,12 @@ describe('properties-panel', function() {
 
     // then
     expect(popup.querySelector('.bio-properties-panel-popup__close')).to.exist;
-    expect(getComputedStyle(editor).borderTopWidth).to.equal('1px');
+
+    // editor fills the popup body without a border/radius of its own, so it
+    // does not overflow and spawn spurious scrollbars
+    expect(getComputedStyle(editor).borderTopWidth).to.equal('0px');
+    expect(getComputedStyle(editor).borderTopLeftRadius).to.equal('0px');
+
     expectContainedInScenario(popup, playground.root);
   });
 
