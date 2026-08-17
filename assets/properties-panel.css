@@ -292,13 +292,6 @@
   z-index: 11;
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-input[type="text"],
-.bpmn-io-shadcn-theme .bio-properties-panel-input[type="number"],
-.bpmn-io-shadcn-theme select.bio-properties-panel-input,
-.bpmn-io-shadcn-theme textarea.bio-properties-panel-input {
-  min-height: var(--shadcn-control-height);
-}
-
 /*
  * Auto-resizing textareas grow from their content and don't centre text like a
  * plain input, so a single line sits at the top of the taller shadcn control.
