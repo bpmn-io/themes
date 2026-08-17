@@ -159,13 +159,17 @@
 }
 
 /*
- * Centre the `=` glyph within the full-height indicator so it lines up with the
- * vertically-centred editor content next to it (rather than sitting at the top).
+ * The indicator spans the full editor height (multi-line included), so the `=`
+ * glyph must stick to the first row — like the pop-out icon — instead of
+ * centring over the whole box. Top-align it and offset by half the surplus
+ * between the control height and a single line so it lines up with the
+ * vertically-centred single-line editor content and the first code row.
  */
 .bpmn-io-shadcn-theme .bio-properties-panel-feel-indicator {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  padding-top: calc((var(--shadcn-control-height) - var(--text-line-height)) / 2);
   border-radius: calc(var(--shadcn-radius) - 2px) 0 0 calc(var(--shadcn-radius) - 2px);
 }
 

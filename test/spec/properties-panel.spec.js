@@ -284,12 +284,17 @@ describe('properties-panel', function() {
     const indicatorStyles = getComputedStyle(indicator);
 
     // then — the editor fills the control height and the code line + the `=`
-    // indicator sit centred within it (rather than pinned to the top)
+    // indicator sit centred within the first row (rather than pinned to the raw
+    // top, or centred over the full multi-line height)
     expect(editor.getBoundingClientRect().height).to.be.closeTo(32, 2);
     expectVerticallyCentered(line, container);
     expect(indicatorStyles.display).to.equal('flex');
-    expect(indicatorStyles.alignItems).to.equal('center');
+    expect(indicatorStyles.alignItems).to.equal('flex-start');
     expect(indicatorStyles.justifyContent).to.equal('center');
+
+    // the glyph is nudged down by half the surplus between control height and a
+    // single line, so it lines up with the first code row
+    expect(parseFloat(indicatorStyles.paddingTop)).to.be.closeTo(5.5, 1);
   });
 
   it('should vertically centre single-line JSON editor content', async function() {
