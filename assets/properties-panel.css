@@ -90,8 +90,14 @@
   --toggle-switch-off-background-color: hsl(var(--shadcn-input));
   --toggle-switch-switcher-background-color: hsl(var(--shadcn-background));
 
-  --side-line-background-color: hsl(var(--shadcn-muted-foreground));
-  --side-line-extension-background-color: hsl(var(--shadcn-muted-foreground));
+  /*
+   * Structural nesting connectors: use the lighter border token (not the dark
+   * muted-foreground) so they read as subtle guides like the original's light
+   * grey, which also stops subpixel rounding at browser zoom from making the
+   * 2px lines look unevenly wide across levels.
+   */
+  --side-line-background-color: hsl(var(--shadcn-border));
+  --side-line-extension-background-color: hsl(var(--shadcn-border));
 
   --list-entry-dot-background-color: hsl(var(--shadcn-muted-foreground));
   --list-entry-header-button-fill-color: hsl(var(--shadcn-muted-foreground));
