@@ -183,9 +183,14 @@
   font-weight: 600;
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-collapsible-entry.open
-  > .bio-properties-panel-collapsible-entry-header
-  .bio-properties-panel-collapsible-entry-header-title,
+/*
+ * Open list-section headers ("Input mapping", "Extension properties", …) carry
+ * the same emphasis as open group headers. Individual list items are left at the
+ * core (unstyled) weight: the stock panel never bolds
+ * `.bio-properties-panel-collapsible-entry-header-title`, so neither do we —
+ * every expanded item label then stays at one consistent, standard weight
+ * instead of some items rendering bold and others not.
+ */
 .bpmn-io-shadcn-theme .bio-properties-panel-list-entry-header-title.open {
   font-weight: 600;
 }

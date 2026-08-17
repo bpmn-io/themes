@@ -76,7 +76,7 @@ describe('execution listeners', function() {
     expect(parseFloat(sideLine.width)).to.be.greaterThan(0);
   });
 
-  it('should visually separate open and collapsed listeners', async function() {
+  it('should keep listener titles at a consistent weight, separating open state structurally', async function() {
     const scenario = await createExecutionListeners(this, 'execution-listeners-hierarchy');
     playground = scenario.playground;
 
@@ -86,11 +86,20 @@ describe('execution listeners', function() {
     } = scenario;
 
     // then
-    // the open listener header is emphasized over the collapsed sibling
+    // item titles keep a single, consistent weight regardless of open state
+    // (the stock panel never bolds collapsible entry titles) ...
     const openWeight = Number(getComputedStyle(openListenerTitle).fontWeight);
     const collapsedWeight = Number(getComputedStyle(collapsedListenerTitle).fontWeight);
 
-    expect(openWeight).to.be.greaterThan(collapsedWeight);
+    expect(openWeight).to.equal(collapsedWeight);
+
+    // ... and the open/collapsed distinction is carried structurally, by the
+    // expanded entry revealing its nested content
+    const openEntry = openListenerTitle.closest('.bio-properties-panel-collapsible-entry');
+    const collapsedEntry = collapsedListenerTitle.closest('.bio-properties-panel-collapsible-entry');
+
+    expect([ ...openEntry.classList ]).to.include('open');
+    expect([ ...collapsedEntry.classList ]).to.not.include('open');
   });
 
 });
