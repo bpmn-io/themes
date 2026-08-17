@@ -74,6 +74,12 @@ export function isPlaygroundEnabled(name) {
   return !singleStart || singleStart === 'all' || singleStart === name;
 }
 
+export function isStartOnly(name) {
+  const singleStart = window.__env__ && window.__env__.SINGLE_START;
+
+  return singleStart === name;
+}
+
 export function shouldKeepPlayground() {
   return Boolean(window.__env__ && window.__env__.SINGLE_START);
 }

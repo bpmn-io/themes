@@ -52,25 +52,31 @@ Prepare the project by installing all dependencies:
 npm install
 ```
 
-Then, depending on your use-case, run any of the following commands:
+Then, depending on your use-case, you may run any of the following commands:
 
 ```sh
 # lint and run all tests
 npm run all
 
-# spin up a playground for a component
-npm run start:properties-panel
-npm run start:diagram
-npm run start:bpmn
-npm run start:element-template-chooser
+# run all tests
+npm test
+
+# spin up the canonical playground to try the theme end-to-end
+npm start
 
 # capture side-by-side theme comparison screenshots into .captures/
 npm run capture
 ```
 
-The test suite doubles as live playgrounds backed by the released component
-packages: in start mode each scenario stays mounted and the fixed **Theme**
-switcher (persisted as `?theme=`) flips it between Original, Shadcn, and C4.
+To explore a narrower surface, `it.only` a scenario spec or spin up one of the
+component-specific playgrounds:
+
+```sh
+npm run start:properties-panel
+npm run start:diagram
+npm run start:bpmn
+npm run start:element-template-chooser
+```
 
 ## License
 
