@@ -2,7 +2,8 @@ import bpmnIoPlugin from 'eslint-plugin-bpmn-io';
 
 const files = {
   ignored: [
-    'coverage'
+    'coverage',
+    'tmp'
   ],
   build: [
     'eslint.config.mjs',

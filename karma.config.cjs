@@ -1,11 +1,21 @@
 const path = require('path');
 
+const fs = require('fs');
+
 const {
   DefinePlugin
 } = require('webpack');
 
 const browsers = (process.env.TEST_BROWSERS || 'ChromeHeadless').split(',');
 const singleStart = process.env.SINGLE_START;
+
+const tmpDir = path.join(__dirname, 'tmp');
+
+fs.mkdirSync(tmpDir, { recursive: true });
+
+// Firefox refuses to capture without a writable, dedicated profile, so hand the
+// headless launcher a throwaway one.
+const firefoxProfile = fs.mkdtempSync(path.join(tmpDir, 'firefox-profile'));
 
 module.exports = function(karma) {
   const config = {
@@ -30,6 +40,13 @@ module.exports = function(karma) {
       ]
     },
     reporters: [ 'tldr' ],
+    customLaunchers: {
+      'FirefoxHeadless': {
+        base: 'Firefox',
+        flags: [ '-headless' ],
+        profile: firefoxProfile
+      }
+    },
     browsers,
     client: {
       mocha: {
