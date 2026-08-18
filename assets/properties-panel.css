@@ -133,7 +133,6 @@
 
   --feel-indicator-background-color: hsl(var(--shadcn-muted));
   --feelers-select-color: hsl(var(--shadcn-primary) / 0.15);
-
 }
 
 .bpmn-io-shadcn-theme .bio-properties-panel-input,
