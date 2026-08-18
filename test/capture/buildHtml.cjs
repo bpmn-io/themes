@@ -15,9 +15,11 @@ const STYLESHEETS = [
   'node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css',
   'node_modules/@bpmn-io/properties-panel/dist/assets/properties-panel.css',
   'node_modules/bpmn-js-element-templates/dist/assets/element-templates.css',
+  'node_modules/camunda-bpmn-js/styles/popup-menu.css',
   'node_modules/@bpmn-io/element-template-chooser/dist/element-template-chooser.css',
   'assets/tokens.css',
   'assets/properties-panel.css',
+  'assets/diagram.css',
   'assets/c4.css',
   'test/playground.css'
 ];
@@ -50,8 +52,8 @@ function styles() {
   return STYLESHEETS.map(read).map(css => `<style>${css}</style>`).join('\n');
 }
 
-function cell(theme, { panel, overlays }) {
-  const rootClasses = [ 'playground', 'capture-cell-panel' ];
+function cell(theme, capture) {
+  const rootClasses = [ 'playground' ];
 
   if (theme.shadcn) {
     rootClasses.push('bpmn-io-shadcn-theme');
@@ -60,6 +62,22 @@ function cell(theme, { panel, overlays }) {
   if (theme.dark) {
     rootClasses.push('dark');
   }
+
+  // diagram scenarios ship their canvas surfaces instead of a panel
+  if (capture.diagram) {
+    rootClasses.push('capture-cell-canvas');
+
+    return `<figure class="capture-cell ${theme.dark ? 'dark' : 'light'}">
+    <figcaption>${theme.label}</figcaption>
+    <div class="${rootClasses.join(' ')}">
+      <div class="djs-container djs-parent capture-surfaces">${capture.diagram.join('\n')}</div>
+    </div>
+  </figure>`;
+  }
+
+  const { panel, overlays } = capture;
+
+  rootClasses.push('capture-cell-panel');
 
   const overlayHtml = overlays && overlays.length
     ? `<div class="capture-overlays bio-properties-panel">${overlays.join('\n')}</div>`
@@ -123,6 +141,48 @@ ${styles()}
   }
   .capture-cell.dark .capture-cell-panel { border-color: #27272a; background: #18181b; }
   .capture-cell-panel .bio-properties-panel { height: auto; }
+
+  /*
+   * Diagram scenarios: the palette, search pad and popup menu mount inside the
+   * canvas and position themselves against the live viewport. In the static
+   * export we drop them onto a canvas-tinted backdrop and neutralise their
+   * positioning so they stack, mirroring the panel overlays.
+   */
+  .capture-cell-canvas {
+    box-sizing: border-box;
+    width: max-content;
+    min-width: 520px;
+    border: 1px solid rgba(0, 0, 0, .12);
+    background: #f4f4f5;
+  }
+  .capture-cell.dark .capture-cell-canvas { border-color: #27272a; background: #18181b; }
+  .capture-surfaces {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 24px;
+    min-height: 160px;
+  }
+  .capture-surfaces .djs-palette,
+  .capture-surfaces .djs-search-container,
+  .capture-surfaces .djs-popup-parent,
+  .capture-surfaces .djs-popup {
+    position: static !important;
+    inset: auto !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    margin: 0 !important;
+  }
+  .capture-surfaces .djs-popup-parent { width: max-content; }
+  /* the search pad floats centrally above the canvas — mirror that placement */
+  .capture-surfaces .djs-search-container {
+    align-self: center;
+    width: 340px;
+  }
 
   /*
    * Portaled overlays position themselves against the live viewport. In the
