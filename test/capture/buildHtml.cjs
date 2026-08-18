@@ -81,16 +81,25 @@ function cell(theme, { panel, overlays }) {
  * A screenshot of this page is the one comparison image per scenario.
  *
  * @param {string} name scenario name
- * @param {{ panel: string, overlays: string[] }} capture captured panel markup
- * plus any portaled overlays (feel/text popup, tooltip), stacked below the panel
+ * @param {{ panel: string, overlays: string[], runtimeStyles: string[] }} capture
+ * captured panel markup plus any portaled overlays (feel/text popup, tooltip),
+ * stacked below the panel, and CodeMirror's runtime-injected stylesheets
  *
  * @return {string}
  */
 function buildComparisonHtml(name, capture) {
   const cells = THEMES.map(theme => cell(theme, capture)).join('\n');
 
+  // CodeMirror's runtime-injected rules (layout + syntax highlighting), captured
+  // from the live document. They go before the static sheet stack so the theme's
+  // higher-specificity .cm-* overrides still win, mirroring the live cascade.
+  const runtimeStyles = (capture.runtimeStyles || [])
+    .map(css => `<style>${css}</style>`)
+    .join('\n');
+
   return `<!DOCTYPE html><html><head><meta charset="utf-8"/>
 <title>${name}</title>
+${runtimeStyles}
 ${styles()}
 <style>
   html, body { margin: 0; padding: 0; }

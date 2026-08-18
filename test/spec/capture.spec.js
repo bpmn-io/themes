@@ -21,6 +21,44 @@ after(function() {
 
   const seen = new Set();
 
+  // CodeMirror builds its layout and syntax-highlight rules at runtime and
+  // injects them as <style> elements in the document head (never in any
+  // node_modules sheet). The static clone keeps the generated token classes but
+  // not those rules, so without this the exported editors collapse to an
+  // unstyled, uncoloured block. Carry the CM stylesheets along with the markup.
+  const CM_STYLE_RE = /\.cm-|\u037c/;
+
+  const runtimeStyles = Array.from(document.querySelectorAll('style'))
+    .map((el) => el.textContent || '')
+    .filter((css) => CM_STYLE_RE.test(css));
+
+  // CodeMirror also lays itself out at runtime — the editor fills its container,
+  // the scroller and gutter take their height from it, content flows — and none
+  // of that survives as static CSS. Copy the live pixel height of every editor
+  // element onto the detached clone so the export matches what the browser
+  // actually rendered (full-height gutter, editor filling the popup body).
+  const GEO_SELECTOR =
+    '.cm-editor, .cm-scroller, .cm-gutters, .cm-gutter, .cm-content';
+
+  function bakeGeometry(liveRoot, cloneRoot) {
+    const live = liveRoot.querySelectorAll(GEO_SELECTOR);
+    const clone = cloneRoot.querySelectorAll(GEO_SELECTOR);
+
+    live.forEach((el, i) => {
+      const target = clone[i];
+
+      if (!target) {
+        return;
+      }
+
+      const height = Math.round(el.getBoundingClientRect().height);
+
+      if (height) {
+        target.style.height = `${height}px`;
+      }
+    });
+  }
+
   document.querySelectorAll('.playground[data-playground]').forEach((root) => {
     const name = root.dataset.playground;
 
@@ -42,16 +80,24 @@ after(function() {
     // (next to `.playground-main`), while the tooltip floats inside the panel.
     const panelClone = panel.cloneNode(true);
 
+    bakeGeometry(panel, panelClone);
+
     const overlays = Array.from(root.children)
       .filter((el) => !el.classList.contains('playground-main'))
-      .map((el) => el.outerHTML);
+      .map((el) => {
+        const clone = el.cloneNode(true);
+
+        bakeGeometry(el, clone);
+
+        return clone.outerHTML;
+      });
 
     panelClone.querySelectorAll('.bio-properties-panel-tooltip').forEach((tooltip) => {
       overlays.push(tooltip.outerHTML);
       tooltip.remove();
     });
 
-    const payload = JSON.stringify({ panel: panelClone.innerHTML, overlays });
+    const payload = JSON.stringify({ panel: panelClone.innerHTML, overlays, runtimeStyles });
 
     const encoded = btoa(unescape(encodeURIComponent(payload)));
 
