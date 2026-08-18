@@ -209,7 +209,7 @@
   background-color: hsl(var(--shadcn-muted-foreground) / 0.4);
 }
 
-/* element-template entry icons keep their aspect ratio and sit on a card */
+/* element-template entry icons keep their aspect ratio */
 .bpmn-io-shadcn-theme .djs-popup-entry-icon img,
 .bpmn-io-shadcn-theme .djs-popup-entry-icon {
   object-fit: contain;
