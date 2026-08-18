@@ -177,14 +177,10 @@
 
   --search-container-background-color: var(--popover);
   --search-shadow-color: color-mix(in srgb, var(--foreground) 12%, transparent);
-  --search-input-border-color: var(--input);
-  --search-input-focus-border-color: var(--ring);
-  --search-input-focus-background-color: var(--input-background);
   --search-result-hover-background-color: var(--neutral-background-medium);
   --search-result-secondary-color: var(--neutral-foreground-subtle);
   --search-preselected-background-color: color-mix(in srgb, var(--primary-action-default) 12%, transparent);
   --search-container-border-color: var(--border);
-  --search-input-background-color: var(--neutral-background-medium);
 
   --tooltip-error-background-color: color-mix(in srgb, var(--danger-action-default) 10%, transparent);
   --tooltip-error-border-color: var(--danger-action-default);

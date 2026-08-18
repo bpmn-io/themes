@@ -58,14 +58,10 @@
   --search-font-family: var(--font-family);
   --search-container-background-color: hsl(var(--shadcn-popover));
   --search-shadow-color: hsl(var(--shadcn-foreground) / 0.12);
-  --search-input-border-color: hsl(var(--shadcn-input));
-  --search-input-focus-border-color: hsl(var(--shadcn-ring));
-  --search-input-focus-background-color: var(--shadcn-input-fill);
   --search-result-hover-background-color: hsl(var(--shadcn-accent));
   --search-result-secondary-color: hsl(var(--shadcn-muted-foreground));
   --search-preselected-background-color: hsl(var(--shadcn-primary) / 0.12);
   --search-container-border-color: hsl(var(--shadcn-border));
-  --search-input-background-color: hsl(var(--shadcn-muted));
 
   /* error tooltip */
   --tooltip-error-background-color: hsl(var(--shadcn-destructive) / 0.1);
@@ -91,11 +87,17 @@
 }
 
 /*
- * Search pad — modelled on the shadcn command menu: a padded popover, a filled
- * pill input with a muted leading icon, and full-width rounded selection rows.
+ * Search pad — modelled on the shadcn command menu (cmdk). The pad is a
+ * command palette, not a form field: it floats above the canvas, filters as you
+ * type and is driven by the keyboard. So we frame the input and its results as
+ * one connected surface — a single popover border, a borderless transparent
+ * input (focus is implicit, so no ring), and a divider that only appears once
+ * there are results. One border plus one divider keeps the framing consistent
+ * and stops the results reading as a second box stamped onto the input.
  */
 .bpmn-io-shadcn-theme .djs-search-container {
-  padding: 6px;
+  padding: 0;
+  overflow: hidden;
   background: var(--search-container-background-color);
   border: 1px solid var(--search-container-border-color);
   border-radius: var(--shadcn-radius);
@@ -104,21 +106,22 @@
 }
 
 .bpmn-io-shadcn-theme .djs-search-input input {
-  padding: 7px 10px 7px 34px;
-  background: var(--search-input-background-color);
-  border-color: transparent;
-  border-radius: calc(var(--shadcn-radius) - 2px);
+  padding: 9px 12px 9px 34px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
 }
 
 .bpmn-io-shadcn-theme .djs-search-input input:focus {
-  background: var(--search-input-background-color);
-  border-color: transparent;
-  box-shadow: 0 0 0 3px hsl(var(--shadcn-ring) / var(--shadcn-ring-alpha));
+  background: transparent;
+  border: none;
+  outline: none;
+  box-shadow: none;
 }
 
 .bpmn-io-shadcn-theme .djs-search-input svg {
   top: 50%;
-  left: 14px;
+  left: 12px;
   transform: translateY(-50%);
 }
 
@@ -127,12 +130,20 @@
 }
 
 .bpmn-io-shadcn-theme .djs-search-results {
-  margin-top: 4px;
   background: transparent;
 }
 
+/*
+ * The divider and list padding ride on the results, so the empty state stays a
+ * symmetric single-row popover and only gains a separator once results exist.
+ */
+.bpmn-io-shadcn-theme .djs-search-results:not(:empty) {
+  padding: 4px;
+  border-top: 1px solid var(--search-container-border-color);
+}
+
 .bpmn-io-shadcn-theme .djs-search-result {
-  padding: 7px 10px;
+  padding: 7px 8px;
   border-radius: calc(var(--shadcn-radius) - 2px);
 }
 
