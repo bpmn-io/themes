@@ -200,27 +200,36 @@ describe('properties-panel', function() {
     const createButton = playground.root.querySelector(
       '[data-group-id="group-inputs"] .bio-properties-panel-add-entry'
     );
+    const arrow = playground.root.querySelector('.bio-properties-panel-arrow');
 
     // when
-    createButton.focus();
     await playground.setup.settle();
 
     const templateStyles = getComputedStyle(templateSelector);
     const createStyles = getComputedStyle(createButton);
-    const arrow = playground.root.querySelector('.bio-properties-panel-arrow');
+
+    // read the ghost button's resting background before focusing it: a
+    // programmatic focus matches `:focus-visible` in Firefox (but not Chrome),
+    // which would swap in the accent fill and make "at rest" browser-dependent.
+    const createRestBackground = createStyles.backgroundColor;
+    const createRestColor = createStyles.color;
 
     // then
     // the template selector is the primary (filled) action...
-    expect(templateStyles.backgroundColor).to.not.equal(createStyles.backgroundColor);
-    expect(createStyles.color).to.not.equal(templateStyles.color);
+    expect(templateStyles.backgroundColor).to.not.equal(createRestBackground);
+    expect(createRestColor).to.not.equal(templateStyles.color);
 
     // ...while the add (+) control is a ghost button: transparent at rest and
     // sharing its styling with the expand arrow it belongs to the same family as.
-    expect(createStyles.backgroundColor).to.equal('rgba(0, 0, 0, 0)');
-    expect(getComputedStyle(arrow).backgroundColor).to.equal(createStyles.backgroundColor);
+    expect(createRestBackground).to.equal('rgba(0, 0, 0, 0)');
+    expect(getComputedStyle(arrow).backgroundColor).to.equal(createRestBackground);
 
     expect(createStyles.borderTopLeftRadius).to.equal(templateStyles.borderTopLeftRadius);
-    expect(createStyles.outlineWidth).to.equal('2px');
+
+    // and it takes a visible focus ring once focused
+    createButton.focus();
+    await playground.setup.settle();
+    expect(getComputedStyle(createButton).outlineWidth).to.equal('2px');
   });
 
   it('should render a themed tooltip', async function() {
