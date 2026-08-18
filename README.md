@@ -1,5 +1,7 @@
 # bpmn.io Shadcn Theme
 
+[![CI](https://github.com/bpmn-io/shadcn-theme/actions/workflows/CI.yml/badge.svg)](https://github.com/bpmn-io/shadcn-theme/actions/workflows/CI.yml)
+
 A portable [shadcn/ui](https://ui.shadcn.com/) theme for bpmn.io, with an
 optional [Camunda Design System](https://github.com/camunda/design-system) (C4)
 override.

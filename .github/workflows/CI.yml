@@ -1,0 +1,30 @@
+name: CI
+on: [ push, pull_request ]
+jobs:
+  build_browsers:
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest ]
+        browser: [ Firefox, ChromeHeadless ]
+
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v7
+    - name: Use Node.js
+      uses: actions/setup-node@v7
+      with:
+        node-version: 24
+        cache: 'npm'
+    - name: Install dependencies
+      run: npm ci
+    - name: Setup project
+      uses: bpmn-io/actions/setup@latest
+    - name: Build
+      env:
+        TEST_BROWSERS: ${{ matrix.browser }}
+      run: xvfb-run npm run all
