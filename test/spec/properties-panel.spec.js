@@ -549,6 +549,38 @@ describe('properties-panel', function() {
     expectContainedInScenario(popup, playground.root);
   });
 
+  it('should hide the inline FEEL editor while its popup is open', async function() {
+    playground = await createPlayground(this, 'feel-popup');
+
+    // core renders the inline FEEL field like this while its popup is open: the
+    // "Opened in editor" placeholder is shown and the inline editor is hidden via
+    // `.popupOpen .bio-properties-panel-input { display: none }`. Our layout
+    // override carries higher specificity, so without a :not(.popupOpen) guard the
+    // editor would remain visible and spill below the placeholder.
+    const buildField = (popupOpen) => {
+      const entry = document.createElement('div');
+      entry.className = 'bio-properties-panel-entry';
+      entry.innerHTML = `
+        <div class="bio-properties-panel-feel-editor-container${popupOpen ? ' popupOpen' : ''}">
+          <div class="bio-properties-panel-feel-editor__open-popup-placeholder">Opened in editor</div>
+          <div class="bio-properties-panel-input"></div>
+        </div>
+      `;
+      playground.root.querySelector('.bio-properties-panel').appendChild(entry);
+      return entry;
+    };
+
+    // when
+    const openField = buildField(true);
+    const closedField = buildField(false);
+
+    // then — hidden while the popup is open, laid out normally otherwise
+    expect(getComputedStyle(openField.querySelector('.bio-properties-panel-input')).display)
+      .to.equal('none');
+    expect(getComputedStyle(closedField.querySelector('.bio-properties-panel-input')).display)
+      .to.equal('flex');
+  });
+
 });
 
 function expectContainedInScenario(popup, scenario) {

@@ -379,8 +379,14 @@
  * sized to the control height). Centre the editor within the wrapper; giving
  * the editor its own min-height would stack on the wrapper's padding + border
  * and overshoot the control height.
+ *
+ * Scope to the non-popup state: when the popup is open core hides this input
+ * (`.popupOpen .bio-properties-panel-input { display: none }`) and shows the
+ * "Opened in editor" placeholder instead. Our layout override carries higher
+ * specificity, so without the guard it would keep the inline editor visible
+ * beneath the placeholder.
  */
-.bpmn-io-shadcn-theme .bio-properties-panel-entry .bio-properties-panel-feel-editor-container .bio-properties-panel-input {
+.bpmn-io-shadcn-theme .bio-properties-panel-entry .bio-properties-panel-feel-editor-container:not(.popupOpen) .bio-properties-panel-input {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -392,8 +398,11 @@
  * background, gutter diagnostics and focus ring stay flush with the field box
  * and span its full height (core sizes them with an editor/scroller min-height,
  * not wrapper padding). Content stays top-aligned, as in the untethered editor.
+ *
+ * feelers is popup-capable, so it is scoped to the non-popup state for the same
+ * reason as FEEL above; the JSON editor has no popup.
  */
-.bpmn-io-shadcn-theme .bio-properties-panel-entry .bio-properties-panel-feelers-editor.bio-properties-panel-input,
+.bpmn-io-shadcn-theme .bio-properties-panel-entry .bio-properties-panel-feelers-editor-container:not(.popupOpen) .bio-properties-panel-feelers-editor.bio-properties-panel-input,
 .bpmn-io-shadcn-theme .bio-properties-panel-entry .bio-properties-panel-json-editor .bio-properties-panel-input {
   display: flex;
   flex-direction: column;
