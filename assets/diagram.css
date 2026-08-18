@@ -19,7 +19,7 @@
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
   /* palette */
-  --palette-entry-color: hsl(var(--shadcn-muted-foreground));
+  --palette-entry-color: hsl(var(--shadcn-foreground));
   --palette-entry-hover-color: hsl(var(--shadcn-foreground));
   --palette-entry-selected-color: hsl(var(--shadcn-primary));
   --palette-separator-color: hsl(var(--shadcn-border));
@@ -77,6 +77,16 @@
 
 /* palette shares the token-driven radius */
 .bpmn-io-shadcn-theme .djs-palette {
+  border-radius: calc(var(--shadcn-radius) - 2px);
+}
+
+/*
+ * Palette icons stay at full foreground contrast in every state; hover adds a
+ * background highlight (the shared toggle-hover token, so C4 stays aligned)
+ * rather than dimming the icon, so entries are always clearly legible.
+ */
+.bpmn-io-shadcn-theme .djs-palette .entry:hover {
+  background: var(--palette-toggle-hover-background-color);
   border-radius: calc(var(--shadcn-radius) - 2px);
 }
 
