@@ -66,6 +66,56 @@ after(function() {
       return;
     }
 
+    // Diagram scenarios compare the canvas surfaces (palette, search pad, popup
+    // menu) rather than the properties panel. They all mount inside the themed
+    // `.djs-parent` canvas container, so capture whichever are live and let the
+    // exporter re-home them onto a canvas backdrop.
+    if (name.startsWith('diagram')) {
+      const canvas = root.querySelector('.playground-canvas');
+
+      // The search pad closes on any outside click, which mounting/interacting
+      // with later scenarios triggers, so re-open and re-run its query here to
+      // capture it in its searched state. Popups persist, so they need no help.
+      const playground = (window.__playgrounds__ || {})[name];
+
+      if (playground && name === 'diagram-search') {
+        playground.setup.search('Review');
+      }
+
+      const surfaces = [];
+
+      // the search pad opens centrally above the canvas, so capture it first
+      const search = canvas.querySelector('.djs-search-container.open');
+
+      if (search) {
+        surfaces.push(search);
+      }
+
+      const palette = canvas.querySelector('.djs-palette');
+
+      if (palette) {
+        surfaces.push(palette);
+      }
+
+      canvas.querySelectorAll('.djs-popup-parent').forEach((popup) => surfaces.push(popup));
+
+      if (!surfaces.length) {
+        return;
+      }
+
+      seen.add(name);
+
+      const diagram = surfaces.map((el) => el.outerHTML);
+
+      const payload = JSON.stringify({ diagram, runtimeStyles });
+
+      const encoded = btoa(unescape(encodeURIComponent(payload)));
+
+      console.log(`CAPTURE::${name}::${encoded}`);
+
+      return;
+    }
+
     const panel = root.querySelector('.playground-properties');
 
     if (!panel || !panel.innerHTML.trim()) {
