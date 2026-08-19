@@ -1,5 +1,5 @@
 import {
-  createPlayground,
+  createBpmnPlayground,
   isStartOnly
 } from '../TestHelper.js';
 
@@ -27,7 +27,7 @@ describe('theme playground', function() {
   });
 
   it('renders the full editor with the theme applied', async function() {
-    await createPlayground(this, 'start', {
+    await createBpmnPlayground(this, 'start', {
       exampleData: true,
       themeControls: true
     });

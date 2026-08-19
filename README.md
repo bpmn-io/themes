@@ -36,6 +36,19 @@ import '@bpmn-io/shadcn-theme/assets/tokens.css';
 import '@bpmn-io/shadcn-theme/assets/diagram.css';
 ```
 
+To theme [`@bpmn-io/form-js`](https://github.com/bpmn-io/form-js) — both the
+viewer and the editor (its palette, live preview and properties panel) — load
+`form-js.css` after the form-js stylesheets. The editor's properties panel
+reuses the `properties-panel.css` adapter, so load that too:
+
+```js
+import '@bpmn-io/form-js/dist/assets/form-js.css';
+import '@bpmn-io/form-js/dist/assets/form-js-editor.css';
+import '@bpmn-io/shadcn-theme/assets/tokens.css';
+import '@bpmn-io/shadcn-theme/assets/properties-panel.css';
+import '@bpmn-io/shadcn-theme/assets/form-js.css';
+```
+
 Add `dark` to the theme root (or any ancestor) for dark mode, and override the
 `--shadcn-*` properties to match your shadcn configuration:
 
@@ -57,6 +70,7 @@ import '@camunda/design-system/styles.css';
 import '@bpmn-io/shadcn-theme/assets/tokens.css';
 import '@bpmn-io/shadcn-theme/assets/properties-panel.css';
 import '@bpmn-io/shadcn-theme/assets/diagram.css';
+import '@bpmn-io/shadcn-theme/assets/form-js.css';
 import '@bpmn-io/shadcn-theme/assets/c4.css';
 ```
 
@@ -89,6 +103,7 @@ component-specific playgrounds:
 
 ```sh
 npm run start:properties-panel
+npm run start:form
 npm run start:diagram
 npm run start:bpmn
 npm run start:element-template-chooser
