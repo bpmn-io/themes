@@ -6,6 +6,8 @@ All notable changes to [@bpmn-io/shadcn-theme](https://github.com/bpmn-io/shadcn
 
 ___Note:__ Yet to be released changes appear here._
 
+* `FEAT`: add Shadcn UI theme for form-js viewer and editor ([#4](https://github.com/bpmn-io/shadcn-theme/issues/4))
+
 
 ## 0.0.1
 

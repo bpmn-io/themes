@@ -1,0 +1,134 @@
+/**
+ * shadcn/ui adapter for @bpmn-io/form-js (viewer + editor).
+ *
+ * Load this after form-js.css / form-js-editor.css and assets/tokens.css.
+ *
+ * form-js resolves its semantic tokens from Carbon `--cds-*` variables with its
+ * own greys as the fallback. We override the semantic layer directly (rather than
+ * the `--cds-*` layer), so the theme applies regardless of whether a Carbon
+ * provider is present.
+ */
+
+/*
+ * Viewer.
+ *
+ * `.fjs-container` defines form-js' semantic tokens; the editor mounts the same
+ * container for its live form preview, so these apply in both surfaces.
+ */
+.bpmn-io-shadcn-theme .fjs-container {
+  /* mirrors the properties-panel adapter so portaled surfaces match */
+  --font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  /* form-js renders native checkbox / radio / date controls; keep their chrome
+     (and scrollbars) in step with the active scheme, and tint the checked state
+     with the theme accent instead of the browser default */
+  color-scheme: light;
+  accent-color: var(--color-accent);
+
+  --color-text: hsl(var(--shadcn-foreground));
+  /* labels stay at full foreground so they read as clearly as the stock panel */
+  --color-text-light: hsl(var(--shadcn-foreground));
+  --color-text-lighter: hsl(var(--shadcn-muted-foreground));
+  --color-text-lightest: hsl(var(--shadcn-muted-foreground));
+  --color-text-inverted: hsl(var(--shadcn-primary-foreground));
+  --color-text-disabled: hsl(var(--shadcn-muted-foreground));
+
+  --color-background: var(--shadcn-input-fill);
+  --color-background-disabled: hsl(var(--shadcn-muted));
+  --color-background-readonly: hsl(var(--shadcn-muted));
+  --color-background-adornment: hsl(var(--shadcn-muted));
+  --color-background-inverted: hsl(var(--shadcn-primary));
+  --color-background-inverted-hover: hsl(var(--shadcn-primary) / 0.9);
+  --color-background-active: hsl(var(--shadcn-accent));
+
+  --color-layer: hsl(var(--shadcn-card));
+  --color-layer-accent: hsl(var(--shadcn-accent));
+  --color-background-pre: hsl(var(--shadcn-muted));
+
+  --color-icon-base: hsl(var(--shadcn-foreground));
+  --color-icon-inverted: hsl(var(--shadcn-primary-foreground));
+
+  --color-borders: hsl(var(--shadcn-input));
+  --color-borders-group: hsl(var(--shadcn-border));
+  --color-borders-table: hsl(var(--shadcn-border));
+  --color-borders-disabled: hsl(var(--shadcn-border));
+  --color-borders-adornment: hsl(var(--shadcn-border));
+  --color-borders-readonly: hsl(var(--shadcn-border));
+  --color-borders-inverted: hsl(var(--shadcn-border));
+  --color-borders-pre: hsl(var(--shadcn-border));
+
+  --color-warning: hsl(var(--shadcn-destructive));
+  --color-warning-light: hsl(var(--shadcn-destructive) / 0.12);
+
+  /* controls (checked checkbox/radio, links, active tags) follow the near-black
+     shadcn primary rather than the stock editor blue */
+  --color-accent: hsl(var(--shadcn-primary));
+  --color-accent-readonly: hsl(var(--shadcn-input));
+  --color-datepicker-focused-day: hsl(var(--shadcn-primary));
+  --color-shadow: hsl(var(--shadcn-border));
+
+  /* a shadcn-style focus ring on inputs, replacing the Carbon blue outline */
+  --cds-focus: hsl(var(--shadcn-ring));
+}
+
+/* dark mode: flip native control chrome so checkboxes, radios, the date picker
+   and scrollbars render dark instead of the browsers' default light surface */
+.dark .bpmn-io-shadcn-theme .fjs-container,
+.bpmn-io-shadcn-theme.dark .fjs-container {
+  color-scheme: dark;
+}
+
+/*
+ * Editor.
+ *
+ * The editor chrome (palette, properties container, drag/selection affordances)
+ * has its own tokens; its embedded properties panel reuses the
+ * @bpmn-io/properties-panel contract already themed by properties-panel.css.
+ */
+.bpmn-io-shadcn-theme .fjs-editor-container {
+  --color-palette-text: hsl(var(--shadcn-foreground));
+  --color-palette-container-background: hsl(var(--shadcn-card));
+  --color-palette-container-border: hsl(var(--shadcn-border));
+  --color-palette-header: hsl(var(--shadcn-foreground));
+  --color-palette-header-background: hsl(var(--shadcn-card));
+  --color-palette-header-border: hsl(var(--shadcn-border));
+  --color-palette-search: hsl(var(--shadcn-foreground));
+  --color-palette-search-icon: hsl(var(--shadcn-muted-foreground));
+  --color-palette-search-icon-hover: hsl(var(--shadcn-foreground));
+  --color-palette-search-background: var(--shadcn-input-fill);
+  --color-palette-search-border: hsl(var(--shadcn-input));
+  --color-palette-search-focus-background: var(--shadcn-input-fill);
+  --color-palette-search-focus-border: hsl(var(--shadcn-ring));
+  --color-palette-search-clear-focus-border: hsl(var(--shadcn-ring));
+  --color-palette-group-title: hsl(var(--shadcn-muted-foreground));
+  --color-palette-field: hsl(var(--shadcn-foreground));
+  --color-palette-field-background: hsl(var(--shadcn-card));
+  --color-palette-field-border: hsl(var(--shadcn-border));
+  --color-palette-field-focus: hsl(var(--shadcn-ring));
+  --color-palette-field-hover-background: hsl(var(--shadcn-accent));
+  --color-palette-field-hover-border: hsl(var(--shadcn-border));
+
+  --color-properties-container-background: hsl(var(--shadcn-card));
+  --color-properties-container-border: hsl(var(--shadcn-border));
+
+  /* selection / hover affordances on the live form preview */
+  --color-children-selected-border: hsl(var(--shadcn-ring));
+  --color-children-selected-background: transparent;
+  --color-children-hover-border: hsl(var(--shadcn-border));
+
+  --color-context-pad-item-fill: hsl(var(--shadcn-muted-foreground));
+  --color-context-pad-item-hover-fill: hsl(var(--shadcn-destructive));
+
+  --color-resize-handle-background: hsl(var(--shadcn-ring));
+  --color-resize-handle-border: hsl(var(--shadcn-ring));
+
+  /* drag-and-drop drop zones */
+  --color-dragula-background: hsl(var(--shadcn-accent));
+  --color-dragula-border: hsl(var(--shadcn-primary));
+  --color-dragula-mirror-background: hsl(var(--shadcn-popover));
+  --color-dragula-mirror-border: hsl(var(--shadcn-border));
+  --color-dragula-error-background: hsl(var(--shadcn-destructive) / 0.12);
+  --color-dragula-error-border: hsl(var(--shadcn-destructive));
+}

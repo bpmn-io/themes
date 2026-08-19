@@ -137,6 +137,104 @@
 }
 
 /**
+ * Camunda Design System overrides for the form-js adapter (viewer + editor).
+ *
+ * Consumes C4 semantic tokens; only applies beneath `.c4-ui`, so stock shadcn
+ * consumers are unaffected. The editor's embedded properties panel is themed by
+ * the `.bio-properties-panel` block above.
+ */
+.c4-ui .bpmn-io-shadcn-theme .fjs-container {
+  --font-family: var(--font-sans);
+
+  accent-color: var(--primary-action-default);
+
+  --color-text: var(--foreground);
+  --color-text-light: var(--foreground);
+  --color-text-lighter: var(--neutral-foreground-subtle);
+  --color-text-lightest: var(--neutral-foreground-subtle);
+  --color-text-inverted: var(--primary-action-foreground);
+  --color-text-disabled: var(--neutral-foreground-subtle);
+
+  --color-background: var(--input-background);
+  --color-background-disabled: var(--neutral-background-medium);
+  --color-background-readonly: var(--neutral-background-medium);
+  --color-background-adornment: var(--neutral-background-medium);
+  --color-background-inverted: var(--primary-action-default);
+  --color-background-inverted-hover: var(--primary-action-hover);
+  --color-background-active: var(--neutral-background-medium);
+
+  --color-layer: var(--background);
+  --color-layer-accent: var(--neutral-background-medium);
+  --color-background-pre: var(--neutral-background-medium);
+
+  --color-icon-base: var(--foreground);
+  --color-icon-inverted: var(--primary-action-foreground);
+
+  --color-borders: var(--input);
+  --color-borders-group: var(--border);
+  --color-borders-table: var(--border);
+  --color-borders-disabled: var(--border);
+  --color-borders-adornment: var(--border);
+  --color-borders-readonly: var(--border);
+  --color-borders-inverted: var(--border);
+  --color-borders-pre: var(--border);
+
+  --color-warning: var(--danger-action-default);
+  --color-warning-light: color-mix(in srgb, var(--danger-action-default) 12%, transparent);
+
+  --color-accent: var(--primary-action-default);
+  --color-accent-readonly: var(--input);
+  --color-datepicker-focused-day: var(--primary-action-default);
+  --color-shadow: var(--border);
+
+  --cds-focus: var(--ring);
+}
+
+.c4-ui .bpmn-io-shadcn-theme .fjs-editor-container {
+  --color-palette-text: var(--foreground);
+  --color-palette-container-background: var(--background);
+  --color-palette-container-border: var(--border);
+  --color-palette-header: var(--foreground);
+  --color-palette-header-background: var(--background);
+  --color-palette-header-border: var(--border);
+  --color-palette-search: var(--foreground);
+  --color-palette-search-icon: var(--neutral-foreground-subtle);
+  --color-palette-search-icon-hover: var(--foreground);
+  --color-palette-search-background: var(--input-background);
+  --color-palette-search-border: var(--input);
+  --color-palette-search-focus-background: var(--input-background);
+  --color-palette-search-focus-border: var(--ring);
+  --color-palette-search-clear-focus-border: var(--ring);
+  --color-palette-group-title: var(--neutral-foreground-subtle);
+  --color-palette-field: var(--foreground);
+  --color-palette-field-background: var(--background);
+  --color-palette-field-border: var(--border);
+  --color-palette-field-focus: var(--ring);
+  --color-palette-field-hover-background: var(--neutral-background-medium);
+  --color-palette-field-hover-border: var(--border);
+
+  --color-properties-container-background: var(--background);
+  --color-properties-container-border: var(--border);
+
+  --color-children-selected-border: var(--ring);
+  --color-children-selected-background: transparent;
+  --color-children-hover-border: var(--border);
+
+  --color-context-pad-item-fill: var(--neutral-foreground-subtle);
+  --color-context-pad-item-hover-fill: var(--danger-action-default);
+
+  --color-resize-handle-background: var(--ring);
+  --color-resize-handle-border: var(--ring);
+
+  --color-dragula-background: var(--neutral-background-medium);
+  --color-dragula-border: var(--primary-action-default);
+  --color-dragula-mirror-background: var(--popover);
+  --color-dragula-mirror-border: var(--border);
+  --color-dragula-error-background: color-mix(in srgb, var(--danger-action-default) 12%, transparent);
+  --color-dragula-error-border: var(--danger-action-default);
+}
+
+/**
  * Camunda Design System overrides for the diagram-js core UI adapter
  * (palette, search pad, popup menu). Consumes C4 semantic tokens; only applies
  * beneath `.c4-ui`, so stock shadcn consumers are unaffected.
