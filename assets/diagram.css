@@ -1,14 +1,16 @@
 /**
  * shadcn/ui adapter for the diagram-js / bpmn-js core UI: the palette, the
- * search pad and the popup menu ("popup editor" — the create, append and
- * replace menus, including their element-template entries).
+ * search pad, diagram selection and drilldown controls, and the popup menu
+ * ("popup editor" — the create, append and replace menus, including their
+ * element-template entries).
  *
  * diagram-js and bpmn-js expose their surfaces through `--palette-*`,
- * `--context-pad-*`, `--popup-*`, `--search-*` and `--tooltip-error-*` custom
- * properties, declared on `.djs-parent`. We remap those to shadcn tokens and
- * only reach for structural rules where a value is hard-coded upstream (radii,
- * shadows, focus rings, a handful of literal hovers). Selectors mirror
- * diagram-js.css / bpmn-js.css so the two stay aligned and resist drift.
+ * `--context-pad-*`, `--element-*`, `--popup-*`, `--search-*`,
+ * `--breadcrumbs-*`, `--drilldown-*`, and `--tooltip-error-*` custom
+ * properties. We remap those to shadcn tokens and only reach for structural
+ * rules where a value is hard-coded upstream (radii, shadows, focus rings, a
+ * handful of literal hovers). Selectors mirror diagram-js.css / bpmn-js.css so
+ * the two stay aligned and resist drift.
  *
  * Load this after diagram-js.css / bpmn-js.css and assets/tokens.css. Import
  * assets/c4.css afterwards to align it with the Camunda Design System instead.
@@ -26,6 +28,17 @@
   --palette-toggle-hover-background-color: hsl(var(--shadcn-accent));
   --palette-background-color: hsl(var(--shadcn-background));
   --palette-border-color: hsl(var(--shadcn-border));
+
+  /*
+   * Selection affordances — the selection/hover outline, bendpoints, resizers,
+   * draggers, lasso and snap lines — deliberately keep bpmn-js's blue. Blue is
+   * the conventional editor selection colour and, unlike a dark ring/foreground
+   * outline, it stays legible against the black element strokes it wraps: a dark
+   * outline would blend into the very elements it marks, most of all around a
+   * selected container and the children inside it. So we leave those
+   * `--element-*`, bendpoint, resizer, lasso and snap-line tokens unmapped and
+   * let the upstream blue show through.
+   */
 
   /* context pad */
   --context-pad-entry-background-color: hsl(var(--shadcn-background));
@@ -60,8 +73,21 @@
   --search-shadow-color: hsl(var(--shadcn-foreground) / 0.12);
   --search-result-hover-background-color: hsl(var(--shadcn-accent));
   --search-result-secondary-color: hsl(var(--shadcn-muted-foreground));
-  --search-preselected-background-color: hsl(var(--shadcn-primary) / 0.12);
+  /*
+   * The on-canvas search match is highlighted by filling its (now selected,
+   * visible) element outline with this token. It must stay TRANSLUCENT or it
+   * paints over the element's own label; left unmapped it inherits bpmn-js's
+   * translucent blue, matching the blue selection outline it accompanies. The
+   * dropdown result row keeps the grey `--search-result-hover-background-color`.
+   */
   --search-container-border-color: hsl(var(--shadcn-border));
+
+  /* drilldown */
+  --breadcrumbs-font-family: var(--font-family);
+  --breadcrumbs-item-color: hsl(var(--shadcn-primary));
+  --breadcrumbs-arrow-color: hsl(var(--shadcn-foreground));
+  --drilldown-fill-color: hsl(var(--shadcn-primary-foreground));
+  --drilldown-background-color: hsl(var(--shadcn-primary));
 
   /* error tooltip */
   --tooltip-error-background-color: hsl(var(--shadcn-destructive) / 0.1);
@@ -215,6 +241,30 @@
   background: hsl(var(--shadcn-popover));
   border-color: hsl(var(--shadcn-border));
   border-radius: calc(var(--shadcn-radius) - 4px);
+}
+
+.bpmn-io-shadcn-theme .bjs-breadcrumbs {
+  color: hsl(var(--shadcn-foreground));
+}
+
+.bpmn-io-shadcn-theme .bjs-breadcrumbs li:not(:first-child)::before {
+  content: "›";
+  color: var(--breadcrumbs-arrow-color);
+  font-size: 1.25em;
+}
+
+.bpmn-io-shadcn-theme .bjs-breadcrumbs li:not(:last-of-type) a:focus-visible,
+.bpmn-io-shadcn-theme .bjs-drilldown:focus-visible {
+  outline: 2px solid hsl(var(--shadcn-ring));
+  outline-offset: 2px;
+}
+
+.bpmn-io-shadcn-theme .bjs-drilldown {
+  border-radius: calc(var(--shadcn-radius) - 4px);
+}
+
+.bpmn-io-shadcn-theme .bjs-drilldown:hover {
+  background-color: hsl(var(--shadcn-primary) / 0.9);
 }
 
 /* scrollbars in the popup pick up the muted-foreground thumb */

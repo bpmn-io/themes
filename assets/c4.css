@@ -179,8 +179,14 @@
   --search-shadow-color: color-mix(in srgb, var(--foreground) 12%, transparent);
   --search-result-hover-background-color: var(--neutral-background-medium);
   --search-result-secondary-color: var(--neutral-foreground-subtle);
-  --search-preselected-background-color: color-mix(in srgb, var(--primary-action-default) 12%, transparent);
+  /* keep the on-canvas match highlight translucent (see diagram.css) */
   --search-container-border-color: var(--border);
+
+  --breadcrumbs-font-family: var(--font-sans);
+  --breadcrumbs-item-color: var(--primary-action-default);
+  --breadcrumbs-arrow-color: var(--foreground);
+  --drilldown-fill-color: var(--primary-action-foreground);
+  --drilldown-background-color: var(--primary-action-default);
 
   --tooltip-error-background-color: color-mix(in srgb, var(--danger-action-default) 10%, transparent);
   --tooltip-error-border-color: var(--danger-action-default);
@@ -200,6 +206,10 @@
   color: var(--neutral-foreground-subtle);
   background: var(--popover);
   border-color: var(--border);
+}
+
+.c4-ui .bpmn-io-shadcn-theme .bjs-drilldown:hover {
+  background-color: var(--primary-action-hover);
 }
 
 .c4-ui .bpmn-io-shadcn-theme .djs-popup *::-webkit-scrollbar-thumb {

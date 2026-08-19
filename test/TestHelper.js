@@ -1,10 +1,6 @@
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 import TestContainer from 'mocha-test-container-support';
 import {
-  getPlaneIdFromShape
-} from 'bpmn-js/lib/util/DrilldownUtil';
-
-import {
   BpmnPropertiesPanelModule,
   BpmnPropertiesProviderModule,
   ZeebePropertiesProviderModule,
@@ -166,8 +162,6 @@ export async function createPlayground(context, name, options = {}) {
   const elementRegistry = modeler.get('elementRegistry');
   const selection = modeler.get('selection');
   const task = elementRegistry.get(selectedElementId);
-  const subProcess = elementRegistry.get('SubProcess_1');
-
   modeler.get('elementTemplatesLoader').setTemplates(templates);
   selection.select(task);
   canvas.zoom('fit-viewport');
@@ -235,7 +229,13 @@ export async function createPlayground(context, name, options = {}) {
       sourceElement: root.querySelector('input')
     }),
     chooser: () => modeler.get('elementTemplateChooser').open(task),
-    drilldown: () => canvas.setRootElement(canvas.findRoot(getPlaneIdFromShape(subProcess))),
+    drilldown: () => {
+      const button = canvasContainer.querySelector('.bjs-drilldown');
+
+      button.click();
+
+      return button;
+    },
     'select-element': () => {
       selection.select([]);
       selection.select(task);
