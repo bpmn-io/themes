@@ -1,10 +1,6 @@
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 import TestContainer from 'mocha-test-container-support';
 import {
-  getPlaneIdFromShape
-} from 'bpmn-js/lib/util/DrilldownUtil';
-
-import {
   BpmnPropertiesPanelModule,
   BpmnPropertiesProviderModule,
   ZeebePropertiesProviderModule,
@@ -14,6 +10,17 @@ import {
 import {
   CloudElementTemplatesPropertiesProviderModule
 } from 'bpmn-js-element-templates';
+
+import {
+  CreateAppendAnythingModule,
+  CreateAppendElementTemplatesModule
+} from 'bpmn-js-create-append-anything';
+
+import CreateAppendGroupsModule from 'camunda-bpmn-js/lib/base/features/create-append-groups';
+import CreateAppendTabsModule from 'camunda-bpmn-js/lib/base/features/create-append-tabs';
+import ElementDescriptionsModule from 'camunda-bpmn-js/lib/base/features/element-descriptions';
+import CamundaDetailsPopupMenuModule from 'camunda-bpmn-js/lib/camunda-cloud/features/popup-menu';
+import { BPMN_TAB } from 'camunda-bpmn-js/lib/base/features/create-append-tabs/tabs';
 
 import ElementTemplateChooserModule from '@bpmn-io/element-template-chooser';
 import ExampleDataProviderModule from '@camunda/example-data-properties-provider';
@@ -31,9 +38,11 @@ import bpmnFontCss from 'bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css';
 import propertiesPanelCss from '@bpmn-io/properties-panel/dist/assets/properties-panel.css';
 import elementTemplateChooserCss from '@bpmn-io/element-template-chooser/dist/element-template-chooser.css';
 import elementTemplatesCss from 'bpmn-js-element-templates/dist/assets/element-templates.css';
+import popupMenuCss from 'camunda-bpmn-js/styles/popup-menu.css';
 
 import tokensCss from '../assets/tokens.css';
 import propertiesPanelThemeCss from '../assets/properties-panel.css';
+import diagramThemeCss from '../assets/diagram.css';
 import c4ThemeCss from '../assets/c4.css';
 import playgroundCss from './playground.css';
 
@@ -119,6 +128,9 @@ export async function createPlayground(context, name, options = {}) {
       feelTooltipContainer: root,
       tooltip: ZeebeTooltipProvider
     },
+    popupMenu: {
+      defaultTab: BPMN_TAB
+    },
     moddleExtensions: {
       zeebe: ZeebeModdle
     },
@@ -129,6 +141,12 @@ export async function createPlayground(context, name, options = {}) {
       CloudElementTemplatesPropertiesProviderModule,
       ElementTemplateChooserModule,
       ZeebeBehaviorModule,
+      CreateAppendAnythingModule,
+      CreateAppendElementTemplatesModule,
+      CamundaDetailsPopupMenuModule,
+      ElementDescriptionsModule,
+      CreateAppendGroupsModule,
+      CreateAppendTabsModule,
       ...(exampleData ? [
         ZeebeVariableResolverModule,
         ExampleDataProviderModule
@@ -144,17 +162,50 @@ export async function createPlayground(context, name, options = {}) {
   const elementRegistry = modeler.get('elementRegistry');
   const selection = modeler.get('selection');
   const task = elementRegistry.get(selectedElementId);
-  const subProcess = elementRegistry.get('SubProcess_1');
-
   modeler.get('elementTemplatesLoader').setTemplates(templates);
   selection.select(task);
   canvas.zoom('fit-viewport');
 
   const setup = {
-    search: () => modeler.get('searchPad').open(),
+    search: (query = 'Review') => {
+      const searchPad = modeler.get('searchPad');
+
+      if (!searchPad.isOpen()) {
+        searchPad.open();
+      }
+
+      // the search pad renders results synchronously on keyup — drive it the
+      // same way a user would so the styled results list is captured
+      const input = canvasContainer.querySelector('.djs-search-input input');
+
+      input.value = query;
+      input.dispatchEvent(new KeyboardEvent('keyup', { key: 'w', bubbles: true }));
+
+      return searchPad;
+    },
     replace: () => modeler.get('popupMenu').open(task, 'bpmn-replace', {
       x: 180,
       y: 160
+    }, {
+      title: 'Change element',
+      width: 'var(--bpmn-replace-popup-width, 300px)',
+      search: true
+    }),
+    create: () => modeler.get('popupMenu').open(canvas.getRootElement(), 'bpmn-create', {
+      x: 180,
+      y: 160
+    }, {
+      title: 'Create element',
+      width: 'var(--bpmn-create-popup-width, 300px)',
+      search: true
+    }),
+    append: () => modeler.get('popupMenu').open(task, 'bpmn-append', {
+      x: 180,
+      y: 160
+    }, {
+      title: 'Append element',
+      width: 'var(--bpmn-append-popup-width, 300px)',
+      search: true
     }),
     'text-popup': () => eventBus.fire('propertiesPanel.openPopup', {
       entryId: 'ServiceTask_1-name',
@@ -178,7 +229,13 @@ export async function createPlayground(context, name, options = {}) {
       sourceElement: root.querySelector('input')
     }),
     chooser: () => modeler.get('elementTemplateChooser').open(task),
-    drilldown: () => canvas.setRootElement(canvas.findRoot(getPlaneIdFromShape(subProcess))),
+    drilldown: () => {
+      const button = canvasContainer.querySelector('.bjs-drilldown');
+
+      button.click();
+
+      return button;
+    },
     'select-element': () => {
       selection.select([]);
       selection.select(task);
@@ -273,7 +330,7 @@ export async function createPlayground(context, name, options = {}) {
     }
   };
 
-  return {
+  const playground = {
     element: task,
     root,
     modeler,
@@ -283,6 +340,17 @@ export async function createPlayground(context, name, options = {}) {
       root.remove();
     }
   };
+
+  // In retained mode (SINGLE_START / capture) the capture hook runs after every
+  // scenario has mounted. The search pad closes on any outside click, which
+  // later scenarios trigger, so expose the playground for re-hydration there.
+  if (shouldKeepPlayground()) {
+    const registry = window.__playgrounds__ || (window.__playgrounds__ = {});
+
+    registry[name] = playground;
+  }
+
+  return playground;
 }
 
 export {
@@ -308,9 +376,11 @@ function insertStyles() {
   insertStyle('bpmn-font.css', bpmnFontCss);
   insertStyle('properties-panel.css', propertiesPanelCss);
   insertStyle('element-templates.css', elementTemplatesCss);
+  insertStyle('popup-menu.css', popupMenuCss);
   insertStyle('element-template-chooser.css', elementTemplateChooserCss);
   insertStyle('shadcn-tokens.css', tokensCss);
   insertStyle('shadcn-properties-panel.css', propertiesPanelThemeCss);
+  insertStyle('shadcn-diagram.css', diagramThemeCss);
   insertStyle('c4-properties-panel.css', c4ThemeCss);
   insertStyle('playground.css', playgroundCss);
 

@@ -13,6 +13,7 @@ then the shared tokens and the adapter for each component in use:
 
 ```html
 <div class="bpmn-io-shadcn-theme">
+  <div id="canvas"></div>
   <div id="properties-panel"></div>
 </div>
 ```
@@ -21,6 +22,18 @@ then the shared tokens and the adapter for each component in use:
 import '@bpmn-io/properties-panel/dist/assets/properties-panel.css';
 import '@bpmn-io/shadcn-theme/assets/tokens.css';
 import '@bpmn-io/shadcn-theme/assets/properties-panel.css';
+```
+
+Each adapter loads after the base CSS of the component it themes. To also theme
+the diagram surfaces — the palette, the search pad and the popup editor (the
+create, append and replace menus) — load `diagram.css` after the bpmn-js
+stylesheets:
+
+```js
+import 'bpmn-js/dist/assets/diagram-js.css';
+import 'bpmn-js/dist/assets/bpmn-js.css';
+import '@bpmn-io/shadcn-theme/assets/tokens.css';
+import '@bpmn-io/shadcn-theme/assets/diagram.css';
 ```
 
 Add `dark` to the theme root (or any ancestor) for dark mode, and override the
@@ -43,6 +56,7 @@ shadcn consumers unaffected:
 import '@camunda/design-system/styles.css';
 import '@bpmn-io/shadcn-theme/assets/tokens.css';
 import '@bpmn-io/shadcn-theme/assets/properties-panel.css';
+import '@bpmn-io/shadcn-theme/assets/diagram.css';
 import '@bpmn-io/shadcn-theme/assets/c4.css';
 ```
 

@@ -1,0 +1,279 @@
+/**
+ * shadcn/ui adapter for the diagram-js / bpmn-js core UI: the palette, the
+ * search pad, diagram selection and drilldown controls, and the popup menu
+ * ("popup editor" — the create, append and replace menus, including their
+ * element-template entries).
+ *
+ * diagram-js and bpmn-js expose their surfaces through `--palette-*`,
+ * `--context-pad-*`, `--element-*`, `--popup-*`, `--search-*`,
+ * `--breadcrumbs-*`, `--drilldown-*`, and `--tooltip-error-*` custom
+ * properties. We remap those to shadcn tokens and only reach for structural
+ * rules where a value is hard-coded upstream (radii, shadows, focus rings, a
+ * handful of literal hovers). Selectors mirror diagram-js.css / bpmn-js.css so
+ * the two stay aligned and resist drift.
+ *
+ * Load this after diagram-js.css / bpmn-js.css and assets/tokens.css. Import
+ * assets/c4.css afterwards to align it with the Camunda Design System instead.
+ */
+.bpmn-io-shadcn-theme .djs-parent {
+  --font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  /* palette */
+  --palette-entry-color: hsl(var(--shadcn-foreground));
+  --palette-entry-hover-color: hsl(var(--shadcn-foreground));
+  --palette-entry-selected-color: hsl(var(--shadcn-primary));
+  --palette-separator-color: hsl(var(--shadcn-border));
+  --palette-toggle-hover-background-color: hsl(var(--shadcn-accent));
+  --palette-background-color: hsl(var(--shadcn-background));
+  --palette-border-color: hsl(var(--shadcn-border));
+
+  /*
+   * Selection affordances — the selection/hover outline, bendpoints, resizers,
+   * draggers, lasso and snap lines — deliberately keep bpmn-js's blue. Blue is
+   * the conventional editor selection colour and, unlike a dark ring/foreground
+   * outline, it stays legible against the black element strokes it wraps: a dark
+   * outline would blend into the very elements it marks, most of all around a
+   * selected container and the children inside it. So we leave those
+   * `--element-*`, bendpoint, resizer, lasso and snap-line tokens unmapped and
+   * let the upstream blue show through.
+   */
+
+  /* context pad */
+  --context-pad-entry-background-color: hsl(var(--shadcn-background));
+  --context-pad-entry-hover-background-color: hsl(var(--shadcn-accent));
+
+  /* popup menu */
+  --popup-font-family: var(--font-family);
+  --popup-header-font-weight: 600;
+  --popup-background-color: hsl(var(--shadcn-popover));
+  --popup-border-color: hsl(var(--shadcn-border));
+  --popup-shadow-color: hsl(var(--shadcn-foreground) / 0.12);
+  --popup-disabled-color: hsl(var(--shadcn-muted-foreground));
+  --popup-description-color: hsl(var(--shadcn-muted-foreground));
+  --popup-no-results-color: hsl(var(--shadcn-muted-foreground));
+  --popup-entry-title-color: hsl(var(--shadcn-muted-foreground));
+  --popup-entry-hover-color: hsl(var(--shadcn-accent));
+  --popup-header-entry-selected-color: hsl(var(--shadcn-primary));
+  --popup-header-group-divider-color: hsl(var(--shadcn-border));
+  --popup-search-border-color: hsl(var(--shadcn-input));
+  --popup-search-focus-border-color: hsl(var(--shadcn-ring));
+  --popup-search-focus-background-color: var(--shadcn-input-fill);
+  --popup-tab-color: hsl(var(--shadcn-muted-foreground));
+  --popup-tab-hover-color: hsl(var(--shadcn-foreground));
+  --popup-tab-active-color: hsl(var(--shadcn-foreground));
+  --popup-tab-active-border-color: hsl(var(--shadcn-primary));
+  --popup-tab-strip-border-color: hsl(var(--shadcn-border));
+  --popup-tab-focus-border-color: hsl(var(--shadcn-ring));
+
+  /* search pad */
+  --search-font-family: var(--font-family);
+  --search-container-background-color: hsl(var(--shadcn-popover));
+  --search-shadow-color: hsl(var(--shadcn-foreground) / 0.12);
+  --search-result-hover-background-color: hsl(var(--shadcn-accent));
+  --search-result-secondary-color: hsl(var(--shadcn-muted-foreground));
+  /*
+   * The on-canvas search match is highlighted by filling its (now selected,
+   * visible) element outline with this token. It must stay TRANSLUCENT or it
+   * paints over the element's own label; left unmapped it inherits bpmn-js's
+   * translucent blue, matching the blue selection outline it accompanies. The
+   * dropdown result row keeps the grey `--search-result-hover-background-color`.
+   */
+  --search-container-border-color: hsl(var(--shadcn-border));
+
+  /* drilldown */
+  --breadcrumbs-font-family: var(--font-family);
+  --breadcrumbs-item-color: hsl(var(--shadcn-primary));
+  --breadcrumbs-arrow-color: hsl(var(--shadcn-foreground));
+  --drilldown-fill-color: hsl(var(--shadcn-primary-foreground));
+  --drilldown-background-color: hsl(var(--shadcn-primary));
+
+  /* error tooltip */
+  --tooltip-error-background-color: hsl(var(--shadcn-destructive) / 0.1);
+  --tooltip-error-border-color: hsl(var(--shadcn-destructive));
+  --tooltip-error-color: hsl(var(--shadcn-destructive));
+}
+
+/**
+ * Structural overrides. diagram-js hard-codes a handful of radii, shadows and
+ * literal hovers; re-derive them from shadcn tokens so both light and dark
+ * modes stay consistent.
+ */
+
+/* palette shares the token-driven radius */
+.bpmn-io-shadcn-theme .djs-palette {
+  border-radius: calc(var(--shadcn-radius) - 2px);
+}
+
+/*
+ * Palette icons stay at full foreground contrast in every state; hover adds a
+ * background highlight (the shared toggle-hover token, so C4 stays aligned)
+ * rather than dimming the icon. The highlight is a centred, inset square that
+ * sits behind the glyph like a shadcn icon button — clear of the palette edge
+ * and its neighbours — instead of a full-bleed slab pinned to the border. It is
+ * drawn on an ::after pseudo behind the icon (the glyph itself rides on
+ * ::before), so the grid never shifts on hover.
+ */
+.bpmn-io-shadcn-theme .djs-palette .entry {
+  position: relative;
+  z-index: 0;
+}
+
+.bpmn-io-shadcn-theme .djs-palette .entry:hover::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 5px;
+  background: var(--palette-toggle-hover-background-color);
+  border-radius: calc(var(--shadcn-radius) - 2px);
+}
+
+.bpmn-io-shadcn-theme .djs-popup {
+  border-radius: calc(var(--shadcn-radius) - 2px);
+  box-shadow: 0 10px 15px -3px hsl(var(--shadcn-foreground) / 0.1),
+    0 4px 6px -4px hsl(var(--shadcn-foreground) / 0.1);
+}
+
+/*
+ * Search pad — modelled on the shadcn command menu (cmdk). The pad is a
+ * command palette, not a form field: it floats above the canvas, filters as you
+ * type and is driven by the keyboard. So we frame the input and its results as
+ * one connected surface — a single popover border, a borderless transparent
+ * input (focus is implicit, so no ring), and a divider that only appears once
+ * there are results. One border plus one divider keeps the framing consistent
+ * and stops the results reading as a second box stamped onto the input.
+ */
+.bpmn-io-shadcn-theme .djs-search-container {
+  padding: 0;
+  overflow: hidden;
+  background: var(--search-container-background-color);
+  border: 1px solid var(--search-container-border-color);
+  border-radius: var(--shadcn-radius);
+  box-shadow: 0 10px 15px -3px var(--search-shadow-color),
+    0 4px 6px -4px var(--search-shadow-color);
+}
+
+.bpmn-io-shadcn-theme .djs-search-input input {
+  padding: 9px 12px 9px 34px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+}
+
+.bpmn-io-shadcn-theme .djs-search-input input:focus {
+  background: transparent;
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+.bpmn-io-shadcn-theme .djs-search-input svg {
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+}
+
+.bpmn-io-shadcn-theme .djs-search-icon path {
+  fill: var(--search-result-secondary-color);
+}
+
+.bpmn-io-shadcn-theme .djs-search-results {
+  background: transparent;
+}
+
+/*
+ * The divider and list padding ride on the results, so the empty state stays a
+ * symmetric single-row popover and only gains a separator once results exist.
+ */
+.bpmn-io-shadcn-theme .djs-search-results:not(:empty) {
+  padding: 4px;
+  border-top: 1px solid var(--search-container-border-color);
+}
+
+.bpmn-io-shadcn-theme .djs-search-result {
+  padding: 7px 8px;
+  border-radius: calc(var(--shadcn-radius) - 2px);
+}
+
+/* the popup editor search keeps the bordered control treatment */
+.bpmn-io-shadcn-theme .djs-popup-search input {
+  border-radius: calc(var(--shadcn-radius) - 4px);
+}
+
+.bpmn-io-shadcn-theme .djs-popup-search input:focus {
+  box-shadow: 0 0 0 3px hsl(var(--shadcn-ring) / var(--shadcn-ring-alpha));
+}
+
+/* entries and tabs align to the token radius */
+.bpmn-io-shadcn-theme .djs-popup-header .entry,
+.bpmn-io-shadcn-theme .djs-popup-body .entry,
+.bpmn-io-shadcn-theme .djs-popup-body .entry-header {
+  border-radius: calc(var(--shadcn-radius) - 4px);
+}
+
+.bpmn-io-shadcn-theme .djs-popup-tab:focus-visible {
+  outline-color: hsl(var(--shadcn-ring));
+}
+
+/*
+ * The "back" breadcrumb chip and the per-entry docs affordance hard-code a
+ * light-grey hover and a white fill upstream; re-map them to accent/popover so
+ * they survive dark mode.
+ */
+.bpmn-io-shadcn-theme .djs-popup-breadcrumbs-item--back {
+  border-color: hsl(var(--shadcn-border));
+  border-radius: calc(var(--shadcn-radius) - 4px);
+}
+
+.bpmn-io-shadcn-theme .djs-popup-breadcrumbs-item--back:hover,
+.bpmn-io-shadcn-theme .djs-popup-body .entry .djs-popup-entry-docs:hover {
+  background: hsl(var(--shadcn-accent));
+}
+
+.bpmn-io-shadcn-theme .djs-popup-breadcrumbs-item:focus-visible,
+.bpmn-io-shadcn-theme .djs-popup-entry-docs:focus-visible {
+  outline-color: hsl(var(--shadcn-ring));
+}
+
+.bpmn-io-shadcn-theme .djs-popup-entry-docs {
+  color: hsl(var(--shadcn-muted-foreground));
+  background: hsl(var(--shadcn-popover));
+  border-color: hsl(var(--shadcn-border));
+  border-radius: calc(var(--shadcn-radius) - 4px);
+}
+
+.bpmn-io-shadcn-theme .bjs-breadcrumbs {
+  color: hsl(var(--shadcn-foreground));
+}
+
+.bpmn-io-shadcn-theme .bjs-breadcrumbs li:not(:first-child)::before {
+  content: "›";
+  color: var(--breadcrumbs-arrow-color);
+  font-size: 1.25em;
+}
+
+.bpmn-io-shadcn-theme .bjs-breadcrumbs li:not(:last-of-type) a:focus-visible,
+.bpmn-io-shadcn-theme .bjs-drilldown:focus-visible {
+  outline: 2px solid hsl(var(--shadcn-ring));
+  outline-offset: 2px;
+}
+
+.bpmn-io-shadcn-theme .bjs-drilldown {
+  border-radius: calc(var(--shadcn-radius) - 4px);
+}
+
+.bpmn-io-shadcn-theme .bjs-drilldown:hover {
+  background-color: hsl(var(--shadcn-primary) / 0.9);
+}
+
+/* scrollbars in the popup pick up the muted-foreground thumb */
+.bpmn-io-shadcn-theme .djs-popup *::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--shadcn-muted-foreground) / 0.4);
+}
+
+/* element-template entry icons keep their aspect ratio */
+.bpmn-io-shadcn-theme .djs-popup-entry-icon img,
+.bpmn-io-shadcn-theme .djs-popup-entry-icon {
+  object-fit: contain;
+}

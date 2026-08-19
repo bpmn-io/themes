@@ -135,3 +135,83 @@
   --feel-popup-close-background-color: var(--primary-action-default);
   --feel-popup-gutters-background-color: var(--neutral-background-medium);
 }
+
+/**
+ * Camunda Design System overrides for the diagram-js core UI adapter
+ * (palette, search pad, popup menu). Consumes C4 semantic tokens; only applies
+ * beneath `.c4-ui`, so stock shadcn consumers are unaffected.
+ */
+.c4-ui .bpmn-io-shadcn-theme .djs-parent {
+  --font-family: var(--font-sans);
+
+  --palette-entry-color: var(--neutral-foreground-subtle);
+  --palette-entry-hover-color: var(--foreground);
+  --palette-entry-selected-color: var(--primary-action-default);
+  --palette-separator-color: var(--border);
+  --palette-toggle-hover-background-color: var(--neutral-background-medium);
+  --palette-background-color: var(--background);
+  --palette-border-color: var(--border);
+
+  --context-pad-entry-background-color: var(--background);
+  --context-pad-entry-hover-background-color: var(--neutral-background-medium);
+
+  --popup-background-color: var(--popover);
+  --popup-border-color: var(--border);
+  --popup-shadow-color: color-mix(in srgb, var(--foreground) 12%, transparent);
+  --popup-disabled-color: var(--neutral-foreground-subtle);
+  --popup-description-color: var(--neutral-foreground-subtle);
+  --popup-no-results-color: var(--neutral-foreground-subtle);
+  --popup-entry-title-color: var(--neutral-foreground-subtle);
+  --popup-entry-hover-color: var(--neutral-background-medium);
+  --popup-header-entry-selected-color: var(--primary-action-default);
+  --popup-header-group-divider-color: var(--border);
+  --popup-search-border-color: var(--input);
+  --popup-search-focus-border-color: var(--ring);
+  --popup-search-focus-background-color: var(--input-background);
+  --popup-tab-color: var(--neutral-foreground-subtle);
+  --popup-tab-hover-color: var(--foreground);
+  --popup-tab-active-color: var(--foreground);
+  --popup-tab-active-border-color: var(--primary-action-default);
+  --popup-tab-strip-border-color: var(--border);
+  --popup-tab-focus-border-color: var(--ring);
+
+  --search-container-background-color: var(--popover);
+  --search-shadow-color: color-mix(in srgb, var(--foreground) 12%, transparent);
+  --search-result-hover-background-color: var(--neutral-background-medium);
+  --search-result-secondary-color: var(--neutral-foreground-subtle);
+  /* keep the on-canvas match highlight translucent (see diagram.css) */
+  --search-container-border-color: var(--border);
+
+  --breadcrumbs-font-family: var(--font-sans);
+  --breadcrumbs-item-color: var(--primary-action-default);
+  --breadcrumbs-arrow-color: var(--foreground);
+  --drilldown-fill-color: var(--primary-action-foreground);
+  --drilldown-background-color: var(--primary-action-default);
+
+  --tooltip-error-background-color: color-mix(in srgb, var(--danger-action-default) 10%, transparent);
+  --tooltip-error-border-color: var(--danger-action-default);
+  --tooltip-error-color: var(--danger-action-default);
+}
+
+.c4-ui .bpmn-io-shadcn-theme .djs-popup {
+  box-shadow: var(--shadow-lg);
+}
+
+.c4-ui .bpmn-io-shadcn-theme .djs-popup-breadcrumbs-item--back:hover,
+.c4-ui .bpmn-io-shadcn-theme .djs-popup-body .entry .djs-popup-entry-docs:hover {
+  background: var(--neutral-background-medium);
+}
+
+.c4-ui .bpmn-io-shadcn-theme .djs-popup-entry-docs {
+  color: var(--neutral-foreground-subtle);
+  background: var(--popover);
+  border-color: var(--border);
+}
+
+.c4-ui .bpmn-io-shadcn-theme .bjs-drilldown:hover {
+  background-color: var(--primary-action-hover);
+}
+
+.c4-ui .bpmn-io-shadcn-theme .djs-popup *::-webkit-scrollbar-thumb {
+  background-color: color-mix(in srgb, var(--neutral-foreground-subtle) 40%, transparent);
+}
