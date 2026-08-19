@@ -11,4 +11,5 @@ ___Note:__ Yet to be released changes appear here._
 
 _Initial version._
 
+* `FEAT`: add Shadcn UI theme for diagram ([#3](https://github.com/bpmn-io/shadcn-theme/pull/3))
 * `FEAT`: add Shadcn UI theme for properties panel ([#1](https://github.com/bpmn-io/shadcn-theme/pull/1))
