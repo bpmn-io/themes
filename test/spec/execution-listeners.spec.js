@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import {
-  createPlayground,
+  createBpmnPlayground,
   isPlaygroundEnabled,
   shouldKeepPlayground
 } from '../TestHelper.js';
@@ -123,7 +123,7 @@ describe('execution listeners', function() {
 });
 
 async function createExecutionListeners(context, name, options = {}) {
-  const playground = await createPlayground(context, name, {
+  const playground = await createBpmnPlayground(context, name, {
     diagram: executionListenersDiagram,
     selectedElementId: 'Activity_0iraag0',
     ...options

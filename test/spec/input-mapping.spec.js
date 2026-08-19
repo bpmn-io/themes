@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import {
-  createPlayground,
+  createBpmnPlayground,
   isPlaygroundEnabled,
   manyInputsDiagram,
   shouldKeepPlayground
@@ -46,7 +46,7 @@ describe('input mapping', function() {
 });
 
 async function createCollapsedInputMapping(context, name, options = {}) {
-  const playground = await createPlayground(context, name, {
+  const playground = await createBpmnPlayground(context, name, {
     diagram: manyInputsDiagram,
     selectedElementId: 'Activity_0iraag0',
     ...options

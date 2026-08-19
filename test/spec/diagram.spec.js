@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import {
-  createPlayground,
+  createBpmnPlayground,
   isPlaygroundEnabled,
   shouldKeepPlayground
 } from '../TestHelper.js';
@@ -22,7 +22,7 @@ describe('diagram-js playground', function() {
   });
 
   it('should theme the palette', async function() {
-    playground = await createPlayground(this, 'diagram-palette');
+    playground = await createBpmnPlayground(this, 'diagram-palette');
 
     const palette = playground.root.querySelector('.djs-palette');
     const canvas = playground.root.querySelector('.djs-parent');
@@ -39,7 +39,7 @@ describe('diagram-js playground', function() {
   });
 
   it('should theme the search pad', async function() {
-    playground = await createPlayground(this, 'diagram-search');
+    playground = await createBpmnPlayground(this, 'diagram-search');
 
     // when
     playground.setup.search('Review');
@@ -68,7 +68,7 @@ describe('diagram-js playground', function() {
   });
 
   it('should theme the replace popup', async function() {
-    playground = await createPlayground(this, 'diagram-replace');
+    playground = await createBpmnPlayground(this, 'diagram-replace');
 
     // when
     playground.setup.replace();
@@ -81,7 +81,7 @@ describe('diagram-js playground', function() {
   });
 
   it('should theme the create popup', async function() {
-    playground = await createPlayground(this, 'diagram-create');
+    playground = await createBpmnPlayground(this, 'diagram-create');
 
     // when
     playground.setup.create();
@@ -95,7 +95,7 @@ describe('diagram-js playground', function() {
   });
 
   it('should theme the append popup', async function() {
-    playground = await createPlayground(this, 'diagram-append');
+    playground = await createBpmnPlayground(this, 'diagram-append');
 
     // when
     playground.setup.append();
