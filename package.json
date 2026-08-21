@@ -5,6 +5,9 @@
   "files": [
     "assets"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     "./assets/*.css": "./assets/*.css",
     "./package.json": "./package.json"
