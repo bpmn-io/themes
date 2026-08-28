@@ -65,6 +65,14 @@ ThemeControlsProvider.prototype.getGroups = function() {
             component: ErrorText
           },
           {
+            id: 'theme-warning',
+            component: WarningText
+          },
+          {
+            id: 'theme-badges',
+            component: Badges
+          },
+          {
             id: 'theme-disabled',
             component: DisabledText
           },
@@ -120,6 +128,57 @@ function ErrorText(props) {
     setValue: noOp,
     validate: () => 'A value is required.'
   });
+}
+
+// The base library ships the `has-warning` modifier and semantic list badges as
+// CSS-only hooks (consumers such as linting integrations opt in), so we render
+// the surfaces directly to exercise the warning/error/accent tokens.
+function WarningText() {
+  return h('div', {
+    class: 'bio-properties-panel-entry has-warning',
+    'data-entry-id': 'theme-warning'
+  }, [
+    h('div', { class: 'bio-properties-panel-textfield' }, [
+      h('label', { class: 'bio-properties-panel-label' }, 'Warned text'),
+      h('input', {
+        class: 'bio-properties-panel-input',
+        type: 'text',
+        spellcheck: false,
+        readOnly: true,
+        value: 'Check this value'
+      })
+    ]),
+    h('div', { class: 'bio-properties-panel-warning' }, 'This value may cause issues.')
+  ]);
+}
+
+function Badges() {
+  const badge = (variant, text) => h('span', {
+    class: [ 'bio-properties-panel-list-badge', variant && `bio-properties-panel-list-badge--${variant}` ]
+      .filter(Boolean)
+      .join(' ')
+  }, text);
+
+  const dot = (variant) => h('span', {
+    class: `bio-properties-panel-dot bio-properties-panel-dot--${variant}`
+  });
+
+  return h('div', {
+    class: 'bio-properties-panel-entry',
+    'data-entry-id': 'theme-badges'
+  }, [
+    h('div', { class: 'bio-properties-panel-label' }, 'Semantic badges'),
+    h('div', {
+      style: 'display: flex; align-items: center; flex-wrap: wrap; gap: 4px;'
+    }, [
+      badge(null, '5'),
+      badge('accent', '3'),
+      badge('warning', '2'),
+      badge('error', '1'),
+      dot('warning'),
+      dot('error')
+    ])
+  ]);
 }
 
 function DisabledText(props) {

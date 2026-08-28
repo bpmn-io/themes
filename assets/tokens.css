@@ -30,6 +30,13 @@
   --shadcn-destructive: 0 84.2% 60.2%;
   --shadcn-destructive-foreground: 0 0% 98%;
 
+  /* Amber warning pair — shadcn ships no stock warning token, so we add one for
+     the semantic warning surfaces upstream now exposes (`.has-warning` inputs,
+     warning list badges and dots). Kept dark enough to read as text/border on
+     the panel and to carry the near-white foreground on a filled badge. */
+  --shadcn-warning: 30 90% 40%;
+  --shadcn-warning-foreground: 0 0% 98%;
+
   --shadcn-border: 240 5.9% 90%;
   --shadcn-input: 240 5.9% 90%;
   --shadcn-ring: 240 10% 3.9%;
@@ -66,6 +73,9 @@
 
   --shadcn-destructive: 0 72% 55%;
   --shadcn-destructive-foreground: 0 0% 98%;
+
+  --shadcn-warning: 32 95% 44%;
+  --shadcn-warning-foreground: 0 0% 98%;
 
   --shadcn-border: 240 3.7% 15.9%;
   --shadcn-input: 240 3.7% 15.9%;

@@ -38,6 +38,14 @@
    * selected container and the children inside it. So we leave those
    * `--element-*`, bendpoint, resizer, lasso and snap-line tokens unmapped and
    * let the upstream blue show through.
+   *
+   * diagram-js@15.25 funnels all of these — plus the palette/popup "selected"
+   * and focus surfaces — through a single `--accent-color`. We intentionally do
+   * NOT remap that token: setting it once would drag the selection outlines to a
+   * dark primary (re-hardcoding the blue we get for free here) and collapse the
+   * primary-vs-ring split we keep below. Instead we override only the specific
+   * palette/popup "selected" tokens to `--shadcn-primary` and the focus tokens
+   * to `--shadcn-ring`, and let selection stay blue.
    */
 
   /* context pad */
@@ -86,8 +94,10 @@
   --breadcrumbs-font-family: var(--font-family);
   --breadcrumbs-item-color: hsl(var(--shadcn-primary));
   --breadcrumbs-arrow-color: hsl(var(--shadcn-foreground));
+  --breadcrumbs-focus-outline-color: hsl(var(--shadcn-ring));
   --drilldown-fill-color: hsl(var(--shadcn-primary-foreground));
   --drilldown-background-color: hsl(var(--shadcn-primary));
+  --drilldown-focus-outline-color: hsl(var(--shadcn-ring));
 
   /* error tooltip */
   --tooltip-error-background-color: hsl(var(--shadcn-destructive) / 0.1);
@@ -251,12 +261,6 @@
   content: "›";
   color: var(--breadcrumbs-arrow-color);
   font-size: 1.25em;
-}
-
-.bpmn-io-shadcn-theme .bjs-breadcrumbs li:not(:last-of-type) a:focus-visible,
-.bpmn-io-shadcn-theme .bjs-drilldown:focus-visible {
-  outline: 2px solid hsl(var(--shadcn-ring));
-  outline-offset: 2px;
 }
 
 .bpmn-io-shadcn-theme .bjs-drilldown {

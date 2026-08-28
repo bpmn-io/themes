@@ -34,13 +34,12 @@ describe('bpmn-js playground', function() {
     expect(getComputedStyle(canvas).getPropertyValue('--drilldown-fill-color'))
       .to.equal('hsl(0 0% 98%)');
 
-    // when
-    drilldown.focus();
-
-    await playground.setup.settle();
-
     // then
-    expect(getComputedStyle(drilldown).outlineColor).to.equal('rgb(9, 9, 11)');
+    // the focus ring is themed via the upstream token (deterministic across
+    // browsers; the rendered :focus-visible outline is not, as Firefox only
+    // matches it on keyboard-driven focus)
+    expect(getComputedStyle(canvas).getPropertyValue('--drilldown-focus-outline-color'))
+      .to.equal('hsl(240 10% 3.9%)');
   });
 
   it('should theme drilldown breadcrumbs', async function() {
