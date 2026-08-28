@@ -33,9 +33,10 @@ describe('diagram-js playground', function() {
       .to.equal('hsl(0 0% 100%)');
 
     // selection keeps the conventional editor blue, distinct from the black
-    // element strokes it wraps, rather than the dark foreground/ring
+    // element strokes it wraps, rather than the dark foreground/ring. diagram-js
+    // routes it through the WCAG-AA `--accent-color` (blue at 40% lightness).
     expect(getComputedStyle(canvas).getPropertyValue('--element-selected-outline-stroke-color'))
-      .to.equal('hsl(205, 100%, 50%)');
+      .to.equal('hsl(205, 100%, 40%)');
   });
 
   it('should theme the search pad', async function() {

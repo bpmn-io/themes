@@ -19,7 +19,18 @@
 .bpmn-io-shadcn-theme .bio-properties-panel {
   --text-base-color: hsl(var(--shadcn-foreground));
   --text-error-color: hsl(var(--shadcn-destructive));
-  --link-color: hsl(var(--shadcn-primary));
+  --text-warning-color: hsl(var(--shadcn-warning));
+
+  /*
+   * Primary accent family. Upstream funnels links, checked controls, the active
+   * FEEL toggle, list add-buttons and the accent badge through `--accent-color`;
+   * we map it once so the whole family tracks `--shadcn-primary` and any new
+   * accent surface inherits it. Focus rings stay on `--shadcn-ring` and neutral
+   * hovers on `--shadcn-accent` as the deliberate exceptions kept explicit below.
+   */
+  --accent-color: hsl(var(--shadcn-primary));
+  --accent-hover-color: hsl(var(--shadcn-primary) / 0.9);
+  --link-color: var(--accent-color);
 
   --description-color: hsl(var(--shadcn-muted-foreground));
   --description-code-background-color: hsl(var(--shadcn-muted));
@@ -62,9 +73,23 @@
 
   --dot-color: hsl(var(--shadcn-muted-foreground));
   --dot-color-error: hsl(var(--shadcn-destructive));
+  --dot-color-warning: hsl(var(--shadcn-warning));
 
   --list-badge-color: hsl(var(--shadcn-background));
   --list-badge-background-color: hsl(var(--shadcn-muted-foreground));
+
+  /* Semantic list badges: error/warning ride the semantic palette, the accent
+     badge reuses the primary accent (see `--accent-color`). */
+  --error-badge-background-color: hsl(var(--shadcn-destructive));
+  --error-badge-color: hsl(var(--shadcn-destructive-foreground));
+  --error-badge-hover-background-color: hsl(var(--shadcn-destructive) / 0.9);
+  --warning-badge-background-color: hsl(var(--shadcn-warning));
+  --warning-badge-color: hsl(var(--shadcn-warning-foreground));
+  --warning-badge-hover-background-color: hsl(var(--shadcn-warning) / 0.9);
+  --accent-badge-background-color: var(--accent-color);
+  --accent-badge-color: hsl(var(--shadcn-primary-foreground));
+  --accent-badge-fill-color: hsl(var(--shadcn-primary-foreground));
+  --accent-badge-hover-background-color: var(--accent-hover-color);
 
   --input-background-color: var(--shadcn-input-fill);
   --input-border-color: hsl(var(--shadcn-input));
@@ -74,25 +99,30 @@
   --checkbox-border-radius: calc(var(--shadcn-radius) - 4px);
   --checkbox-border-color: hsl(var(--shadcn-input));
   --checkbox-background-color: var(--shadcn-input-fill);
-  --checkbox-checked-background-color: hsl(var(--shadcn-primary));
-  --checkbox-checked-border-color: hsl(var(--shadcn-primary));
+  --checkbox-checked-background-color: var(--accent-color);
+  --checkbox-checked-border-color: var(--accent-color);
 
   --input-focus-background-color: var(--shadcn-input-fill);
   --input-focus-border-color: hsl(var(--shadcn-ring));
   --focus-outline-color: hsl(var(--shadcn-ring));
   --focus-ring-color: hsl(var(--shadcn-ring) / var(--shadcn-ring-alpha));
   --focus-ring-error-color: hsl(var(--shadcn-destructive) / var(--shadcn-ring-alpha));
+  --focus-ring-warning-color: hsl(var(--shadcn-warning) / var(--shadcn-ring-alpha));
   --focus-ring-width: 3px;
 
   --input-error-background-color: var(--shadcn-input-fill);
   --input-error-border-color: hsl(var(--shadcn-destructive));
   --input-error-focus-border-color: hsl(var(--shadcn-destructive));
 
+  --input-warning-background-color: var(--shadcn-input-fill);
+  --input-warning-border-color: hsl(var(--shadcn-warning));
+  --input-warning-focus-border-color: hsl(var(--shadcn-warning));
+
   --input-disabled-color: hsl(var(--shadcn-muted-foreground));
   --input-disabled-background-color: hsl(var(--shadcn-muted));
   --input-disabled-border-color: hsl(var(--shadcn-border));
 
-  --toggle-switch-on-background-color: hsl(var(--shadcn-primary));
+  --toggle-switch-on-background-color: var(--accent-color);
   --toggle-switch-off-background-color: hsl(var(--shadcn-input));
   --toggle-switch-switcher-background-color: hsl(var(--shadcn-background));
 
@@ -110,10 +140,10 @@
 
   --list-entry-dot-background-color: var(--side-line-background-color);
   --list-entry-header-button-fill-color: hsl(var(--shadcn-muted-foreground));
-  --list-entry-add-entry-empty-background-color: hsl(var(--shadcn-primary));
-  --list-entry-add-entry-empty-hover-background-color: hsl(var(--shadcn-primary) / 0.9);
+  --list-entry-add-entry-empty-background-color: var(--accent-color);
+  --list-entry-add-entry-empty-hover-background-color: var(--accent-hover-color);
   --list-entry-add-entry-label-color: hsl(var(--shadcn-primary-foreground));
-  --list-entry-add-entry-background-color: hsl(var(--shadcn-primary));
+  --list-entry-add-entry-background-color: var(--accent-color);
   --list-entry-add-entry-fill-color: hsl(var(--shadcn-primary-foreground));
 
   --dropdown-item-background-color: hsl(var(--shadcn-popover));
@@ -121,7 +151,7 @@
   --dropdown-separator-background-color: hsl(var(--shadcn-border));
 
   --feel-background-color: transparent;
-  --feel-active-color: hsl(var(--shadcn-primary));
+  --feel-active-color: var(--accent-color);
   --feel-inactive-color: hsl(var(--shadcn-muted-foreground));
   --feel-hover-color: hsl(var(--shadcn-foreground));
   --feel-hover-background-color: hsl(var(--shadcn-accent));

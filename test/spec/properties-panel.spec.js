@@ -169,6 +169,35 @@ describe('properties-panel', function() {
     expect(disabledInput.disabled).to.be.true;
   });
 
+  it('should render the warning input state and semantic badges', async function() {
+    playground = await createPlayground(this, 'properties-panel-semantic-states', {
+      themeControls: true
+    });
+
+    await playground.setup.settle();
+
+    // open the theme controls so the warning input and semantic badges render
+    playground.setup['open-group']('theme-controls');
+    await playground.setup.settle();
+
+    const warningEntry = playground.root.querySelector('[data-entry-id="theme-warning"]');
+    const badges = playground.root.querySelector('[data-entry-id="theme-badges"]');
+
+    // then
+    expect([ ...warningEntry.classList ]).to.include('has-warning');
+    expect(warningEntry.querySelector('.bio-properties-panel-warning')).to.exist;
+
+    // the warning input picks up the themed amber border (not the raw upstream
+    // amber literal), so it stays on-palette and dark-mode aware
+    expect(getComputedStyle(warningEntry).getPropertyValue('--input-warning-border-color'))
+      .to.equal('hsl(30 90% 40%)');
+
+    expect(badges.querySelector('.bio-properties-panel-list-badge--warning')).to.exist;
+    expect(badges.querySelector('.bio-properties-panel-list-badge--error')).to.exist;
+    expect(badges.querySelector('.bio-properties-panel-list-badge--accent')).to.exist;
+    expect(badges.querySelector('.bio-properties-panel-dot--warning')).to.exist;
+  });
+
   it('should render select, checkbox, toggle and list states', async function() {
     playground = await createPlayground(this, 'properties-panel-controls', {
       themeControls: true
