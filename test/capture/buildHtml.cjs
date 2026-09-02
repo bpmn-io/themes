@@ -17,6 +17,7 @@ const STYLESHEETS = [
   'node_modules/bpmn-js-element-templates/dist/assets/element-templates.css',
   'node_modules/camunda-bpmn-js/styles/popup-menu.css',
   'node_modules/@bpmn-io/element-template-chooser/dist/element-template-chooser.css',
+  'packages/theme/assets/theme.css',
   'packages/shadcn-theme/assets/tokens.css',
   'packages/shadcn-theme/assets/properties-panel.css',
   'packages/shadcn-theme/assets/diagram.css',
