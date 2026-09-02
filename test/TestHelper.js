@@ -40,10 +40,10 @@ import elementTemplateChooserCss from '@bpmn-io/element-template-chooser/dist/el
 import elementTemplatesCss from 'bpmn-js-element-templates/dist/assets/element-templates.css';
 import popupMenuCss from 'camunda-bpmn-js/styles/popup-menu.css';
 
-import tokensCss from '../assets/tokens.css';
-import propertiesPanelThemeCss from '../assets/properties-panel.css';
-import diagramThemeCss from '../assets/diagram.css';
-import c4ThemeCss from '../assets/c4.css';
+import tokensCss from '@bpmn-io/shadcn-theme/assets/tokens.css';
+import propertiesPanelThemeCss from '@bpmn-io/shadcn-theme/assets/properties-panel.css';
+import diagramThemeCss from '@bpmn-io/shadcn-theme/assets/diagram.css';
+import c4ThemeCss from '@bpmn-io/shadcn-theme/assets/c4.css';
 import playgroundCss from './playground.css';
 
 import defaultDiagram from './fixtures/playground.bpmn';
