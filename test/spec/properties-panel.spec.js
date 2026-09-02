@@ -154,6 +154,7 @@ describe('properties-panel', function() {
 
     // when
     await playground.setup.settle();
+    playground.setup['open-group']('theme-controls');
     playground.setup['focus-theme-input']();
     playground.setup['invalidate-theme-input']();
     await playground.setup.settle();
@@ -174,6 +175,8 @@ describe('properties-panel', function() {
       themeControls: true
     });
 
+    await playground.setup.settle();
+    playground.setup['open-group']('theme-controls');
     await playground.setup.settle();
 
     const select = playground.root.querySelector('[data-entry-id="theme-select"] select');

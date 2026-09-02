@@ -124,7 +124,10 @@ function screenshotAll() {
         '--no-sandbox',
         '--hide-scrollbars',
         '--force-device-scale-factor=2',
-        '--window-size=1800,2600',
+
+        // a viewport screenshot, so the window must fit every theme column —
+        // trimming below is best-effort and only runs when ImageMagick is around
+        '--window-size=2400,2600',
         `--screenshot=${pngFile}`,
         htmlFile
       ], { stdio: 'ignore' });
