@@ -1,0 +1,34 @@
+{
+  "name": "@bpmn-io/shadcn-theme",
+  "version": "0.0.1",
+  "description": "A shadcn theme for bpmn.io",
+  "files": [
+    "assets"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    "./assets/*.css": "./assets/*.css",
+    "./package.json": "./package.json"
+  },
+  "keywords": [
+    "shadcn",
+    "bpmn.io",
+    "theme"
+  ],
+  "homepage": "https://github.com/bpmn-io/shadcn-theme#readme",
+  "bugs": {
+    "url": "https://github.com/bpmn-io/shadcn-theme/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bpmn-io/shadcn-theme.git",
+    "directory": "packages/shadcn-theme"
+  },
+  "license": "MIT",
+  "author": "bpmn.io Contributors",
+  "sideEffects": [
+    "*.css"
+  ]
+}

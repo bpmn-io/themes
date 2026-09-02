@@ -17,10 +17,10 @@ const STYLESHEETS = [
   'node_modules/bpmn-js-element-templates/dist/assets/element-templates.css',
   'node_modules/camunda-bpmn-js/styles/popup-menu.css',
   'node_modules/@bpmn-io/element-template-chooser/dist/element-template-chooser.css',
-  'assets/tokens.css',
-  'assets/properties-panel.css',
-  'assets/diagram.css',
-  'assets/c4.css',
+  'packages/shadcn-theme/assets/tokens.css',
+  'packages/shadcn-theme/assets/properties-panel.css',
+  'packages/shadcn-theme/assets/diagram.css',
+  'packages/shadcn-theme/assets/c4.css',
   'test/playground.css'
 ];
 
