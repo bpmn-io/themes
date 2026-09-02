@@ -94,7 +94,7 @@ export function shouldKeepPlayground() {
   return Boolean(window.__env__ && window.__env__.SINGLE_START);
 }
 
-export async function createPlayground(context, name, options = {}) {
+export async function createBpmnPlayground(context, name, options = {}) {
   insertStyles();
 
   const {
