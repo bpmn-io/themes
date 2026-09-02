@@ -1,0 +1,34 @@
+{
+  "name": "@bpmn-io/theme",
+  "version": "0.0.0",
+  "description": "Design tokens and the default theme for bpmn.io",
+  "files": [
+    "assets"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    "./assets/*.css": "./assets/*.css",
+    "./package.json": "./package.json"
+  },
+  "keywords": [
+    "bpmn.io",
+    "theme",
+    "design tokens"
+  ],
+  "homepage": "https://github.com/bpmn-io/shadcn-theme#readme",
+  "bugs": {
+    "url": "https://github.com/bpmn-io/shadcn-theme/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bpmn-io/shadcn-theme.git",
+    "directory": "packages/theme"
+  },
+  "license": "MIT",
+  "author": "bpmn.io Contributors",
+  "sideEffects": [
+    "*.css"
+  ]
+}
