@@ -30,6 +30,15 @@
   --shadcn-destructive: 0 84.2% 60.2%;
   --shadcn-destructive-foreground: 0 0% 98%;
 
+  /*
+   * shadcn/ui ships no `warning` token — only `destructive`. bpmn.io surfaces do
+   * have a warning state (lint warnings, invalid-but-not-fatal input), so the
+   * theme defines one rather than leaving those surfaces unthemed.
+   */
+  --shadcn-warning: 38 92% 50%;
+  --shadcn-warning-foreground: 20 92% 25%;
+  --shadcn-warning-surface: 48 100% 96%;
+
   --shadcn-border: 240 5.9% 90%;
   --shadcn-input: 240 5.9% 90%;
   --shadcn-ring: 240 10% 3.9%;
@@ -67,10 +76,80 @@
   --shadcn-destructive: 0 72% 55%;
   --shadcn-destructive-foreground: 0 0% 98%;
 
+  --shadcn-warning: 38 92% 50%;
+  --shadcn-warning-foreground: 48 96% 89%;
+  --shadcn-warning-surface: 26 83% 14%;
+
   --shadcn-border: 240 3.7% 15.9%;
   --shadcn-input: 240 3.7% 15.9%;
   --shadcn-ring: 240 4.9% 83.9%;
 
   --shadcn-input-fill: hsl(var(--shadcn-input) / 0.3);
   --shadcn-ring-alpha: 0.5;
+}
+
+/**
+ * Bind the bpmn.io semantic tokens (`@bpmn-io/theme`) to shadcn values.
+ *
+ * This is the whole theme, for every bpmn.io component: the libraries derive
+ * their own variables from these tokens, so the per-component adapters only
+ * carry the places where this theme deliberately departs from the default
+ * semantics.
+ *
+ * The compound selector is required — the base theme declares the tokens on the
+ * same element, and a custom property set on the element itself always beats
+ * one inherited from an ancestor.
+ */
+.bpmn-io-shadcn-theme .bpmn-io-theme,
+.bpmn-io-shadcn-theme.bpmn-io-theme {
+  --bio-surface: hsl(var(--shadcn-card));
+  --bio-surface-overlay: hsl(var(--shadcn-popover));
+  --bio-surface-sunken: hsl(var(--shadcn-muted));
+  --bio-surface-subtle: var(--shadcn-input-fill);
+  --bio-surface-strong: hsl(var(--shadcn-muted));
+
+  /* shadcn/ui builds its tooltip from `primary`, which inverts with the mode */
+  --bio-surface-inverted: hsl(var(--shadcn-primary));
+  --bio-surface-inverted-subtle: hsl(var(--shadcn-primary-foreground) / 0.15);
+
+  --bio-text: hsl(var(--shadcn-foreground));
+  --bio-text-subtle: hsl(var(--shadcn-muted-foreground));
+  --bio-text-muted: hsl(var(--shadcn-muted-foreground));
+  --bio-text-on-accent: hsl(var(--shadcn-primary-foreground));
+  --bio-text-on-inverted: hsl(var(--shadcn-primary-foreground));
+
+  --bio-border: hsl(var(--shadcn-border));
+  --bio-border-subtle: hsl(var(--shadcn-border));
+  --bio-border-disabled: hsl(var(--shadcn-border));
+  --bio-border-input: hsl(var(--shadcn-input));
+
+  --bio-accent: hsl(var(--shadcn-primary));
+  --bio-accent-hover: hsl(var(--shadcn-primary) / 0.9);
+  --bio-accent-strong: hsl(var(--shadcn-ring));
+  --bio-accent-surface: var(--shadcn-input-fill);
+
+  /* shadcn/ui has no link colour; on the inverted surface a link stays the
+     inverted foreground and is told apart by its underline */
+  --bio-accent-on-inverted: hsl(var(--shadcn-primary-foreground));
+  --bio-accent-surface-strong: hsl(var(--shadcn-primary) / 0.15);
+
+  --bio-danger: hsl(var(--shadcn-destructive));
+  --bio-danger-hover: hsl(var(--shadcn-destructive) / 0.9);
+  --bio-danger-surface: hsl(var(--shadcn-destructive) / 0.1);
+  --bio-danger-surface-subtle: var(--shadcn-input-fill);
+
+  --bio-warning: hsl(var(--shadcn-warning));
+  --bio-warning-hover: hsl(var(--shadcn-warning) / 0.9);
+  --bio-warning-text: hsl(var(--shadcn-warning-foreground));
+  --bio-warning-surface: hsl(var(--shadcn-warning-surface));
+
+  --bio-success: hsl(var(--shadcn-primary));
+
+  --bio-focus: hsl(var(--shadcn-ring));
+  --bio-focus-ring: hsl(var(--shadcn-ring) / var(--shadcn-ring-alpha));
+  --bio-focus-ring-danger: hsl(var(--shadcn-destructive) / var(--shadcn-ring-alpha));
+  --bio-focus-ring-warning: hsl(var(--shadcn-warning) / var(--shadcn-ring-alpha));
+
+  --bio-shadow: hsl(var(--shadcn-foreground) / 0.12);
+  --bio-shadow-subtle: hsl(var(--shadcn-foreground) / 0.08);
 }

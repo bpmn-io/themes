@@ -20,14 +20,18 @@
     "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
-  /* palette */
-  --palette-entry-color: hsl(var(--shadcn-foreground));
+  /*
+   * Only deviations from the token defaults live here — everything diagram-js
+   * derives from a semantic token (text, borders, surfaces, danger) is already
+   * themed by the bindings in tokens.css.
+   */
+
+  /* palette — entries read as a flat toolbar, so hover darkens the glyph
+     instead of tinting it, and the surface stays the app background */
   --palette-entry-hover-color: hsl(var(--shadcn-foreground));
   --palette-entry-selected-color: hsl(var(--shadcn-primary));
-  --palette-separator-color: hsl(var(--shadcn-border));
   --palette-toggle-hover-background-color: hsl(var(--shadcn-accent));
   --palette-background-color: hsl(var(--shadcn-background));
-  --palette-border-color: hsl(var(--shadcn-border));
 
   /*
    * Selection affordances — the selection/hover outline, bendpoints, resizers,
@@ -40,39 +44,20 @@
    * let the upstream blue show through.
    */
 
-  /* context pad */
-  --context-pad-entry-background-color: hsl(var(--shadcn-background));
-  --context-pad-entry-hover-background-color: hsl(var(--shadcn-accent));
-
-  /* popup menu */
+  /* popup menu — a bordered, shadowed popover rather than diagram-js's
+     borderless card, and selection follows the theme's primary */
   --popup-font-family: var(--font-family);
   --popup-header-font-weight: 600;
-  --popup-background-color: hsl(var(--shadcn-popover));
   --popup-border-color: hsl(var(--shadcn-border));
-  --popup-shadow-color: hsl(var(--shadcn-foreground) / 0.12);
-  --popup-disabled-color: hsl(var(--shadcn-muted-foreground));
-  --popup-description-color: hsl(var(--shadcn-muted-foreground));
-  --popup-no-results-color: hsl(var(--shadcn-muted-foreground));
-  --popup-entry-title-color: hsl(var(--shadcn-muted-foreground));
-  --popup-entry-hover-color: hsl(var(--shadcn-accent));
   --popup-header-entry-selected-color: hsl(var(--shadcn-primary));
-  --popup-header-group-divider-color: hsl(var(--shadcn-border));
-  --popup-search-border-color: hsl(var(--shadcn-input));
   --popup-search-focus-border-color: hsl(var(--shadcn-ring));
-  --popup-search-focus-background-color: var(--shadcn-input-fill);
-  --popup-tab-color: hsl(var(--shadcn-muted-foreground));
-  --popup-tab-hover-color: hsl(var(--shadcn-foreground));
-  --popup-tab-active-color: hsl(var(--shadcn-foreground));
   --popup-tab-active-border-color: hsl(var(--shadcn-primary));
-  --popup-tab-strip-border-color: hsl(var(--shadcn-border));
   --popup-tab-focus-border-color: hsl(var(--shadcn-ring));
+  --popup-button-hover-background-color: hsl(var(--shadcn-accent));
+  --popup-scrollbar-thumb-color: hsl(var(--shadcn-muted-foreground) / 0.4);
 
   /* search pad */
   --search-font-family: var(--font-family);
-  --search-container-background-color: hsl(var(--shadcn-popover));
-  --search-shadow-color: hsl(var(--shadcn-foreground) / 0.12);
-  --search-result-hover-background-color: hsl(var(--shadcn-accent));
-  --search-result-secondary-color: hsl(var(--shadcn-muted-foreground));
   /*
    * The on-canvas search match is highlighted by filling its (now selected,
    * visible) element outline with this token. It must stay TRANSLUCENT or it
@@ -82,17 +67,14 @@
    */
   --search-container-border-color: hsl(var(--shadcn-border));
 
-  /* drilldown */
+  /* drilldown — supplied by bpmn-js, so there is no token default to inherit */
   --breadcrumbs-font-family: var(--font-family);
   --breadcrumbs-item-color: hsl(var(--shadcn-primary));
-  --breadcrumbs-arrow-color: hsl(var(--shadcn-foreground));
   --drilldown-fill-color: hsl(var(--shadcn-primary-foreground));
   --drilldown-background-color: hsl(var(--shadcn-primary));
 
-  /* error tooltip */
+  /* error tooltip — a tinted wash rather than the token's flat surface */
   --tooltip-error-background-color: hsl(var(--shadcn-destructive) / 0.1);
-  --tooltip-error-border-color: hsl(var(--shadcn-destructive));
-  --tooltip-error-color: hsl(var(--shadcn-destructive));
 }
 
 /**
@@ -217,30 +199,18 @@
 }
 
 /*
- * The "back" breadcrumb chip and the per-entry docs affordance hard-code a
- * light-grey hover and a white fill upstream; re-map them to accent/popover so
- * they survive dark mode.
+ * The "back" breadcrumb chip and the per-entry docs affordance are shadcn icon
+ * buttons here, so they take the tighter radius; their fill, hover and border
+ * already follow the tokens.
  */
-.bpmn-io-shadcn-theme .djs-popup-breadcrumbs-item--back {
-  border-color: hsl(var(--shadcn-border));
+.bpmn-io-shadcn-theme .djs-popup-breadcrumbs-item--back,
+.bpmn-io-shadcn-theme .djs-popup-entry-docs {
   border-radius: calc(var(--shadcn-radius) - 4px);
-}
-
-.bpmn-io-shadcn-theme .djs-popup-breadcrumbs-item--back:hover,
-.bpmn-io-shadcn-theme .djs-popup-body .entry .djs-popup-entry-docs:hover {
-  background: hsl(var(--shadcn-accent));
 }
 
 .bpmn-io-shadcn-theme .djs-popup-breadcrumbs-item:focus-visible,
 .bpmn-io-shadcn-theme .djs-popup-entry-docs:focus-visible {
   outline-color: hsl(var(--shadcn-ring));
-}
-
-.bpmn-io-shadcn-theme .djs-popup-entry-docs {
-  color: hsl(var(--shadcn-muted-foreground));
-  background: hsl(var(--shadcn-popover));
-  border-color: hsl(var(--shadcn-border));
-  border-radius: calc(var(--shadcn-radius) - 4px);
 }
 
 .bpmn-io-shadcn-theme .bjs-breadcrumbs {
@@ -265,11 +235,6 @@
 
 .bpmn-io-shadcn-theme .bjs-drilldown:hover {
   background-color: hsl(var(--shadcn-primary) / 0.9);
-}
-
-/* scrollbars in the popup pick up the muted-foreground thumb */
-.bpmn-io-shadcn-theme .djs-popup *::-webkit-scrollbar-thumb {
-  background-color: hsl(var(--shadcn-muted-foreground) / 0.4);
 }
 
 /* element-template entry icons keep their aspect ratio */

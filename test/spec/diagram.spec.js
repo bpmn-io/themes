@@ -35,7 +35,7 @@ describe('diagram-js playground', function() {
     // selection keeps the conventional editor blue, distinct from the black
     // element strokes it wraps, rather than the dark foreground/ring
     expect(getComputedStyle(canvas).getPropertyValue('--element-selected-outline-stroke-color'))
-      .to.equal('hsl(205, 100%, 50%)');
+      .to.equal('hsl(205, 100%, 40%)');
   });
 
   it('should theme the search pad', async function() {

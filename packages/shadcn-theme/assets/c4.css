@@ -1,97 +1,109 @@
 /**
- * Camunda Design System overrides for the properties-panel adapter.
+ * Camunda Design System overrides.
  *
- * Load this after tokens.css and properties-panel.css, inside a C4Provider.
+ * Load this after tokens.css and the component adapters, inside a C4Provider.
+ *
+ * Almost all of it is the bpmn.io semantic tokens re-pointed at C4 tokens —
+ * one block that covers every bpmn.io component. What follows are only the
+ * places where C4 wants something other than the default, including a few
+ * where it opts back out of a shadcn-specific deviation.
  */
 .c4-ui .bpmn-io-shadcn-theme {
   --shadcn-radius: var(--radius);
 }
 
+.c4-ui .bpmn-io-shadcn-theme .bpmn-io-theme,
+.c4-ui .bpmn-io-shadcn-theme.bpmn-io-theme {
+  --bio-surface: var(--background);
+  --bio-surface-overlay: var(--popover);
+  --bio-surface-sunken: var(--neutral-background-medium);
+  --bio-surface-subtle: var(--neutral-background-medium);
+  --bio-surface-strong: var(--neutral-background-medium);
+
+  --bio-surface-inverted: var(--primary-action-default);
+  --bio-surface-inverted-subtle: color-mix(in srgb, var(--primary-action-foreground) 15%, transparent);
+
+  --bio-text: var(--foreground);
+  --bio-text-subtle: var(--neutral-foreground-subtle);
+  --bio-text-muted: var(--neutral-foreground-subtle);
+  --bio-text-on-accent: var(--primary-action-foreground);
+  --bio-text-on-inverted: var(--primary-action-foreground);
+
+  --bio-border: var(--border);
+  --bio-border-subtle: var(--border);
+  --bio-border-disabled: var(--border);
+  --bio-border-input: var(--input);
+
+  --bio-accent: var(--primary-action-default);
+  --bio-accent-hover: var(--primary-action-hover);
+  --bio-accent-strong: var(--ring);
+  --bio-accent-surface: var(--input-background);
+  --bio-accent-surface-strong: color-mix(in srgb, var(--primary-action-default) 15%, transparent);
+  --bio-accent-on-inverted: var(--primary-action-foreground);
+
+  --bio-danger: var(--danger-action-default);
+  --bio-danger-hover: var(--danger-action-default);
+  --bio-danger-surface: color-mix(in srgb, var(--danger-action-default) 10%, transparent);
+  --bio-danger-surface-subtle: var(--input-background);
+
+  --bio-focus: var(--ring);
+
+  /* alphas and mixing space follow the design system's own Input:
+     `focus-visible:ring-ring/20 dark:focus-visible:ring-ring/40` */
+  --bio-focus-ring: color-mix(in oklab, var(--ring) 20%, transparent);
+  --bio-focus-ring-danger: color-mix(in oklab, var(--danger-action-default) 20%, transparent);
+
+  --bio-shadow: color-mix(in srgb, var(--foreground) 12%, transparent);
+  --bio-shadow-subtle: color-mix(in srgb, var(--foreground) 8%, transparent);
+}
+
+/* the design system doubles the ring alpha in dark mode */
+.dark .c4-ui .bpmn-io-shadcn-theme .bpmn-io-theme,
+.c4-ui .dark .bpmn-io-shadcn-theme .bpmn-io-theme,
+.c4-ui .bpmn-io-shadcn-theme.dark .bpmn-io-theme,
+.c4-ui .dark .bpmn-io-shadcn-theme.bpmn-io-theme {
+  --bio-focus-ring: color-mix(in oklab, var(--ring) 40%, transparent);
+  --bio-focus-ring-danger: color-mix(in oklab, var(--danger-action-default) 40%, transparent);
+}
+
 .c4-ui .bpmn-io-shadcn-theme .bio-properties-panel {
   --font-family: var(--font-sans);
   --font-family-monospace: var(--font-mono);
-  --text-base-color: var(--foreground);
-  --text-error-color: var(--danger-action-default);
-  --link-color: var(--primary-action-default);
-  --description-color: var(--neutral-foreground-subtle);
-  --description-code-background-color: var(--neutral-background-medium);
-  --description-code-border-color: var(--border);
-  --description-list-item-color: var(--neutral-foreground-subtle);
-  --tooltip-underline-color: var(--neutral-foreground-subtle);
-  --placeholder-color: var(--neutral-foreground-subtle);
-  --placeholder-background-color: var(--neutral-background-medium);
+
+  /* C4 separates the panel and group headers from the content with its subtle
+     surface, and opts an open group back into a fill */
   --header-background-color: var(--neutral-background-subtle);
-  --header-icon-fill-color: var(--foreground);
-  --header-bottom-border-color: var(--border);
-  --group-background-color: var(--background);
-  --group-bottom-border-color: var(--border);
   --sticky-group-background-color: var(--neutral-background-subtle);
-  --sticky-group-bottom-border-color: var(--border);
   --open-group-header-background-color: var(--neutral-background-medium);
-  --add-entry-fill-color: var(--neutral-foreground-subtle);
+
+  /* the add (+) control is C4's filled primary action, not the shadcn ghost */
   --add-entry-hover-fill-color: var(--primary-action-foreground);
   --add-entry-hover-background-color: var(--primary-action-default);
   --add-entry-label-color: var(--primary-action-foreground);
+  --arrow-hover-background-color: var(--neutral-background-medium);
+
   --secondary-action-background-color: var(--neutral-background-medium);
   --secondary-action-hover-background-color: var(--neutral-background-strong);
   --secondary-action-foreground-color: var(--foreground);
   --secondary-action-border-color: var(--border);
-  --remove-entry-fill-color: var(--danger-action-default);
-  --remove-entry-hover-background-color: color-mix(in srgb, var(--danger-action-default) 10%, transparent);
-  --arrow-fill-color: var(--neutral-foreground-subtle);
-  --arrow-hover-background-color: var(--neutral-background-medium);
-  --dot-color: var(--neutral-foreground-subtle);
-  --dot-color-error: var(--danger-action-default);
+
+  /* a filled primary badge rather than the shadcn grey */
   --list-badge-color: var(--primary-action-foreground);
   --list-badge-background-color: var(--primary-action-default);
+
   --input-background-color: var(--input-background);
-  --input-border-color: var(--input);
-  --input-border-radius: calc(var(--radius) - 2px);
-  --input-height: var(--shadcn-control-height);
-  --checkbox-border-radius: calc(var(--radius) - 4px);
-  --checkbox-border-color: var(--input);
-  --checkbox-background-color: var(--input-background);
-  --checkbox-checked-background-color: var(--primary-action-default);
-  --checkbox-checked-border-color: var(--primary-action-default);
-  --input-focus-background-color: var(--input-background);
+
+  /* a focused input takes the ring, not the accent the token defaults to */
   --input-focus-border-color: var(--ring);
-  --focus-outline-color: var(--ring);
-  --focus-ring-color: color-mix(in srgb, var(--ring) 65%, transparent);
-  --focus-ring-error-color: color-mix(in srgb, var(--danger-action-default) 65%, transparent);
-  --focus-ring-width: 3px;
-  --input-error-background-color: var(--input-background);
-  --input-error-border-color: var(--danger-action-default);
-  --input-error-focus-border-color: var(--danger-action-default);
-  --input-disabled-color: var(--neutral-foreground-subtle);
-  --input-disabled-background-color: var(--neutral-background-medium);
-  --input-disabled-border-color: var(--border);
-  --toggle-switch-on-background-color: var(--primary-action-default);
-  --toggle-switch-off-background-color: var(--input);
-  --toggle-switch-switcher-background-color: var(--background);
+
+  /* the nesting connectors follow C4's border, opting back out of the shadcn
+     adapter's own side-line deviation */
   --side-line-background-color: var(--border);
   --side-line-extension-background-color: var(--border);
   --list-entry-dot-background-color: var(--neutral-foreground-subtle);
-  --list-entry-header-button-fill-color: var(--neutral-foreground-subtle);
-  --list-entry-add-entry-empty-background-color: var(--primary-action-default);
-  --list-entry-add-entry-empty-hover-background-color: var(--primary-action-hover);
-  --list-entry-add-entry-label-color: var(--primary-action-foreground);
-  --list-entry-add-entry-background-color: var(--primary-action-default);
-  --list-entry-add-entry-fill-color: var(--primary-action-foreground);
-  --dropdown-item-background-color: var(--popover);
-  --dropdown-item-hover-background-color: var(--neutral-background-medium);
-  --dropdown-separator-background-color: var(--border);
-  --feel-background-color: transparent;
+
   --feel-active-color: var(--primary-action-default);
-  --feel-inactive-color: var(--neutral-foreground-subtle);
-  --feel-hover-color: var(--foreground);
   --feel-hover-background-color: var(--neutral-background-medium);
-  --feel-active-background-color: transparent;
-  --feel-required-color: var(--neutral-foreground-subtle);
-  --feel-open-popup-color: var(--neutral-foreground-subtle);
-  --feel-open-popup-background-color: var(--popover);
-  --feel-open-popup-hover-color: var(--primary-action-default);
-  --feel-indicator-background-color: var(--neutral-background-medium);
-  --feelers-select-color: color-mix(in srgb, var(--primary-action-default) 15%, transparent);
 }
 
 .c4-ui .bpmn-io-shadcn-theme .bio-properties-panel-input,
@@ -119,99 +131,53 @@
 }
 
 .c4-ui .bpmn-io-shadcn-theme .bio-properties-panel-tooltip {
-  --tooltip-background-color: var(--primary-action-default);
-  --tooltip-link: var(--primary-action-foreground);
   --tooltip-code-background-color: color-mix(in srgb, var(--primary-action-default) 60%, transparent);
   --tooltip-code-border-color: color-mix(in srgb, var(--primary-action-foreground) 20%, transparent);
-
-  color: var(--primary-action-foreground);
 }
 
 .c4-ui .bpmn-io-shadcn-theme .bio-properties-panel-popup {
   --popup-background-color: var(--background);
   --popup-header-background-color: var(--neutral-background-subtle);
-  --popup-font-color: var(--foreground);
-  --popup-title-color: var(--foreground);
-  --feel-popup-close-background-color: var(--primary-action-default);
-  --feel-popup-gutters-background-color: var(--neutral-background-medium);
 }
 
 /**
  * Camunda Design System overrides for the diagram-js core UI adapter
- * (palette, search pad, popup menu). Consumes C4 semantic tokens; only applies
- * beneath `.c4-ui`, so stock shadcn consumers are unaffected.
+ * (palette, search pad, popup menu). The token bindings above already cover the
+ * text, border, surface and danger tokens; only deviations remain.
  */
 .c4-ui .bpmn-io-shadcn-theme .djs-parent {
   --font-family: var(--font-sans);
 
+  /* the palette reads as a subtle toolbar: muted glyphs that darken on hover */
   --palette-entry-color: var(--neutral-foreground-subtle);
   --palette-entry-hover-color: var(--foreground);
   --palette-entry-selected-color: var(--primary-action-default);
-  --palette-separator-color: var(--border);
   --palette-toggle-hover-background-color: var(--neutral-background-medium);
   --palette-background-color: var(--background);
-  --palette-border-color: var(--border);
 
-  --context-pad-entry-background-color: var(--background);
-  --context-pad-entry-hover-background-color: var(--neutral-background-medium);
-
-  --popup-background-color: var(--popover);
   --popup-border-color: var(--border);
-  --popup-shadow-color: color-mix(in srgb, var(--foreground) 12%, transparent);
-  --popup-disabled-color: var(--neutral-foreground-subtle);
-  --popup-description-color: var(--neutral-foreground-subtle);
-  --popup-no-results-color: var(--neutral-foreground-subtle);
-  --popup-entry-title-color: var(--neutral-foreground-subtle);
-  --popup-entry-hover-color: var(--neutral-background-medium);
   --popup-header-entry-selected-color: var(--primary-action-default);
-  --popup-header-group-divider-color: var(--border);
-  --popup-search-border-color: var(--input);
   --popup-search-focus-border-color: var(--ring);
-  --popup-search-focus-background-color: var(--input-background);
-  --popup-tab-color: var(--neutral-foreground-subtle);
-  --popup-tab-hover-color: var(--foreground);
-  --popup-tab-active-color: var(--foreground);
   --popup-tab-active-border-color: var(--primary-action-default);
-  --popup-tab-strip-border-color: var(--border);
   --popup-tab-focus-border-color: var(--ring);
+  --popup-button-hover-background-color: var(--neutral-background-medium);
+  --popup-scrollbar-thumb-color: color-mix(in srgb, var(--neutral-foreground-subtle) 40%, transparent);
 
-  --search-container-background-color: var(--popover);
-  --search-shadow-color: color-mix(in srgb, var(--foreground) 12%, transparent);
-  --search-result-hover-background-color: var(--neutral-background-medium);
-  --search-result-secondary-color: var(--neutral-foreground-subtle);
   /* keep the on-canvas match highlight translucent (see diagram.css) */
   --search-container-border-color: var(--border);
 
   --breadcrumbs-font-family: var(--font-sans);
   --breadcrumbs-item-color: var(--primary-action-default);
-  --breadcrumbs-arrow-color: var(--foreground);
   --drilldown-fill-color: var(--primary-action-foreground);
   --drilldown-background-color: var(--primary-action-default);
 
   --tooltip-error-background-color: color-mix(in srgb, var(--danger-action-default) 10%, transparent);
-  --tooltip-error-border-color: var(--danger-action-default);
-  --tooltip-error-color: var(--danger-action-default);
 }
 
 .c4-ui .bpmn-io-shadcn-theme .djs-popup {
   box-shadow: var(--shadow-lg);
 }
 
-.c4-ui .bpmn-io-shadcn-theme .djs-popup-breadcrumbs-item--back:hover,
-.c4-ui .bpmn-io-shadcn-theme .djs-popup-body .entry .djs-popup-entry-docs:hover {
-  background: var(--neutral-background-medium);
-}
-
-.c4-ui .bpmn-io-shadcn-theme .djs-popup-entry-docs {
-  color: var(--neutral-foreground-subtle);
-  background: var(--popover);
-  border-color: var(--border);
-}
-
 .c4-ui .bpmn-io-shadcn-theme .bjs-drilldown:hover {
   background-color: var(--primary-action-hover);
-}
-
-.c4-ui .bpmn-io-shadcn-theme .djs-popup *::-webkit-scrollbar-thumb {
-  background-color: color-mix(in srgb, var(--neutral-foreground-subtle) 40%, transparent);
 }

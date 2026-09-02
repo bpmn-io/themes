@@ -40,6 +40,7 @@ import elementTemplateChooserCss from '@bpmn-io/element-template-chooser/dist/el
 import elementTemplatesCss from 'bpmn-js-element-templates/dist/assets/element-templates.css';
 import popupMenuCss from 'camunda-bpmn-js/styles/popup-menu.css';
 
+import baseThemeCss from '@bpmn-io/theme/assets/theme.css';
 import tokensCss from '@bpmn-io/shadcn-theme/assets/tokens.css';
 import propertiesPanelThemeCss from '@bpmn-io/shadcn-theme/assets/properties-panel.css';
 import diagramThemeCss from '@bpmn-io/shadcn-theme/assets/diagram.css';
@@ -375,6 +376,7 @@ function insertStyles() {
   insertStyle('bpmn-js.css', bpmnJsCss);
   insertStyle('bpmn-font.css', bpmnFontCss);
   insertStyle('properties-panel.css', propertiesPanelCss);
+  insertStyle('bpmn-io-theme.css', baseThemeCss);
   insertStyle('element-templates.css', elementTemplatesCss);
   insertStyle('popup-menu.css', popupMenuCss);
   insertStyle('element-template-chooser.css', elementTemplateChooserCss);
