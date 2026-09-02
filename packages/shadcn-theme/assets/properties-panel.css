@@ -1,7 +1,8 @@
 /**
  * shadcn/ui adapter for @bpmn-io/properties-panel.
  *
- * Load this after properties-panel.css and assets/tokens.css.
+ * Load after properties-panel.css and tokens.css. Only the places where this
+ * theme departs from the default token semantics belong here.
  */
 /*
  * Font stacks live on the theme root (not only the panel) so portaled surfaces
@@ -17,84 +18,28 @@
 }
 
 .bpmn-io-shadcn-theme .bio-properties-panel {
-  --text-base-color: hsl(var(--shadcn-foreground));
-  --text-error-color: hsl(var(--shadcn-destructive));
-  --link-color: hsl(var(--shadcn-primary));
-
-  --description-color: hsl(var(--shadcn-muted-foreground));
-  --description-code-background-color: hsl(var(--shadcn-muted));
-  --description-code-border-color: hsl(var(--shadcn-border));
-  --description-list-item-color: hsl(var(--shadcn-muted-foreground));
-  --tooltip-underline-color: hsl(var(--shadcn-muted-foreground));
-
-  --placeholder-color: hsl(var(--shadcn-muted-foreground));
-  --placeholder-background-color: hsl(var(--shadcn-muted));
-
-  --header-background-color: hsl(var(--shadcn-muted));
-  --header-icon-fill-color: hsl(var(--shadcn-foreground));
-  --header-bottom-border-color: hsl(var(--shadcn-border));
-
-  --group-background-color: hsl(var(--shadcn-card));
-  --group-bottom-border-color: hsl(var(--shadcn-border));
-
-  /* A stuck (scrolled) group header needs a solid fill to occlude content
-     sliding underneath AND to read as "stuck". The app background equals the
-     card in the light palette, so it would occlude but not mark the header;
-     the muted surface (as used by the panel header) stands apart from the card
-     content the way the stock panel's grey does. Core applies fill + separator
-     via these variables. */
-  --sticky-group-background-color: hsl(var(--shadcn-muted));
-  --sticky-group-bottom-border-color: hsl(var(--shadcn-border));
-  /* Open group headers stay flush with their content (like the stock panel);
-     the bold title alone carries the hierarchy. C4 opts back into a fill. */
-  --open-group-header-background-color: transparent;
-
-  --add-entry-fill-color: hsl(var(--shadcn-muted-foreground));
-  --add-entry-hover-fill-color: hsl(var(--shadcn-foreground));
-  --add-entry-hover-background-color: hsl(var(--shadcn-accent));
-  --add-entry-label-color: hsl(var(--shadcn-foreground));
-
-  --remove-entry-fill-color: hsl(var(--shadcn-destructive));
-  --remove-entry-hover-background-color: hsl(var(--shadcn-destructive) / 0.1);
-
-  --arrow-fill-color: hsl(var(--shadcn-muted-foreground));
-  --arrow-hover-background-color: hsl(var(--shadcn-accent));
-
-  --dot-color: hsl(var(--shadcn-muted-foreground));
-  --dot-color-error: hsl(var(--shadcn-destructive));
-
-  --list-badge-color: hsl(var(--shadcn-background));
-  --list-badge-background-color: hsl(var(--shadcn-muted-foreground));
-
-  --input-background-color: var(--shadcn-input-fill);
-  --input-border-color: hsl(var(--shadcn-input));
   --input-border-radius: calc(var(--shadcn-radius) - 2px);
   --input-height: var(--shadcn-control-height);
 
   --checkbox-border-radius: calc(var(--shadcn-radius) - 4px);
-  --checkbox-border-color: hsl(var(--shadcn-input));
-  --checkbox-background-color: var(--shadcn-input-fill);
-  --checkbox-checked-background-color: hsl(var(--shadcn-primary));
-  --checkbox-checked-border-color: hsl(var(--shadcn-primary));
 
-  --input-focus-background-color: var(--shadcn-input-fill);
-  --input-focus-border-color: hsl(var(--shadcn-ring));
-  --focus-outline-color: hsl(var(--shadcn-ring));
-  --focus-ring-color: hsl(var(--shadcn-ring) / var(--shadcn-ring-alpha));
-  --focus-ring-error-color: hsl(var(--shadcn-destructive) / var(--shadcn-ring-alpha));
   --focus-ring-width: 3px;
 
-  --input-error-background-color: var(--shadcn-input-fill);
-  --input-error-border-color: hsl(var(--shadcn-destructive));
-  --input-error-focus-border-color: hsl(var(--shadcn-destructive));
+  /* a focused input takes the ring, not the accent the token defaults to */
+  --input-focus-border-color: hsl(var(--shadcn-ring));
 
-  --input-disabled-color: hsl(var(--shadcn-muted-foreground));
-  --input-disabled-background-color: hsl(var(--shadcn-muted));
-  --input-disabled-border-color: hsl(var(--shadcn-border));
+  /* Open group headers stay flush with their content (like the stock panel);
+     the bold title alone carries the hierarchy. C4 opts back into a fill. */
+  --open-group-header-background-color: transparent;
 
-  --toggle-switch-on-background-color: hsl(var(--shadcn-primary));
-  --toggle-switch-off-background-color: hsl(var(--shadcn-input));
-  --toggle-switch-switcher-background-color: hsl(var(--shadcn-background));
+  /* a ghost button here, so it needs a readable foreground, not white-on-primary */
+  --add-entry-hover-fill-color: hsl(var(--shadcn-foreground));
+  --add-entry-hover-background-color: hsl(var(--shadcn-accent));
+  --add-entry-label-color: hsl(var(--shadcn-foreground));
+  --arrow-hover-background-color: hsl(var(--shadcn-accent));
+
+  --list-badge-color: hsl(var(--shadcn-background));
+  --list-badge-background-color: hsl(var(--shadcn-muted-foreground));
 
   /*
    * Structural nesting connectors: the side lines and the list-entry dot that
@@ -107,32 +52,12 @@
    */
   --side-line-background-color: hsl(var(--shadcn-border));
   --side-line-extension-background-color: hsl(var(--shadcn-border));
-
   --list-entry-dot-background-color: var(--side-line-background-color);
-  --list-entry-header-button-fill-color: hsl(var(--shadcn-muted-foreground));
-  --list-entry-add-entry-empty-background-color: hsl(var(--shadcn-primary));
-  --list-entry-add-entry-empty-hover-background-color: hsl(var(--shadcn-primary) / 0.9);
-  --list-entry-add-entry-label-color: hsl(var(--shadcn-primary-foreground));
-  --list-entry-add-entry-background-color: hsl(var(--shadcn-primary));
-  --list-entry-add-entry-fill-color: hsl(var(--shadcn-primary-foreground));
 
-  --dropdown-item-background-color: hsl(var(--shadcn-popover));
-  --dropdown-item-hover-background-color: hsl(var(--shadcn-accent));
-  --dropdown-separator-background-color: hsl(var(--shadcn-border));
-
-  --feel-background-color: transparent;
+  /* the active `fx` marker is the full primary here, not the softened hover
+     shade the accent token carries */
   --feel-active-color: hsl(var(--shadcn-primary));
-  --feel-inactive-color: hsl(var(--shadcn-muted-foreground));
-  --feel-hover-color: hsl(var(--shadcn-foreground));
   --feel-hover-background-color: hsl(var(--shadcn-accent));
-  --feel-active-background-color: transparent;
-  --feel-required-color: hsl(var(--shadcn-muted-foreground));
-  --feel-open-popup-color: hsl(var(--shadcn-muted-foreground));
-  --feel-open-popup-background-color: hsl(var(--shadcn-popover));
-  --feel-open-popup-hover-color: hsl(var(--shadcn-primary));
-
-  --feel-indicator-background-color: hsl(var(--shadcn-muted));
-  --feelers-select-color: hsl(var(--shadcn-primary) / 0.15);
 }
 
 .bpmn-io-shadcn-theme .bio-properties-panel-input,
@@ -356,17 +281,6 @@
     0 2px 4px -2px hsl(var(--shadcn-foreground) / 0.1);
 }
 
-/* Core hardcodes --color-white for the stuck list-entry header (no variable to
-   theme), so this selector override is the only way to give it a solid fill. */
-.bpmn-io-shadcn-theme .bio-properties-panel-list-entry-header.sticky {
-  background-color: hsl(var(--shadcn-card));
-}
-
-.bpmn-io-shadcn-theme .bio-properties-panel-feelers-editor-container .bio-properties-panel-feelers-editor__open-popup-placeholder,
-.bpmn-io-shadcn-theme .bio-properties-panel-feel-editor-container .bio-properties-panel-feel-editor__open-popup-placeholder {
-  color: hsl(var(--shadcn-muted-foreground));
-}
-
 /*
  * Inline CodeMirror editors don't auto-centre a single line within the taller
  * shadcn control, and the core `.cm-content` padding that normalises them to a
@@ -445,12 +359,10 @@
 }
 
 .bpmn-io-shadcn-theme .bio-properties-panel-tooltip {
-  --tooltip-background-color: hsl(var(--shadcn-primary));
-  --tooltip-link: hsl(var(--shadcn-primary-foreground));
+  /* the code chip sits on the inverted surface, so it tints that surface
+     instead of taking the light `--bio-surface-subtle` default */
   --tooltip-code-background-color: hsl(var(--shadcn-primary) / 0.6);
   --tooltip-code-border-color: hsl(var(--shadcn-primary-foreground) / 0.2);
-
-  color: hsl(var(--shadcn-primary-foreground));
 }
 
 .bpmn-io-shadcn-theme .bio-properties-panel-tooltip-content {
@@ -465,13 +377,9 @@
 }
 
 .bpmn-io-shadcn-theme .bio-properties-panel-popup {
+  /* the popup body is the app background, a shade apart from the card the
+     header uses; the token default makes both the card */
   --popup-background-color: hsl(var(--shadcn-background));
-  --popup-header-background-color: hsl(var(--shadcn-card));
-  --popup-font-color: hsl(var(--shadcn-foreground));
-  --popup-title-color: hsl(var(--shadcn-foreground));
-
-  --feel-popup-close-background-color: hsl(var(--shadcn-primary));
-  --feel-popup-gutters-background-color: hsl(var(--shadcn-muted));
 
   border: 1px solid hsl(var(--shadcn-border));
   border-radius: calc(var(--shadcn-radius) - 2px);
@@ -490,7 +398,6 @@
 }
 
 .bpmn-io-shadcn-theme .bio-properties-panel-popup .bio-properties-panel-feel-popup__close-btn {
-  color: hsl(var(--shadcn-primary-foreground));
   border-radius: calc(var(--shadcn-radius) - 2px);
 }
 

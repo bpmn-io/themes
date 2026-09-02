@@ -589,7 +589,6 @@ describe('properties-panel', function() {
     expect(getComputedStyle(closedField.querySelector('.bio-properties-panel-input')).display)
       .to.equal('flex');
   });
-
 });
 
 function expectContainedInScenario(popup, scenario) {
