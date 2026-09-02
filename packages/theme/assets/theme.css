@@ -1,0 +1,165 @@
+/**
+ * The bpmn.io design tokens — the source of truth for the semantic layer.
+ *
+ * Two tiers: the raw palette (`--color-*`) and the semantic tokens (`--bio-*`).
+ * Libraries do not load this file. They copy the tokens they use into their own
+ * stylesheet, on `bio-theme-parent`, so each renders on its own; a theme rebinds
+ * the semantic tokens, and reaches a component variable only to deviate.
+ */
+.bio-theme-parent {
+
+  /* greys */
+  --color-grey-225-10-15: hsl(225, 10%, 15%);
+  --color-grey-225-10-35: hsl(225, 10%, 35%);
+  --color-grey-225-10-45: hsl(225, 10%, 45%);
+  --color-grey-225-10-55: hsl(225, 10%, 55%);
+  --color-grey-225-10-75: hsl(225, 10%, 75%);
+  --color-grey-225-10-80: hsl(225, 10%, 80%);
+  --color-grey-225-10-85: hsl(225, 10%, 85%);
+  --color-grey-225-10-90: hsl(225, 10%, 90%);
+  --color-grey-225-10-93: hsl(225, 10%, 93%);
+  --color-grey-225-10-95: hsl(225, 10%, 95%);
+  --color-grey-225-10-97: hsl(225, 10%, 97%);
+  --color-grey-0-0-22: hsl(0, 0%, 22%);
+  --color-grey-0-0-88: hsl(0, 0%, 88%);
+
+  /* blues */
+  --color-blue-205-100-35: hsl(205, 100%, 35%);
+  --color-blue-205-100-40: hsl(205, 100%, 40%);
+  --color-blue-205-100-45: hsl(205, 100%, 45%);
+  --color-blue-205-100-50: hsl(205, 100%, 50%);
+
+  /* name says 70, value is 75%; preserved verbatim, since correcting it would
+     change what diagram-js renders */
+  --color-blue-205-100-70: hsl(205, 100%, 75%);
+
+  --color-blue-205-100-80: hsl(205, 100%, 80%);
+  --color-blue-205-100-85: hsl(205, 100%, 85%);
+  --color-blue-205-100-95: hsl(205, 100%, 95%);
+  --color-blue-218-100-74: hsl(218, 100%, 74%);
+
+  --color-blue-219-99-53: hsl(219, 99%, 53%);
+
+  /* greens */
+  --color-green-150-86-44: hsl(150, 86%, 44%);
+
+  /* reds */
+  --color-red-360-100-35: hsl(360, 100%, 35%);
+  --color-red-360-100-40: hsl(360, 100%, 40%);
+  --color-red-360-100-45: hsl(360, 100%, 45%);
+  --color-red-360-100-92: hsl(360, 100%, 92%);
+  --color-red-360-100-95: hsl(360, 100%, 95%);
+  --color-red-360-100-97: hsl(360, 100%, 97%);
+
+  /* ambers */
+  --color-amber-39-100-33: hsl(39, 100%, 33%);
+  --color-amber-35-84-57: hsl(35, 84%, 57%);
+  --color-amber-35-84-62: hsl(35, 84%, 62%);
+  --color-amber-38-100-96: hsl(38, 100%, 96%);
+
+  /* neutrals */
+  --color-white: hsl(0, 0%, 100%);
+  --color-black: hsl(0, 0%, 0%);
+  --color-transparent: transparent;
+
+  /* alpha variants */
+  --color-blue-205-100-45-opacity-30: hsla(205, 100%, 45%, 30%);
+  --color-blue-205-100-50-opacity-15: hsla(205, 100%, 50%, 15%);
+  --color-blue-205-100-40-a35: hsla(205, 100%, 40%, 0.35);
+  /* name says 100 and 05, value is 99% at 0.5 alpha; preserved verbatim, since
+     correcting it would change what diagram-js renders */
+  --color-blue-219-100-53-05: hsla(219, 99%, 53%, 0.5);
+  --color-red-360-100-45-a35: hsla(360, 100%, 45%, 0.35);
+  --color-amber-35-84-62-a35: hsla(35, 84%, 62%, 0.35);
+  --color-black-opacity-05: hsla(0, 0%, 0%, 5%);
+  --color-black-opacity-10: hsla(0, 0%, 0%, 10%);
+  --color-black-opacity-20: hsla(0, 0%, 0%, 20%);
+  --color-black-opacity-30: hsla(0, 0%, 0%, 30%);
+
+  /**
+   * Semantic tokens — the theming contract. Defaults reproduce the current
+   * bpmn.io look, so adopting the layer is not a visual change.
+   */
+
+  /* surfaces */
+  --bio-surface: var(--color-white);
+  --bio-surface-overlay: var(--color-white);
+  --bio-surface-subtle: var(--color-grey-225-10-97);
+  --bio-surface-medium: var(--color-grey-225-10-95);
+  --bio-surface-strong: var(--color-grey-225-10-90);
+
+  /* tooltips contrast with the page rather than sit on it, so they invert */
+  --bio-surface-inverted: var(--color-grey-0-0-22);
+  --bio-surface-inverted-subtle: var(--color-grey-225-10-35);
+
+  /* content */
+  --bio-text: var(--color-grey-225-10-15);
+  --bio-text-subtle: var(--color-grey-225-10-35);
+  --bio-text-subtlest: var(--color-grey-225-10-55);
+  --bio-text-on-primary: var(--color-white);
+  --bio-text-on-inverted: var(--color-white);
+
+  /* lines */
+  --bio-border: var(--color-grey-225-10-75);
+  --bio-border-subtle: var(--color-grey-225-10-85);
+  --bio-border-disabled: var(--color-grey-225-10-90);
+
+  /* form-control borders */
+  --bio-border-input: var(--color-grey-225-10-75);
+
+  /* primary action */
+  --bio-primary: var(--color-blue-205-100-40);
+  --bio-primary-hover: var(--color-blue-205-100-35);
+  --bio-primary-surface: var(--color-blue-205-100-95);
+
+  /* stronger than `--bio-primary-surface`, to stay visible under selected text */
+  --bio-primary-surface-strong: var(--color-blue-205-100-85);
+
+  /* danger */
+  --bio-danger: var(--color-red-360-100-45);
+  --bio-danger-hover: var(--color-red-360-100-40);
+  --bio-danger-text: var(--color-red-360-100-35);
+  --bio-danger-surface: var(--color-red-360-100-92);
+  --bio-danger-surface-subtle: var(--color-red-360-100-97);
+
+  /* warning */
+  --bio-warning: var(--color-amber-35-84-62);
+  --bio-warning-hover: var(--color-amber-35-84-57);
+  --bio-warning-text: var(--color-amber-39-100-33);
+  --bio-warning-surface: var(--color-amber-38-100-96);
+
+  /* success */
+  --bio-success: var(--color-green-150-86-44);
+
+  /* informational — links */
+  --bio-info: var(--color-blue-205-100-40);
+  --bio-info-hover: var(--color-blue-205-100-35);
+  --bio-info-text: var(--color-blue-205-100-35);
+  --bio-info-surface: var(--color-blue-205-100-95);
+
+  /* a link on `--bio-surface-inverted` */
+  --bio-info-on-inverted: var(--color-blue-218-100-74);
+
+  /* a selected menu entry, which the default look marks no louder than hover */
+  --bio-selected-surface: var(--bio-surface-medium);
+  --bio-selected-text: var(--bio-text);
+
+  /* focus */
+  --bio-focus: var(--color-blue-205-100-40);
+  --bio-focus-ring: var(--color-blue-205-100-40-a35);
+  --bio-focus-ring-danger: var(--color-red-360-100-45-a35);
+  --bio-focus-ring-warning: var(--color-amber-35-84-62-a35);
+
+  /* a wash behind a focused control, where the design fills rather than rings */
+  --bio-focus-surface: var(--color-blue-205-100-95);
+
+  /* elevation */
+  --bio-shadow: var(--color-black-opacity-30);
+  --bio-shadow-subtle: var(--color-black-opacity-10);
+
+  /* corners — fully-round shapes (dots, toggle tracks) are geometry, not scale,
+     and stay off this ladder */
+  --bio-radius-sm: 2px;
+  --bio-radius-md: 3px;
+  --bio-radius-lg: 4px;
+}
