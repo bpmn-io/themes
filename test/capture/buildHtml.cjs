@@ -10,7 +10,7 @@ const ROOT = path.resolve(__dirname, '..', '..');
  */
 const STYLESHEETS = [
   'node_modules/@camunda/design-system/dist/styles.css',
-  'node_modules/bpmn-js/dist/assets/diagram-js.css',
+  'node_modules/diagram-js/assets/diagram-js.css',
   'node_modules/bpmn-js/dist/assets/bpmn-js.css',
   'node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css',
   'node_modules/@bpmn-io/properties-panel/dist/assets/properties-panel.css',
@@ -31,7 +31,8 @@ const STYLESHEETS = [
 const THEMES = [
   { name: 'original', label: 'Original', shadcn: false, dark: false },
   { name: 'shadcn-light', label: 'shadcn — light', shadcn: true, dark: false },
-  { name: 'shadcn-dark', label: 'shadcn — dark', shadcn: true, dark: true }
+  { name: 'shadcn-dark', label: 'shadcn — dark', shadcn: true, dark: true },
+  { name: 'c4', label: 'C4', shadcn: true, dark: false, c4: true }
 ];
 
 const PANEL_WIDTH = 360;
@@ -64,14 +65,25 @@ function cell(theme, capture) {
     rootClasses.push('dark');
   }
 
+  // c4.css only applies beneath `.c4-ui`, so it rides on the figure that wraps
+  // the theme root — mirroring how the live playground scopes it
+  const figureClasses = [ 'capture-cell', theme.dark ? 'dark' : 'light' ];
+
+  if (theme.c4) {
+    figureClasses.push('c4-ui');
+  }
+
   // diagram scenarios ship their canvas surfaces instead of a panel
   if (capture.diagram) {
     rootClasses.push('capture-cell-canvas');
 
-    return `<figure class="capture-cell ${theme.dark ? 'dark' : 'light'}">
+    // the backdrop carries both container classes because that is where each
+    // library declares its variables (`.djs-parent`, `.bjs-container`), and
+    // `bjs-breadcrumbs-shown` because the trail is display:none without it
+    return `<figure class="${figureClasses.join(' ')}">
     <figcaption>${theme.label}</figcaption>
     <div class="${rootClasses.join(' ')}">
-      <div class="djs-container djs-parent capture-surfaces">${capture.diagram.join('\n')}</div>
+      <div class="djs-container djs-parent bjs-container bjs-breadcrumbs-shown bpmn-io-theme capture-surfaces">${capture.diagram.join('\n')}</div>
     </div>
   </figure>`;
   }
@@ -81,10 +93,10 @@ function cell(theme, capture) {
   rootClasses.push('capture-cell-panel');
 
   const overlayHtml = overlays && overlays.length
-    ? `<div class="capture-overlays bio-properties-panel">${overlays.join('\n')}</div>`
+    ? `<div class="capture-overlays bio-properties-panel bpmn-io-theme">${overlays.join('\n')}</div>`
     : '';
 
-  return `<figure class="capture-cell ${theme.dark ? 'dark' : 'light'}">
+  return `<figure class="${figureClasses.join(' ')}">
     <figcaption>${theme.label}</figcaption>
     <div class="${rootClasses.join(' ')}">
       <div class="playground-properties" style="width: ${PANEL_WIDTH}px;">${panel}</div>
@@ -168,7 +180,9 @@ ${styles()}
   .capture-surfaces .djs-palette,
   .capture-surfaces .djs-search-container,
   .capture-surfaces .djs-popup-parent,
-  .capture-surfaces .djs-popup {
+  .capture-surfaces .djs-popup,
+  .capture-surfaces .bjs-breadcrumbs,
+  .capture-surfaces .bjs-drilldown {
     position: static !important;
     inset: auto !important;
     top: auto !important;

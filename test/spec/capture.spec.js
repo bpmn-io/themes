@@ -28,6 +28,33 @@ after(function() {
   // unstyled, uncoloured block. Carry the CM stylesheets along with the markup.
   const CM_STYLE_RE = /\.cm-|\u037c/;
 
+  /*
+   * Canvas scenarios compare diagram surfaces rather than the properties panel.
+   * Each names the surfaces it exercises, so a scenario ships the one thing it
+   * is about instead of whatever happens to be mounted.
+   */
+  const CANVAS_SURFACES = {
+    'diagram-palette': [ '.djs-palette' ],
+    'diagram-search': [ '.djs-search-container.open', '.djs-palette' ],
+    'diagram-replace': [ '.djs-popup-parent' ],
+    'diagram-create': [ '.djs-popup-parent' ],
+    'diagram-append': [ '.djs-popup-parent' ],
+    'bpmn-drilldown': [ '.bjs-drilldown' ],
+    'bpmn-breadcrumbs': [ '.bjs-breadcrumbs' ]
+  };
+
+  /*
+   * The search pad and the popup menus all close on any outside click, which
+   * mounting and interacting with later scenarios triggers, so re-run the
+   * interaction here to capture them in their open state.
+   */
+  const REOPEN = {
+    'diagram-search': (setup) => setup.search('Review'),
+    'diagram-replace': (setup) => setup.replace(),
+    'diagram-create': (setup) => setup.create(),
+    'diagram-append': (setup) => setup.append()
+  };
+
   const runtimeStyles = Array.from(document.querySelectorAll('style'))
     .map((el) => el.textContent || '')
     .filter((css) => CM_STYLE_RE.test(css));
@@ -66,38 +93,27 @@ after(function() {
       return;
     }
 
-    // Diagram scenarios compare the canvas surfaces (palette, search pad, popup
-    // menu) rather than the properties panel. They all mount inside the themed
-    // `.djs-parent` canvas container, so capture whichever are live and let the
-    // exporter re-home them onto a canvas backdrop.
-    if (name.startsWith('diagram')) {
+    // Canvas scenarios compare the canvas surfaces (palette, search pad, popup
+    // menu, drilldown) rather than the properties panel. They all mount inside
+    // the themed canvas container, so capture the ones this scenario declares
+    // and let the exporter re-home them onto a canvas backdrop.
+    const surfaceSelectors = CANVAS_SURFACES[name];
+
+    if (surfaceSelectors) {
       const canvas = root.querySelector('.playground-canvas');
 
-      // The search pad closes on any outside click, which mounting/interacting
-      // with later scenarios triggers, so re-open and re-run its query here to
-      // capture it in its searched state. Popups persist, so they need no help.
       const playground = (window.__playgrounds__ || {})[name];
+      const reopen = REOPEN[name];
 
-      if (playground && name === 'diagram-search') {
-        playground.setup.search('Review');
+      if (playground && reopen) {
+        reopen(playground.setup);
       }
 
       const surfaces = [];
 
-      // the search pad opens centrally above the canvas, so capture it first
-      const search = canvas.querySelector('.djs-search-container.open');
-
-      if (search) {
-        surfaces.push(search);
-      }
-
-      const palette = canvas.querySelector('.djs-palette');
-
-      if (palette) {
-        surfaces.push(palette);
-      }
-
-      canvas.querySelectorAll('.djs-popup-parent').forEach((popup) => surfaces.push(popup));
+      surfaceSelectors.forEach((selector) => {
+        canvas.querySelectorAll(selector).forEach((el) => surfaces.push(el));
+      });
 
       if (!surfaces.length) {
         return;
