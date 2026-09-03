@@ -35,7 +35,6 @@
   /* a ghost button here, so it needs a readable foreground, not white-on-primary */
   --add-entry-hover-fill-color: hsl(var(--shadcn-foreground));
   --add-entry-hover-background-color: hsl(var(--shadcn-accent));
-  --add-entry-label-color: hsl(var(--shadcn-foreground));
   --arrow-hover-background-color: hsl(var(--shadcn-accent));
 
   --list-badge-color: hsl(var(--shadcn-background));
@@ -170,6 +169,18 @@
   color: var(--text-base-color);
   fill: currentColor;
   background-color: var(--arrow-hover-background-color);
+}
+
+/* the label is part of the ghost button, so it takes the same colours as the
+   glyph rather than the accent fill the core tokens assume */
+.bpmn-io-shadcn-theme .bio-properties-panel-group-header.empty .bio-properties-panel-add-entry-label,
+.bpmn-io-shadcn-theme .bio-properties-panel-list-entry.empty .bio-properties-panel-add-entry-label {
+  color: var(--add-entry-fill-color);
+}
+
+.bpmn-io-shadcn-theme .bio-properties-panel-add-entry:hover .bio-properties-panel-add-entry-label,
+.bpmn-io-shadcn-theme .bio-properties-panel-add-entry:focus-visible .bio-properties-panel-add-entry-label {
+  color: var(--text-base-color);
 }
 
 .bpmn-io-shadcn-theme .bio-properties-panel-group-header-button:focus-visible,

@@ -12,8 +12,8 @@
   --shadcn-radius: var(--radius);
 }
 
-.c4-ui .bpmn-io-shadcn-theme .bio-theme,
-.c4-ui .bpmn-io-shadcn-theme.bio-theme {
+.c4-ui .bpmn-io-shadcn-theme .bio-theme-parent,
+.c4-ui .bpmn-io-shadcn-theme.bio-theme-parent {
   --bio-surface: var(--background);
   --bio-surface-overlay: var(--popover);
   --bio-surface-medium: var(--neutral-background-medium);
@@ -26,7 +26,7 @@
   --bio-text: var(--foreground);
   --bio-text-subtle: var(--neutral-foreground-subtle);
   --bio-text-subtlest: var(--neutral-foreground-subtle);
-  --bio-text-on-accent: var(--primary-action-foreground);
+  --bio-text-on-primary: var(--primary-action-foreground);
   --bio-text-on-inverted: var(--primary-action-foreground);
 
   --bio-border: var(--border);
@@ -34,17 +34,29 @@
   --bio-border-disabled: var(--border);
   --bio-border-input: var(--input);
 
-  --bio-accent: var(--primary-action-default);
-  --bio-accent-hover: var(--primary-action-hover);
-  --bio-accent-strong: var(--ring);
-  --bio-accent-surface: var(--input-background);
-  --bio-accent-surface-strong: color-mix(in srgb, var(--primary-action-default) 15%, transparent);
-  --bio-accent-on-inverted: var(--primary-action-foreground);
+  --bio-primary: var(--primary-action-default);
+  --bio-primary-hover: var(--primary-action-hover);
+  --bio-primary-surface: var(--input-background);
+  --bio-primary-surface-strong: color-mix(in srgb, var(--primary-action-default) 15%, transparent);
+
+  --bio-info: var(--info-action-default);
+  --bio-info-hover: var(--info-action-hover);
+  --bio-info-text: var(--info-foreground-strong);
+  --bio-info-surface: var(--info-background-strong);
+  --bio-info-on-inverted: var(--primary-action-foreground);
 
   --bio-danger: var(--danger-action-default);
   --bio-danger-hover: var(--danger-action-default);
+  --bio-danger-text: var(--danger-foreground-strong);
   --bio-danger-surface: color-mix(in srgb, var(--danger-action-default) 10%, transparent);
   --bio-danger-surface-subtle: var(--input-background);
+
+  --bio-warning: var(--warning-action-default);
+  --bio-warning-hover: var(--warning-action-hover);
+  --bio-warning-text: var(--warning-foreground-strong);
+  --bio-warning-surface: var(--warning-background-strong);
+
+  --bio-success: var(--success-action-default);
 
   --bio-focus: var(--ring);
   --bio-focus-surface: var(--input-background);
@@ -59,10 +71,10 @@
 }
 
 /* the design system doubles the ring alpha in dark mode */
-.dark .c4-ui .bpmn-io-shadcn-theme .bio-theme,
-.c4-ui .dark .bpmn-io-shadcn-theme .bio-theme,
-.c4-ui .bpmn-io-shadcn-theme.dark .bio-theme,
-.c4-ui .dark .bpmn-io-shadcn-theme.bio-theme {
+.dark .c4-ui .bpmn-io-shadcn-theme .bio-theme-parent,
+.c4-ui .dark .bpmn-io-shadcn-theme .bio-theme-parent,
+.c4-ui .bpmn-io-shadcn-theme.dark .bio-theme-parent,
+.c4-ui .dark .bpmn-io-shadcn-theme.bio-theme-parent {
   --bio-focus-ring: color-mix(in oklab, var(--ring) 40%, transparent);
   --bio-focus-ring-danger: color-mix(in oklab, var(--danger-action-default) 40%, transparent);
 }
@@ -76,10 +88,8 @@
   --sticky-group-background-color: var(--neutral-background-subtle);
   --open-group-header-background-color: transparent;
 
-  /* the add (+) control is C4's filled primary action, not the shadcn ghost */
   --add-entry-hover-fill-color: var(--primary-action-foreground);
   --add-entry-hover-background-color: var(--primary-action-default);
-  --add-entry-label-color: var(--primary-action-foreground);
   --arrow-hover-background-color: var(--neutral-background-medium);
 
   --secondary-action-background-color: var(--neutral-background-medium);

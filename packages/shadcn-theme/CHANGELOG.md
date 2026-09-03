@@ -7,6 +7,7 @@ All notable changes to [@bpmn-io/shadcn-theme](https://github.com/bpmn-io/themes
 ___Note:__ Yet to be released changes appear here._
 
 * `FEAT`: source colors from [`@bpmn-io/theme`](https://github.com/bpmn-io/themes/tree/main/packages/theme) ([#7](https://github.com/bpmn-io/shadcn-theme/pull/7))
+* `FIX`: keep the add entry label readable on the ghost button ([#7](https://github.com/bpmn-io/shadcn-theme/pull/7))
 
 ## 0.0.1
 
