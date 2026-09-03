@@ -1,5 +1,5 @@
 {
-  "name": "bpmn-io-theme-workspace",
+  "name": "bpmn-io-themes",
   "private": true,
   "description": "Monorepo for the bpmn.io base theme and the themes built on top of it",
   "workspaces": [
@@ -7,7 +7,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bpmn-io/shadcn-theme.git"
+    "url": "git+https://github.com/bpmn-io/themes.git"
   },
   "license": "MIT",
   "author": "bpmn.io Contributors",
