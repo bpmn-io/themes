@@ -6,16 +6,19 @@ A portable [shadcn/ui](https://ui.shadcn.com/) theme for bpmn.io, with an
 optional [Camunda Design System](https://github.com/camunda/design-system) (C4)
 override.
 
+It works by re-pointing the [`@bpmn-io/theme`](../theme) semantic tokens at
+shadcn values, so one import themes every bpmn.io component at once.
+
 ## Usage
 
-Apply `bpmn-io-shadcn-theme` to a common ancestor, load the base component CSS,
+Apply `bpmn-io-shadcn-theme` to your application root, load the base component CSS,
 then the shared tokens and the adapter for each component in use:
 
 ```html
-<div class="bpmn-io-shadcn-theme">
+<body class="bpmn-io-shadcn-theme">
   <div id="canvas"></div>
   <div id="properties-panel"></div>
-</div>
+</body>
 ```
 
 ```js
