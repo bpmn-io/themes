@@ -91,28 +91,28 @@ describe('properties-panel', function() {
     originalButton.click();
 
     // then
-    expect([ ...playground.root.classList ]).to.not.include('bpmn-io-shadcn-theme');
+    expect([ ...document.body.classList ]).to.not.include('bpmn-io-shadcn-theme');
     expect(new URLSearchParams(window.location.search).get('theme')).to.equal('original');
 
     // when
     shadcnButton.click();
 
     // then
-    expect([ ...playground.root.classList ]).to.include('bpmn-io-shadcn-theme');
+    expect([ ...document.body.classList ]).to.include('bpmn-io-shadcn-theme');
     expect(new URLSearchParams(window.location.search).get('theme')).to.equal('shadcn');
 
     // when
     c4Button.click();
 
     // then
-    expect([ ...playground.root.classList ]).to.include('bpmn-io-shadcn-theme');
-    expect([ ...playground.root.parentElement.classList ]).to.include('c4-ui');
+    expect([ ...document.body.classList ]).to.include('bpmn-io-shadcn-theme');
+    expect([ ...document.documentElement.classList ]).to.include('c4-ui');
     expect(new URLSearchParams(window.location.search).get('theme')).to.equal('c4');
 
     window.history.pushState(null, '', '?theme=original');
     window.dispatchEvent(new PopStateEvent('popstate'));
 
-    expect([ ...playground.root.classList ]).to.not.include('bpmn-io-shadcn-theme');
+    expect([ ...document.body.classList ]).to.not.include('bpmn-io-shadcn-theme');
 
     shadcnButton.click();
   });
@@ -251,7 +251,7 @@ describe('properties-panel', function() {
     // then
     expect(tooltip).to.exist;
     expect(tooltip.textContent).to.contain('Specify which job workers');
-    expect(tooltip.closest('.bpmn-io-shadcn-theme')).to.equal(playground.root);
+    expect(tooltip.closest('.bpmn-io-shadcn-theme')).to.equal(document.body);
   });
 
   it('should render an open themed dropdown', async function() {
@@ -474,19 +474,19 @@ describe('properties-panel', function() {
     expect(entry.querySelector('.bio-properties-panel-error')).to.exist;
   });
 
-  it('should mount the text popup inside the stock theme root', async function() {
+  it('should theme the text popup', async function() {
     playground = await createPlayground(this, 'popup');
 
     // when
     playground.setup['text-popup']();
     await playground.setup.settle();
 
-    const popup = playground.root.querySelector('.bio-properties-panel-popup');
+    const popup = document.querySelector('.bio-properties-panel-popup');
     const textarea = popup.querySelector('.bio-properties-panel-input');
 
     // then
     expect(popup).to.exist;
-    expect(popup.closest('.bpmn-io-shadcn-theme')).to.equal(playground.root);
+    expect(popup.closest('.bpmn-io-shadcn-theme')).to.equal(document.body);
     expect(popup.querySelector('.bio-properties-panel-popup__close')).to.exist;
 
     // the header carries a divider so it stays distinct from the editor content
@@ -507,8 +507,6 @@ describe('properties-panel', function() {
     // overflow its body and spawn a spurious scrollbar
     expect(getComputedStyle(textarea).boxSizing).to.equal('border-box');
     expect(textarea.scrollHeight).to.be.at.most(textarea.clientHeight + 1);
-
-    expectContainedInScenario(popup, playground.root);
   });
 
   // skipped until diagram-js, properties-panel and bpmn-js ship their token
@@ -547,7 +545,7 @@ describe('properties-panel', function() {
     playground.setup['feel-popup']();
     await playground.setup.settle();
 
-    const popup = playground.root.querySelector('.bio-properties-panel-feel-popup');
+    const popup = document.querySelector('.bio-properties-panel-feel-popup');
     const container = popup.querySelector('.bio-properties-panel-feel-editor-container');
 
     // the FEEL editor reuses .bio-properties-panel-input as its wrapper; inside
@@ -563,8 +561,6 @@ describe('properties-panel', function() {
     expect(getComputedStyle(container).borderTopWidth).to.equal('0px');
     expect(getComputedStyle(editorInput).borderTopLeftRadius).to.equal('0px');
     expect(getComputedStyle(editorInput).borderTopRightRadius).to.equal('0px');
-
-    expectContainedInScenario(popup, playground.root);
   });
 
   it('should hide the inline FEEL editor while its popup is open', async function() {
@@ -599,16 +595,6 @@ describe('properties-panel', function() {
       .to.equal('flex');
   });
 });
-
-function expectContainedInScenario(popup, scenario) {
-  const popupBounds = popup.getBoundingClientRect();
-  const scenarioBounds = scenario.getBoundingClientRect();
-
-  expect(popupBounds.left).to.be.at.least(scenarioBounds.left);
-  expect(popupBounds.right).to.be.at.most(scenarioBounds.right);
-  expect(popupBounds.top).to.be.at.least(scenarioBounds.top);
-  expect(popupBounds.bottom).to.be.at.most(scenarioBounds.bottom);
-}
 
 function expectVerticallyCentered(inner, outer, tolerance = 3) {
   const innerBounds = inner.getBoundingClientRect();

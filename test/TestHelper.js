@@ -94,6 +94,10 @@ export function shouldKeepPlayground() {
   return Boolean(window.__env__ && window.__env__.SINGLE_START);
 }
 
+function isCaptureGrid() {
+  return (window.__env__ && window.__env__.SINGLE_START) === 'all';
+}
+
 export async function createPlayground(context, name, options = {}) {
   insertStyles();
 
@@ -115,7 +119,7 @@ export async function createPlayground(context, name, options = {}) {
   `;
 
   TestContainer.get(context).appendChild(root);
-  applyTheme(root);
+  applyTheme();
 
   const canvasContainer = root.querySelector('.playground-canvas');
   const propertiesContainer = root.querySelector('.playground-properties');
@@ -125,8 +129,10 @@ export async function createPlayground(context, name, options = {}) {
     debounceInput: false,
     propertiesPanel: {
       parent: propertiesContainer,
-      feelPopupContainer: root,
-      feelTooltipContainer: root,
+
+      // the capture grid mounts every scenario on one page, so a body-level
+      // popup could not be told apart from another scenario's
+      ...(isCaptureGrid() ? { feelPopupContainer: root } : {}),
       tooltip: ZeebeTooltipProvider
     },
     popupMenu: {
@@ -376,7 +382,10 @@ function insertStyles() {
   insertStyle('bpmn-js.css', bpmnJsCss);
   insertStyle('bpmn-font.css', bpmnFontCss);
   insertStyle('properties-panel.css', propertiesPanelCss);
-  insertStyle('bpmn-io-theme.css', baseThemeCss);
+
+  // the libraries copy the tokens into their own stylesheets once released;
+  // until then the installed copies carry none, so the playground supplies them
+  insertStyle('bio-theme.css', baseThemeCss);
   insertStyle('element-templates.css', elementTemplatesCss);
   insertStyle('popup-menu.css', popupMenuCss);
   insertStyle('element-template-chooser.css', elementTemplateChooserCss);
@@ -433,7 +442,7 @@ function setTheme(theme, persist = true) {
 
   activeTheme = theme;
 
-  document.querySelectorAll('.playground').forEach(applyTheme);
+  applyTheme();
   updateThemeSwitcher(document.querySelector('.theme-switcher'));
 
   if (persist) {
@@ -441,9 +450,11 @@ function setTheme(theme, persist = true) {
   }
 }
 
-function applyTheme(root) {
-  root.classList.toggle('bpmn-io-shadcn-theme', activeTheme !== 'original');
-  root.parentElement.classList.toggle('c4-ui', activeTheme === 'c4');
+// consumers apply a theme at the app root, which is what puts portaled UI
+// (the FEEL popup, tooltips) in scope
+function applyTheme() {
+  document.body.classList.toggle('bpmn-io-shadcn-theme', activeTheme !== 'original');
+  document.documentElement.classList.toggle('c4-ui', activeTheme === 'c4');
 }
 
 function updateThemeSwitcher(switcher) {
