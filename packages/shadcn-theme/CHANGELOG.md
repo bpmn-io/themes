@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to [@bpmn-io/shadcn-theme](https://github.com/bpmn-io/shadcn-theme) are documented here. We use [semantic versioning](http://semver.org/) for releases.
+All notable changes to [@bpmn-io/shadcn-theme](https://github.com/bpmn-io/themes) are documented here. We use [semantic versioning](http://semver.org/) for releases.
 
 ## Unreleased
 

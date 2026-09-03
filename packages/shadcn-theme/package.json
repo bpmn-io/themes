@@ -17,13 +17,13 @@
     "bpmn.io",
     "theme"
   ],
-  "homepage": "https://github.com/bpmn-io/shadcn-theme#readme",
+  "homepage": "https://github.com/bpmn-io/themes#readme",
   "bugs": {
-    "url": "https://github.com/bpmn-io/shadcn-theme/issues"
+    "url": "https://github.com/bpmn-io/themes/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bpmn-io/shadcn-theme.git",
+    "url": "git+https://github.com/bpmn-io/themes.git",
     "directory": "packages/shadcn-theme"
   },
   "license": "MIT",
