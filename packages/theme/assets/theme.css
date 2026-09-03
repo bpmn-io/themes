@@ -1,7 +1,9 @@
 /**
- * The bpmn.io design tokens — the source of truth for the semantic layer.
+ * The bpmn.io design tokens.
  *
- * Two tiers: the raw palette (`--color-*`) and the semantic tokens (`--bio-*`).
+ * The semantic tokens (`--bio-*`) are the contract: a theme overrides them, a
+ * library reads them.
+ *
  * Libraries do not load this file. They copy the tokens they use into their own
  * stylesheet, on `bio-theme-parent`, so each renders on its own; a theme rebinds
  * the semantic tokens, and reaches a component variable only to deviate.
