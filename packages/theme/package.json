@@ -2,6 +2,9 @@
   "name": "@bpmn-io/theme",
   "version": "0.0.0",
   "description": "Design tokens and the default theme for bpmn.io",
+  "scripts": {
+    "all": "npm --prefix ../.. run all"
+  },
   "files": [
     "assets"
   ],

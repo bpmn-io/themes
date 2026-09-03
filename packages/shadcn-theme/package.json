@@ -2,6 +2,9 @@
   "name": "@bpmn-io/shadcn-theme",
   "version": "0.0.1",
   "description": "A shadcn theme for bpmn.io",
+  "scripts": {
+    "all": "npm --prefix ../.. run all"
+  },
   "files": [
     "assets"
   ],
