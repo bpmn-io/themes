@@ -28,8 +28,11 @@ describe('diagram-js playground', function() {
 
     // then
     expect(palette).to.exist;
-    expect(getComputedStyle(palette).getPropertyValue('--palette-background-color'))
-      .to.equal('hsl(0 0% 100%)');
+
+    const paletteStyle = getComputedStyle(palette);
+
+    expect(paletteStyle.getPropertyValue('--palette-background-color'))
+      .to.equal(paletteStyle.getPropertyValue('--background'));
 
     // selection keeps the conventional editor blue, distinct from the black
     // element strokes it wraps, rather than the dark foreground/ring; asserted

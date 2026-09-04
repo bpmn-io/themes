@@ -1,27 +1,31 @@
-# bpmn.io Shadcn Theme
+# @bpmn-io/shadcn-theme
 
 [![CI](https://github.com/bpmn-io/themes/actions/workflows/CI.yml/badge.svg)](https://github.com/bpmn-io/themes/actions/workflows/CI.yml)
 
-A portable [shadcn/ui](https://ui.shadcn.com/) theme for bpmn.io, with an
-optional [Camunda Design System](https://github.com/camunda/design-system) (C4)
-override.
+A [shadcn/ui](https://ui.shadcn.com/) theme for bpmn.io, adapted to the
+[Camunda Design System](https://github.com/camunda/design-system) (C4) — which
+is itself built on shadcn. Structure (radii, spacing, control heights, ghost
+buttons) is shadcn-derived; colour comes from C4 tokens.
 
-It works by re-pointing the [`@bpmn-io/theme`](../theme) semantic tokens at
-shadcn values, so one import themes every bpmn.io component at once.
+It works by re-pointing the [`@bpmn-io/theme`](../theme) semantic tokens at C4
+tokens, so one import themes every bpmn.io component at once.
 
 ## Usage
 
-Apply `bpmn-io-shadcn-theme` to your application root, load the base component CSS,
-then the shared tokens and the adapter for each component in use:
+Put `.c4-ui` on your application root (it carries the design system's tokens),
+load the base component CSS, then the shared tokens and the adapter for each
+component in use. The theme is scoped to `.c4-ui`, so importing the stylesheet
+is the only opt-in:
 
 ```html
-<body class="bpmn-io-shadcn-theme">
+<body class="c4-ui">
   <div id="canvas"></div>
   <div id="properties-panel"></div>
 </body>
 ```
 
 ```js
+import '@camunda/design-system/styles.css';
 import '@bpmn-io/properties-panel/dist/assets/properties-panel.css';
 import '@bpmn-io/shadcn-theme/assets/tokens.css';
 import '@bpmn-io/shadcn-theme/assets/properties-panel.css';
@@ -39,29 +43,8 @@ import '@bpmn-io/shadcn-theme/assets/tokens.css';
 import '@bpmn-io/shadcn-theme/assets/diagram.css';
 ```
 
-Add `dark` to the theme root (or any ancestor) for dark mode, and override the
-`--shadcn-*` properties to match your shadcn configuration:
-
-```css
-.bpmn-io-shadcn-theme {
-  --shadcn-primary: 221.2 83.2% 53.3%;
-  --shadcn-radius: 0.75rem;
-}
-```
-
-### Camunda Design System (C4) override
-
-C4 exposes its own scoped semantic tokens. Render inside `C4Provider` and import
-`c4.css` after the adapter; it only applies beneath `.c4-ui`, leaving stock
-shadcn consumers unaffected:
-
-```js
-import '@camunda/design-system/styles.css';
-import '@bpmn-io/shadcn-theme/assets/tokens.css';
-import '@bpmn-io/shadcn-theme/assets/properties-panel.css';
-import '@bpmn-io/shadcn-theme/assets/diagram.css';
-import '@bpmn-io/shadcn-theme/assets/c4.css';
-```
+Dark mode follows the design system's own `dark` class — the theme carries no
+palette of its own, so it inherits whatever C4 resolves to.
 
 ## Build and Run
 

@@ -1,5 +1,6 @@
 import {
   CheckboxEntry,
+  CollapsibleEntry,
   DropdownButton,
   ListEntry,
   SelectEntry,
@@ -83,6 +84,10 @@ ThemeControlsProvider.prototype.getGroups = function() {
           {
             id: 'theme-tooltip',
             component: Tooltip
+          },
+          {
+            id: 'theme-link',
+            component: LinkText
           },
           {
             id: 'theme-list',
@@ -172,10 +177,30 @@ function Tooltip() {
     'data-entry-id': 'theme-tooltip'
   }, h(TooltipEntry, {
     forId: 'theme-tooltip',
-    value: 'Themed tooltip content.'
+    value: h('span', null, 'Themed tooltip content. ', h('a', {
+      href: '#',
+      onClick: (event) => event.preventDefault()
+    }, 'Learn more.'))
   }, h('span', {
     'data-theme-tooltip': true
   }, 'Tooltip content')));
+}
+
+/* the link on a normal surface; the tooltip above puts one on an inverted
+   surface, and the two take different tokens */
+function LinkText(props) {
+  return TextFieldEntry({
+    ...props,
+    id: 'theme-link',
+    label: 'Described value',
+    debounce: immediate,
+    getValue: () => 'Example value',
+    setValue: noOp,
+    description: h('span', null, 'Supporting copy with a ', h('a', {
+      href: '#',
+      onClick: (event) => event.preventDefault()
+    }, 'documentation link'), '.')
+  });
 }
 
 function List(props) {
@@ -195,16 +220,27 @@ function ListItem(props) {
   const {
     id,
     index,
-    item
+    item,
+    open
   } = props;
 
-  return TextFieldEntry({
+  return CollapsibleEntry({
     ...props,
     id: `${id}-${index}`,
     label: item.label,
-    debounce: immediate,
-    getValue: () => item.value,
-    setValue: noOp
+
+    // keep one item expanded, so the nested entry styling is on screen
+    open: open || index === 0,
+    entries: [
+      {
+        id: `${id}-${index}-value`,
+        component: TextFieldEntry,
+        label: 'Value',
+        debounce: immediate,
+        getValue: () => item.value,
+        setValue: noOp
+      }
+    ]
   });
 }
 
@@ -213,6 +249,9 @@ function Actions() {
     class: 'bio-properties-panel-entry',
     'data-entry-id': 'theme-actions'
   }, h(DropdownButton, {
+
+    // the wrapper is what element templates style the trigger through
+    class: 'bio-properties-panel-applied-template-button',
     menuItems: [
       {
         entry: 'First action',

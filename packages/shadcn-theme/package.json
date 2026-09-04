@@ -1,7 +1,7 @@
 {
   "name": "@bpmn-io/shadcn-theme",
   "version": "0.0.1",
-  "description": "A shadcn theme for bpmn.io",
+  "description": "A shadcn/ui theme for bpmn.io, adapted to the Camunda Design System",
   "scripts": {
     "all": "npm --prefix ../.. run all"
   },
@@ -17,6 +17,7 @@
   },
   "keywords": [
     "shadcn",
+    "camunda",
     "bpmn.io",
     "theme"
   ],

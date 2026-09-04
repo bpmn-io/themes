@@ -76,7 +76,7 @@ describe('execution listeners', function() {
     expect(parseFloat(sideLine.width)).to.be.greaterThan(0);
   });
 
-  it('should paint the nested list dot in the side-line colour', async function() {
+  it('should distinguish the nested list dot from its side line', async function() {
     const scenario = await createExecutionListeners(this, 'execution-listeners');
     playground = scenario.playground;
 
@@ -88,10 +88,10 @@ describe('execution listeners', function() {
     const dotColor = getComputedStyle(listEntry, '::before').backgroundColor;
     const sideLineColor = getComputedStyle(entries, '::before').backgroundColor;
 
-    // the original paints the dot and its side line with a single grey; matching
-    // them keeps the line from looking like it cuts through a mismatched dot
+    // the dot reads as a marker on the lighter side line rather than a
+    // continuation of it, so the two are deliberately distinct
     expect(dotColor).to.not.equal('rgba(0, 0, 0, 0)');
-    expect(dotColor).to.equal(sideLineColor);
+    expect(sideLineColor).to.not.equal(dotColor);
   });
 
   it('should keep listener titles at a consistent weight, separating open state structurally', async function() {

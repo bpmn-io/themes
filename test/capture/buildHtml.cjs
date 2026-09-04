@@ -21,7 +21,6 @@ const STYLESHEETS = [
   'packages/shadcn-theme/assets/tokens.css',
   'packages/shadcn-theme/assets/properties-panel.css',
   'packages/shadcn-theme/assets/diagram.css',
-  'packages/shadcn-theme/assets/c4.css',
   'test/playground.css'
 ];
 
@@ -29,10 +28,9 @@ const STYLESHEETS = [
  * The themes a captured scenario is rendered under for comparison.
  */
 const THEMES = [
-  { name: 'original', label: 'Original', shadcn: false, dark: false },
-  { name: 'shadcn-light', label: 'shadcn — light', shadcn: true, dark: false },
-  { name: 'shadcn-dark', label: 'shadcn — dark', shadcn: true, dark: true },
-  { name: 'c4', label: 'C4', shadcn: true, dark: false, c4: true }
+  { name: 'bpmn-io', label: 'bpmn-io', themed: false, dark: false },
+  { name: 'c4-light', label: 'C4 — light', themed: true, dark: false },
+  { name: 'c4-dark', label: 'C4 — dark', themed: true, dark: true }
 ];
 
 const PANEL_WIDTH = 360;
@@ -57,19 +55,15 @@ function styles() {
 function cell(theme, capture) {
   const rootClasses = [ 'playground' ];
 
-  if (theme.shadcn) {
-    rootClasses.push('bpmn-io-shadcn-theme');
-  }
-
   if (theme.dark) {
     rootClasses.push('dark');
   }
 
   // the grid shows several themes at once, so each cell scopes its own instead
-  // of using the app root a consumer would theme; c4.css needs `.c4-ui` above
+  // of using the app root a consumer would theme; the theme needs `.c4-ui` above
   const figureClasses = [ 'capture-cell', theme.dark ? 'dark' : 'light' ];
 
-  if (theme.c4) {
+  if (theme.themed) {
     figureClasses.push('c4-ui');
   }
 

@@ -27,20 +27,22 @@ body {
 }
 
 .playground {
-  --playground-border: hsl(var(--shadcn-border, 240 5.9% 90%));
+  --playground-border: var(--border, hsl(240 5.9% 90%));
 
   width: 100%;
   height: 100%;
   margin: 0;
   position: relative;
   isolation: isolate;
-  color: hsl(var(--shadcn-foreground, 240 10% 3.9%));
-  background: hsl(var(--shadcn-background, 0 0% 100%));
+  color: var(--foreground, hsl(240 10% 3.9%));
+  background: var(--background, hsl(0 0% 100%));
   border: 1px solid var(--playground-border);
 }
 
-.playground.dark {
-  --playground-border: hsl(var(--shadcn-border));
+/* the capture grid marks each cell, the switcher marks the document root */
+.playground.dark,
+.dark .playground {
+  --playground-border: var(--border);
 }
 
 .playground-main {
@@ -50,11 +52,12 @@ body {
   min-height: 0;
 }
 
+/* no `transform` here: it would become the containing block for the
+   `position: fixed` hover tooltip, which is placed from viewport coordinates */
 .playground-canvas {
   position: relative;
   min-width: 0;
-  transform: translateZ(0);
-  background: hsl(var(--shadcn-muted, 240 4.8% 95.9%) / 0.25);
+  background: color-mix(in srgb, var(--muted, hsl(240 4.8% 95.9%)) 25%, transparent);
   border-radius: 0;
 }
 
@@ -64,7 +67,7 @@ body {
 }
 
 .playground-canvas .djs-container svg:focus {
-  outline: 2px solid hsl(var(--shadcn-ring, 240 10% 3.9%));
+  outline: 2px solid var(--ring, hsl(240 10% 3.9%));
   outline-offset: -2px;
 }
 
@@ -94,7 +97,7 @@ body {
   min-height: 0;
   overflow: auto;
   border-left: 1px solid var(--playground-border);
-  background: hsl(var(--shadcn-card, 0 0% 100%));
+  background: var(--card, hsl(0 0% 100%));
 }
 
 .playground-properties > .bio-properties-panel {
@@ -111,8 +114,11 @@ body {
 
 .playground.dark .djs-container,
 .playground.dark .djs-palette,
-.playground.dark .djs-context-pad {
-  background: hsl(var(--shadcn-background));
+.playground.dark .djs-context-pad,
+.dark .playground .djs-container,
+.dark .playground .djs-palette,
+.dark .playground .djs-context-pad {
+  background: var(--background);
 }
 
 .theme-switcher {

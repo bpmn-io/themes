@@ -7,14 +7,15 @@ The shared design-token layer for bpmn.io, and the themes built on top of it.
 | Package | Description |
 | --- | --- |
 | [`@bpmn-io/theme`](./packages/theme) | The design tokens and the default bpmn.io look. Consumed by the libraries themselves. |
-| [`@bpmn-io/shadcn-theme`](./packages/shadcn-theme) | A [shadcn/ui](https://ui.shadcn.com/) theme, with an optional [Camunda Design System](https://github.com/camunda/design-system) override. |
+| [`@bpmn-io/shadcn-theme`](./packages/shadcn-theme) | A [shadcn/ui](https://ui.shadcn.com/) theme, adapted to the [Camunda Design System](https://github.com/camunda/design-system) (C4), which is itself shadcn-based. |
 
 ## Applying a theme
 
-Put the theme class on your application root:
+A theme scopes itself to the class its design system already defines — `c4-ui`
+for the Camunda Design System — so put that on your application root:
 
 ```html
-<body class="bpmn-io-shadcn-theme">
+<body class="c4-ui">
 ```
 
 The libraries mark their own roots with `bio-theme-parent`, including UI that

@@ -1,152 +1,117 @@
 /**
- * Portable shadcn/ui defaults for bpmn.io component adapters.
+ * Camunda Design System bindings for bpmn.io component adapters.
  *
- * Apply `bpmn-io-shadcn-theme` to a common ancestor of the components to
- * theme. Add `dark` to that element or one of its ancestors for dark mode.
- * Import `c4.css` after component adapters to align them with C4 instead.
+ * Scoped to the design system's own `c4-ui`, so carrying that class is all it
+ * takes — importing this stylesheet is the opt-in. Dark mode follows the design
+ * system's `dark` class; this theme carries no palette of its own.
  */
-.bpmn-io-shadcn-theme {
-  --shadcn-background: 0 0% 100%;
-  --shadcn-foreground: 240 10% 3.9%;
-
-  --shadcn-card: 0 0% 100%;
-  --shadcn-card-foreground: 240 10% 3.9%;
-
-  --shadcn-popover: 0 0% 100%;
-  --shadcn-popover-foreground: 240 10% 3.9%;
-
-  --shadcn-primary: 240 5.9% 10%;
-  --shadcn-primary-foreground: 0 0% 98%;
-
-  --shadcn-secondary: 240 4.8% 95.9%;
-  --shadcn-secondary-foreground: 240 5.9% 10%;
-
-  --shadcn-muted: 240 4.8% 95.9%;
-  --shadcn-muted-foreground: 240 3.8% 46.1%;
-
-  --shadcn-accent: 240 4.8% 95.9%;
-  --shadcn-accent-foreground: 240 5.9% 10%;
-
-  --shadcn-destructive: 0 84.2% 60.2%;
-  --shadcn-destructive-foreground: 0 0% 98%;
-
-  /* shadcn/ui ships no warning role, but bpmn.io surfaces have a warning state */
-  --shadcn-warning: 38 92% 50%;
-  --shadcn-warning-foreground: 20 92% 25%;
-  --shadcn-warning-surface: 48 100% 96%;
-
-  --shadcn-border: 240 5.9% 90%;
-  --shadcn-input: 240 5.9% 90%;
-  --shadcn-ring: 240 10% 3.9%;
-
-  --shadcn-radius: 0.5rem;
-  --shadcn-control-height: 2rem;
-
-  --shadcn-input-fill: hsl(var(--shadcn-background));
-  --shadcn-ring-alpha: 0.35;
-}
-
-.dark .bpmn-io-shadcn-theme,
-.bpmn-io-shadcn-theme.dark {
-  --shadcn-background: 240 10% 3.9%;
-  --shadcn-foreground: 0 0% 98%;
-
-  --shadcn-card: 240 10% 3.9%;
-  --shadcn-card-foreground: 0 0% 98%;
-
-  --shadcn-popover: 240 10% 3.9%;
-  --shadcn-popover-foreground: 0 0% 98%;
-
-  --shadcn-primary: 0 0% 98%;
-  --shadcn-primary-foreground: 240 5.9% 10%;
-
-  --shadcn-secondary: 240 3.7% 15.9%;
-  --shadcn-secondary-foreground: 0 0% 98%;
-
-  --shadcn-muted: 240 3.7% 15.9%;
-  --shadcn-muted-foreground: 240 5% 64.9%;
-
-  --shadcn-accent: 240 3.7% 15.9%;
-  --shadcn-accent-foreground: 0 0% 98%;
-
-  --shadcn-destructive: 0 72% 55%;
-  --shadcn-destructive-foreground: 0 0% 98%;
-
-  --shadcn-warning: 38 92% 50%;
-  --shadcn-warning-foreground: 48 96% 89%;
-  --shadcn-warning-surface: 26 83% 14%;
-
-  --shadcn-border: 240 3.7% 15.9%;
-  --shadcn-input: 240 3.7% 15.9%;
-  --shadcn-ring: 240 4.9% 83.9%;
-
-  --shadcn-input-fill: hsl(var(--shadcn-input) / 0.3);
-  --shadcn-ring-alpha: 0.5;
+.c4-ui {
+  /* the design system exposes its radius steps as `rounded-*` utilities, not as
+     variables — only `--radius` resolves, so re-derive them with its formulas */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
 /**
- * Bind the bpmn.io semantic tokens to shadcn values. This is the whole theme,
- * for every bpmn.io component — the per-component adapters only carry the
- * places where this theme departs from the default semantics.
+ * Bind the bpmn.io semantic tokens to C4 tokens. This is the whole theme, for
+ * every bpmn.io component — the per-component adapters only carry the places
+ * where this theme departs from the default semantics.
  *
  * The compound selector is required: the base theme declares these on the same
  * element, and a property set on the element beats one inherited from above.
  */
-.bpmn-io-shadcn-theme .bio-theme-parent,
-.bpmn-io-shadcn-theme.bio-theme-parent {
-  --bio-surface: hsl(var(--shadcn-card));
-  --bio-surface-overlay: hsl(var(--shadcn-popover));
-  --bio-surface-medium: hsl(var(--shadcn-muted));
-  --bio-surface-subtle: var(--shadcn-input-fill);
-  --bio-surface-strong: hsl(var(--shadcn-muted));
+.c4-ui .bio-theme-parent,
+.c4-ui.bio-theme-parent {
+  --bio-surface: var(--background);
+  --bio-surface-overlay: var(--popover);
+  --bio-surface-medium: var(--neutral-background-medium);
+  --bio-surface-subtle: var(--neutral-background-medium);
+  --bio-surface-strong: var(--neutral-background-medium);
 
-  /* shadcn/ui builds its tooltip from `primary`, which inverts with the mode */
-  --bio-surface-inverted: hsl(var(--shadcn-primary));
-  --bio-surface-inverted-subtle: hsl(var(--shadcn-primary-foreground) / 0.15);
+  /* the design system's Tooltip is `bg-foreground text-background` */
+  --bio-surface-inverted: var(--foreground);
+  --bio-surface-inverted-subtle: color-mix(in srgb, var(--background) 15%, transparent);
 
-  --bio-text: hsl(var(--shadcn-foreground));
-  --bio-text-subtle: hsl(var(--shadcn-muted-foreground));
-  --bio-text-subtlest: hsl(var(--shadcn-muted-foreground));
-  --bio-text-on-primary: hsl(var(--shadcn-primary-foreground));
-  --bio-text-on-inverted: hsl(var(--shadcn-primary-foreground));
+  --bio-text: var(--foreground);
+  --bio-text-subtle: var(--neutral-foreground-subtle);
+  --bio-text-subtlest: var(--neutral-foreground-subtle);
+  --bio-text-on-primary: var(--primary-action-foreground);
+  --bio-text-on-inverted: var(--background);
 
-  --bio-border: hsl(var(--shadcn-border));
-  --bio-border-subtle: hsl(var(--shadcn-border));
-  --bio-border-disabled: hsl(var(--shadcn-border));
-  --bio-border-input: hsl(var(--shadcn-input));
+  --bio-border: var(--border);
+  --bio-border-subtle: var(--border);
+  --bio-border-disabled: var(--border);
+  --bio-border-input: var(--input);
 
-  --bio-primary: hsl(var(--shadcn-primary));
-  --bio-primary-hover: hsl(var(--shadcn-primary) / 0.9);
-  --bio-primary-surface: var(--shadcn-input-fill);
-  --bio-primary-surface-strong: hsl(var(--shadcn-primary) / 0.15);
+  --bio-primary: var(--primary-action-default);
+  --bio-primary-hover: var(--primary-action-hover);
+  --bio-primary-surface: var(--input-background);
+  --bio-primary-surface-strong: var(--primary-background-strong);
 
-  /* shadcn/ui has no link colour; the underline tells it apart instead */
-  --bio-info: hsl(var(--shadcn-primary));
-  --bio-info-hover: hsl(var(--shadcn-primary) / 0.9);
-  --bio-info-text: hsl(var(--shadcn-primary));
-  --bio-info-surface: hsl(var(--shadcn-primary) / 0.1);
-  --bio-info-on-inverted: hsl(var(--shadcn-primary-foreground));
+  /* no semantic step flips with the inverted surface, so take the palette
+     directly — light enough for the dark tooltip, darkened below for the light */
+  --bio-info-on-inverted: var(--color-blue-400);
 
-  --bio-danger: hsl(var(--shadcn-destructive));
-  --bio-danger-hover: hsl(var(--shadcn-destructive) / 0.9);
-  --bio-danger-text: hsl(var(--shadcn-destructive));
-  --bio-danger-surface: hsl(var(--shadcn-destructive) / 0.1);
-  --bio-danger-surface-subtle: var(--shadcn-input-fill);
+  --bio-danger: var(--danger-action-default);
+  --bio-danger-hover: var(--danger-action-default);
+  --bio-danger-text: var(--danger-foreground-strong);
+  --bio-danger-surface: var(--danger-background-strong);
+  --bio-danger-surface-subtle: var(--danger-background-subtle);
 
-  --bio-warning: hsl(var(--shadcn-warning));
-  --bio-warning-hover: hsl(var(--shadcn-warning) / 0.9);
-  --bio-warning-text: hsl(var(--shadcn-warning-foreground));
-  --bio-warning-surface: hsl(var(--shadcn-warning-surface));
+  --bio-warning: var(--warning-action-default);
+  --bio-warning-hover: var(--warning-action-hover);
+  --bio-warning-text: var(--warning-foreground-strong);
+  --bio-warning-surface: var(--warning-background-subtle);
 
-  /* shadcn/ui has no success colour either */
-  --bio-success: hsl(var(--shadcn-primary));
+  --bio-success: var(--success-action-default);
 
-  --bio-focus: hsl(var(--shadcn-ring));
-  --bio-focus-surface: var(--shadcn-input-fill);
-  --bio-focus-ring: hsl(var(--shadcn-ring) / var(--shadcn-ring-alpha));
-  --bio-focus-ring-danger: hsl(var(--shadcn-destructive) / var(--shadcn-ring-alpha));
-  --bio-focus-ring-warning: hsl(var(--shadcn-warning) / var(--shadcn-ring-alpha));
+  --bio-info: var(--info-action-default);
+  --bio-info-hover: var(--info-action-hover);
+  --bio-info-text: var(--info-foreground-strong);
+  --bio-info-surface: var(--info-background-strong);
 
-  --bio-shadow: hsl(var(--shadcn-foreground) / 0.12);
-  --bio-shadow-subtle: hsl(var(--shadcn-foreground) / 0.08);
+  /* a menu row is too much surface for the brand accent, so selection stays
+     neutral — a step darker than hover to still read as selected */
+  --bio-selected-surface: var(--neutral-background-strong);
+  --bio-selected-text: var(--foreground);
+
+  --bio-neutral: var(--neutral-action-default);
+  --bio-neutral-hover: var(--neutral-action-hover);
+
+  /* `--bio-canvas-accent` is deliberately not bound: it is drawn over the black
+     element strokes on the canvas, where a dark colour disappears. Overriding it
+     means taking on that constraint. */
+
+  --bio-focus: var(--ring);
+  --bio-focus-surface: var(--input-background);
+
+  /* alphas and mixing space follow the design system's own Input:
+     `focus-visible:ring-ring/20 dark:focus-visible:ring-ring/40` */
+  --bio-focus-ring: color-mix(in oklab, var(--ring) 20%, transparent);
+  --bio-focus-ring-danger: color-mix(in oklab, var(--danger-action-default) 20%, transparent);
+  --bio-focus-ring-warning: color-mix(in oklab, var(--warning-action-default) 20%, transparent);
+
+  /* `--shadow-*` are whole box-shadow values; our libraries take just the colour */
+  --bio-shadow: color-mix(in srgb, var(--foreground) 12%, transparent);
+  --bio-shadow-subtle: color-mix(in srgb, var(--foreground) 8%, transparent);
+
+  --bio-radius-sm: var(--radius-sm);
+  --bio-radius-md: var(--radius-md);
+  --bio-radius-lg: var(--radius-lg);
+}
+
+/* the design system doubles the ring alpha in dark mode; it flips its own
+   tokens under `.dark .c4-ui` and `.c4-ui.dark`, so mirror exactly those two */
+.dark .c4-ui .bio-theme-parent,
+.dark .c4-ui.bio-theme-parent,
+.c4-ui.dark .bio-theme-parent,
+.c4-ui.dark.bio-theme-parent {
+  --bio-focus-ring: color-mix(in oklab, var(--ring) 40%, transparent);
+  --bio-focus-ring-danger: color-mix(in oklab, var(--danger-action-default) 40%, transparent);
+  --bio-focus-ring-warning: color-mix(in oklab, var(--warning-action-default) 40%, transparent);
+
+  /* the tooltip turns light in dark mode, so its link darkens to match */
+  --bio-info-on-inverted: var(--color-blue-600);
 }
