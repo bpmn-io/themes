@@ -79,42 +79,32 @@ describe('properties-panel', function() {
   it('should persist the global theme selection in the URL', async function() {
     playground = await createPlayground(this, 'properties-panel-theme-switcher');
 
-    const originalButton = document.querySelector(
-      '.theme-switcher button[data-theme="original"]'
-    );
-    const shadcnButton = document.querySelector(
-      '.theme-switcher button[data-theme="shadcn"]'
+    const bpmnIoButton = document.querySelector(
+      '.theme-switcher button[data-theme="bpmn-io"]'
     );
     const c4Button = document.querySelector('.theme-switcher button[data-theme="c4"]');
 
     // when
-    originalButton.click();
+    bpmnIoButton.click();
 
     // then
-    expect([ ...document.body.classList ]).to.not.include('bpmn-io-shadcn-theme');
-    expect(new URLSearchParams(window.location.search).get('theme')).to.equal('original');
-
-    // when
-    shadcnButton.click();
-
-    // then
-    expect([ ...document.body.classList ]).to.include('bpmn-io-shadcn-theme');
-    expect(new URLSearchParams(window.location.search).get('theme')).to.equal('shadcn');
+    expect([ ...document.documentElement.classList ]).to.not.include('c4-ui');
+    expect(new URLSearchParams(window.location.search).get('theme')).to.equal('bpmn-io');
 
     // when
     c4Button.click();
 
     // then
-    expect([ ...document.body.classList ]).to.include('bpmn-io-shadcn-theme');
     expect([ ...document.documentElement.classList ]).to.include('c4-ui');
     expect(new URLSearchParams(window.location.search).get('theme')).to.equal('c4');
 
-    window.history.pushState(null, '', '?theme=original');
+    window.history.pushState(null, '', '?theme=bpmn-io');
     window.dispatchEvent(new PopStateEvent('popstate'));
 
-    expect([ ...document.body.classList ]).to.not.include('bpmn-io-shadcn-theme');
+    expect([ ...document.documentElement.classList ]).to.not.include('c4-ui');
 
-    shadcnButton.click();
+    // restore the themed default the remaining specs render against
+    c4Button.click();
   });
 
   it('should distinguish open and closed group headers', async function() {
@@ -230,7 +220,9 @@ describe('properties-panel', function() {
     expect(createRestBackground).to.equal('rgba(0, 0, 0, 0)');
     expect(getComputedStyle(arrow).backgroundColor).to.equal(createRestBackground);
 
-    expect(createStyles.borderTopLeftRadius).to.equal(templateStyles.borderTopLeftRadius);
+    // against the arrow, not the template selector: that is a badge with its own
+    // pill, so comparing across the two families would prove nothing
+    expect(createStyles.borderTopLeftRadius).to.equal(getComputedStyle(arrow).borderTopLeftRadius);
 
     // and it takes a visible focus ring once focused
     createButton.focus();
@@ -251,7 +243,7 @@ describe('properties-panel', function() {
     // then
     expect(tooltip).to.exist;
     expect(tooltip.textContent).to.contain('Specify which job workers');
-    expect(tooltip.closest('.bpmn-io-shadcn-theme')).to.equal(document.body);
+    expect(tooltip.closest('.c4-ui')).to.equal(document.documentElement);
   });
 
   it('should render an open themed dropdown', async function() {
@@ -320,7 +312,7 @@ describe('properties-panel', function() {
 
     // resolve the muted token the FEEL `=` indicator uses, in the themed context
     const probe = document.createElement('div');
-    probe.style.background = 'hsl(var(--shadcn-muted))';
+    probe.style.background = 'var(--neutral-background-medium)';
     gutters.appendChild(probe);
     const mutedColor = getComputedStyle(probe).backgroundColor;
     probe.remove();
@@ -386,9 +378,12 @@ describe('properties-panel', function() {
     expect(indicatorStyles.alignItems).to.equal('flex-start');
     expect(indicatorStyles.justifyContent).to.equal('center');
 
-    // the glyph is nudged down by half the surplus between control height and a
-    // single line, so it lines up with the first code row
-    expect(parseFloat(indicatorStyles.paddingTop)).to.be.closeTo(5.5, 1);
+    // the glyph, not the full-height box that holds it: padding on one side
+    // alone would tilt it off centre
+    const glyph = document.createRange();
+    glyph.selectNodeContents(indicator);
+
+    expectVerticallyCentered(glyph, container, 1);
   });
 
   it('should vertically centre single-line JSON editor content', async function() {
@@ -486,7 +481,7 @@ describe('properties-panel', function() {
 
     // then
     expect(popup).to.exist;
-    expect(popup.closest('.bpmn-io-shadcn-theme')).to.equal(document.body);
+    expect(popup.closest('.c4-ui')).to.equal(document.documentElement);
     expect(popup.querySelector('.bio-properties-panel-popup__close')).to.exist;
 
     // the header carries a divider so it stays distinct from the editor content
@@ -496,7 +491,7 @@ describe('properties-panel', function() {
     expect(headerStyle.borderBottomWidth).to.equal('1px');
 
     const probe = document.createElement('div');
-    probe.style.borderColor = 'hsl(var(--shadcn-border))';
+    probe.style.borderColor = 'var(--border)';
     header.appendChild(probe);
     const borderColor = getComputedStyle(probe).borderTopColor;
     probe.remove();
@@ -526,7 +521,7 @@ describe('properties-panel', function() {
 
     // resolve the muted token (the panel header surface) in the themed context
     const probe = document.createElement('div');
-    probe.style.background = 'hsl(var(--shadcn-muted))';
+    probe.style.background = 'var(--neutral-background-medium)';
     header.appendChild(probe);
     const mutedColor = getComputedStyle(probe).backgroundColor;
     probe.remove();

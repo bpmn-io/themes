@@ -1,108 +1,120 @@
 /**
- * shadcn/ui adapter for @bpmn-io/properties-panel.
+ * Camunda Design System adapter for @bpmn-io/properties-panel.
  *
- * Load after properties-panel.css and tokens.css. Only the places where this
- * theme departs from the default token semantics belong here.
+ * Load after properties-panel.css and tokens.css, inside a c4 root. Only
+ * the places where this theme departs from the default token semantics belong
+ * here.
  */
 /*
  * Font stacks live on the theme root (not only the panel) so portaled surfaces
  * — the FEEL popup and tooltips — inherit them too instead of falling back to
  * the browser serif default.
  */
-.bpmn-io-shadcn-theme {
-  --font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-family-monospace: ui-monospace, SFMono-Regular, "SF Mono", Menlo,
-    Consolas, "Liberation Mono", monospace;
+.c4-ui {
+  --font-family: var(--font-sans);
+  --font-family-monospace: var(--font-mono);
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel {
-  --input-border-radius: calc(var(--shadcn-radius) - 2px);
-  --input-height: var(--shadcn-control-height);
+.c4-ui .bio-properties-panel {
+  /* Input and Button are `rounded-lg`, Checkbox `rounded-[4px]`, Tooltip
+     `rounded-md`; Badge stays a pill */
+  --input-border-radius: var(--radius-lg);
+  --checkbox-border-radius: 4px;
+  --chip-border-radius: var(--radius-sm);
+  --surface-border-radius: var(--radius-md);
+  --icon-button-border-radius: var(--radius-lg);
 
-  --checkbox-border-radius: calc(var(--shadcn-radius) - 4px);
+  /* the design system's small control (`h-8`) — this panel is a dense sidebar,
+     not a page form */
+  --input-height: 2rem;
 
+  /* the design system rings text inputs at `ring-3`, everything else at `ring-2` */
   --focus-ring-width: 3px;
 
-  /* a focused input takes the ring, not the accent the token defaults to */
-  --input-focus-border-color: hsl(var(--shadcn-ring));
+  --input-background-color: var(--input-background);
 
-  /* Open group headers stay flush with their content (like the stock panel);
-     the bold title alone carries the hierarchy. C4 opts back into a fill. */
+  /* a focused input takes the ring, not the accent the token defaults to */
+  --input-focus-border-color: var(--ring);
+
+  /* the design system marks an invalid field with a destructive border and
+     ring, never a tinted fill */
+  --input-error-background-color: var(--input-background);
+
+  /* the design system's link variant underlines on hover only */
+  --link-text-decoration: none;
+  --link-hover-text-decoration: underline;
+
+  /* the panel header carries the fill; an open group stays flush with its
+     content, so the bold title alone carries the hierarchy */
+  --header-background-color: var(--neutral-background-medium);
+  --sticky-group-background-color: var(--neutral-background-subtle);
   --open-group-header-background-color: transparent;
 
-  /* a ghost button here, so it needs a readable foreground, not white-on-primary */
-  --add-entry-hover-fill-color: hsl(var(--shadcn-foreground));
-  --add-entry-hover-background-color: hsl(var(--shadcn-accent));
-  --arrow-hover-background-color: hsl(var(--shadcn-accent));
+  --add-entry-hover-fill-color: var(--primary-action-foreground);
+  --add-entry-hover-background-color: var(--primary-action-default);
+  --arrow-hover-background-color: var(--neutral-background-medium);
 
-  --list-badge-color: hsl(var(--shadcn-background));
-  --list-badge-background-color: hsl(var(--shadcn-muted-foreground));
+  --secondary-action-background-color: var(--neutral-background-medium);
+  --secondary-action-hover-background-color: var(--neutral-background-strong);
+  --secondary-action-foreground-color: var(--foreground);
+  --secondary-action-border-color: var(--border);
+
+  --list-badge-color: var(--neutral-foreground-strong);
+  --list-badge-background-color: var(--neutral-background-strong);
 
   /*
    * Structural nesting connectors: the side lines and the list-entry dot that
-   * sits on them. Use the lighter border token (not the dark muted-foreground)
-   * so they read as subtle guides like the original's light grey, which also
-   * stops subpixel rounding at browser zoom from making the 2px lines look
-   * unevenly wide across levels. The dot reuses the exact side-line colour so
-   * the line never looks like it cuts through a mismatched dot — the original
-   * paints both with a single grey.
+   * sits on them. The lines follow the border token so they read as subtle
+   * guides, which also stops subpixel rounding at browser zoom from making the
+   * 2px lines look unevenly wide across levels.
    */
-  --side-line-background-color: hsl(var(--shadcn-border));
-  --side-line-extension-background-color: hsl(var(--shadcn-border));
-  --list-entry-dot-background-color: var(--side-line-background-color);
+  --side-line-background-color: var(--border);
+  --side-line-extension-background-color: var(--border);
+  --list-entry-dot-background-color: var(--neutral-foreground-subtle);
 
-  /* the active `fx` marker is the full primary here, not the softened hover
-     shade the accent token carries */
-  --feel-active-color: hsl(var(--shadcn-primary));
-  --feel-hover-background-color: hsl(var(--shadcn-accent));
+  --feel-active-color: var(--primary-action-default);
+  --feel-hover-background-color: var(--neutral-background-medium);
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-input,
-.bpmn-io-shadcn-theme select.bio-properties-panel-input,
-.bpmn-io-shadcn-theme textarea.bio-properties-panel-input {
-  color: hsl(var(--shadcn-foreground));
+.c4-ui .bio-properties-panel-input,
+.c4-ui select.bio-properties-panel-input,
+.c4-ui textarea.bio-properties-panel-input {
+  color: var(--foreground);
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-input::placeholder {
-  color: hsl(var(--shadcn-muted-foreground));
+.c4-ui .bio-properties-panel-input::placeholder {
+  color: var(--neutral-foreground-subtle);
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-input[type="checkbox"],
-.bpmn-io-shadcn-theme .bio-properties-panel-input[type="radio"] {
-  accent-color: hsl(var(--shadcn-primary));
+.c4-ui .bio-properties-panel-input[type="checkbox"],
+.c4-ui .bio-properties-panel-input[type="radio"] {
+  accent-color: var(--primary-action-default);
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-input,
-.bpmn-io-shadcn-theme .bio-properties-panel-feel-editor-container .bio-properties-panel-feel-editor__open-popup-placeholder,
-.bpmn-io-shadcn-theme .bio-properties-panel-feelers-editor-container .bio-properties-panel-feelers-editor__open-popup-placeholder {
-  border-radius: calc(var(--shadcn-radius) - 2px);
+/* the placeholders stand in for an input, so they match it */
+.c4-ui .bio-properties-panel-feel-editor-container .bio-properties-panel-feel-editor__open-popup-placeholder,
+.c4-ui .bio-properties-panel-feelers-editor-container .bio-properties-panel-feelers-editor__open-popup-placeholder {
+  border-radius: var(--input-border-radius);
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-list-entry-item:first-child .bio-properties-panel-simple .bio-properties-panel-input {
-  border-top-left-radius: calc(var(--shadcn-radius) - 2px);
-  border-top-right-radius: calc(var(--shadcn-radius) - 2px);
+.c4-ui .bio-properties-panel-list-entry-item:first-child .bio-properties-panel-simple .bio-properties-panel-input {
+  border-top-left-radius: var(--input-border-radius);
+  border-top-right-radius: var(--input-border-radius);
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-list-entry-item:last-child .bio-properties-panel-simple .bio-properties-panel-input {
-  border-bottom-left-radius: calc(var(--shadcn-radius) - 2px);
-  border-bottom-right-radius: calc(var(--shadcn-radius) - 2px);
+.c4-ui .bio-properties-panel-list-entry-item:last-child .bio-properties-panel-simple .bio-properties-panel-input {
+  border-bottom-left-radius: var(--input-border-radius);
+  border-bottom-right-radius: var(--input-border-radius);
 }
 
-/*
- * The indicator spans the full editor height (multi-line included), so the `=`
- * glyph must stick to the first row — like the pop-out icon — instead of
- * centring over the whole box. Top-align it and offset by half the surplus
- * between the control height and a single line so it lines up with the
- * vertically-centred single-line editor content and the first code row.
- */
-.bpmn-io-shadcn-theme .bio-properties-panel-feel-indicator {
+/* the indicator spans the whole editor, multi-line included, so the `=` takes a
+   single control's line box and centres in the first row rather than the box */
+.c4-ui .bio-properties-panel-feel-indicator {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding-top: calc((var(--shadcn-control-height) - var(--text-line-height)) / 2);
-  border-radius: calc(var(--shadcn-radius) - 2px) 0 0 calc(var(--shadcn-radius) - 2px);
+  padding-block: 0;
+  line-height: calc(var(--input-height) - 3px);
 }
 
 /* Open group headers stay flush with their content, but only while not stuck:
@@ -110,12 +122,12 @@
  * core's lower-specificity `.sticky` fill + separator and leave the stuck header
  * transparent (content showing through). Scoping to :not(.sticky) lets core's
  * sticky treatment mark the header once it sticks. */
-.bpmn-io-shadcn-theme .bio-properties-panel-group-header.open:not(.sticky) {
+.c4-ui .bio-properties-panel-group-header.open:not(.sticky) {
   background-color: var(--open-group-header-background-color);
   border-bottom: 0;
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-group-header.open
+.c4-ui .bio-properties-panel-group-header.open
   .bio-properties-panel-group-header-title {
   font-weight: 600;
 }
@@ -128,22 +140,20 @@
  * every expanded item label then stays at one consistent, standard weight
  * instead of some items rendering bold and others not.
  */
-.bpmn-io-shadcn-theme .bio-properties-panel-list-entry-header-title.open {
+.c4-ui .bio-properties-panel-list-entry-header-title.open {
   font-weight: 600;
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-description code,
-.bpmn-io-shadcn-theme .bio-properties-panel-feel-icon,
-.bpmn-io-shadcn-theme .bio-properties-panel-tooltip-content code,
-.bpmn-io-shadcn-theme .bio-properties-panel-tooltip-content pre {
-  border-radius: calc(var(--shadcn-radius) - 4px);
+/* the only chip core does not route through `--chip-border-radius` */
+.c4-ui .bio-properties-panel-tooltip-content code {
+  border-radius: var(--chip-border-radius);
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-add-entry,
-.bpmn-io-shadcn-theme .bio-properties-panel-arrow,
-.bpmn-io-shadcn-theme .bio-properties-panel-group-header-button,
-.bpmn-io-shadcn-theme .bio-properties-panel-list-entry-header-buttons > button {
-  border-radius: calc(var(--shadcn-radius) - 2px);
+.c4-ui .bio-properties-panel-add-entry,
+.c4-ui .bio-properties-panel-arrow,
+.c4-ui .bio-properties-panel-group-header-button,
+.c4-ui .bio-properties-panel-list-entry-header-buttons > button {
+  border-radius: var(--icon-button-border-radius);
   transition: background-color 150ms ease, color 150ms ease, fill 150ms ease;
 }
 
@@ -154,18 +164,18 @@
  * header controls consistent and, crucially, pairs the add-entry hover label
  * with a readable foreground colour (it was white-on-light before).
  */
-.bpmn-io-shadcn-theme .bio-properties-panel-add-entry,
-.bpmn-io-shadcn-theme .bio-properties-panel-arrow {
+.c4-ui .bio-properties-panel-add-entry,
+.c4-ui .bio-properties-panel-arrow {
   color: var(--add-entry-fill-color);
   fill: currentColor;
   border: none;
   background-color: transparent;
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-add-entry:hover,
-.bpmn-io-shadcn-theme .bio-properties-panel-add-entry:focus-visible,
-.bpmn-io-shadcn-theme .bio-properties-panel-arrow:hover,
-.bpmn-io-shadcn-theme .bio-properties-panel-arrow:focus-visible {
+.c4-ui .bio-properties-panel-add-entry:hover,
+.c4-ui .bio-properties-panel-add-entry:focus-visible,
+.c4-ui .bio-properties-panel-arrow:hover,
+.c4-ui .bio-properties-panel-arrow:focus-visible {
   color: var(--text-base-color);
   fill: currentColor;
   background-color: var(--arrow-hover-background-color);
@@ -173,37 +183,37 @@
 
 /* the label is part of the ghost button, so it takes the same colours as the
    glyph rather than the accent fill the core tokens assume */
-.bpmn-io-shadcn-theme .bio-properties-panel-group-header.empty .bio-properties-panel-add-entry-label,
-.bpmn-io-shadcn-theme .bio-properties-panel-list-entry.empty .bio-properties-panel-add-entry-label {
+.c4-ui .bio-properties-panel-group-header.empty .bio-properties-panel-add-entry-label,
+.c4-ui .bio-properties-panel-list-entry.empty .bio-properties-panel-add-entry-label {
   color: var(--add-entry-fill-color);
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-add-entry:hover .bio-properties-panel-add-entry-label,
-.bpmn-io-shadcn-theme .bio-properties-panel-add-entry:focus-visible .bio-properties-panel-add-entry-label {
+.c4-ui .bio-properties-panel-add-entry:hover .bio-properties-panel-add-entry-label,
+.c4-ui .bio-properties-panel-add-entry:focus-visible .bio-properties-panel-add-entry-label {
   color: var(--text-base-color);
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-group-header-button:focus-visible,
-.bpmn-io-shadcn-theme .bio-properties-panel-list-entry-header-buttons > button:focus-visible {
+.c4-ui .bio-properties-panel-group-header-button:focus-visible,
+.c4-ui .bio-properties-panel-list-entry-header-buttons > button:focus-visible {
   outline: 2px solid var(--focus-outline-color);
   outline-offset: 1px;
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-remove-entry,
-.bpmn-io-shadcn-theme .bio-properties-panel-remove-list-entry {
+.c4-ui .bio-properties-panel-remove-entry,
+.c4-ui .bio-properties-panel-remove-list-entry {
   color: var(--remove-entry-fill-color);
   fill: currentColor;
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-remove-entry:hover,
-.bpmn-io-shadcn-theme .bio-properties-panel-remove-entry:focus-visible,
-.bpmn-io-shadcn-theme .bio-properties-panel-remove-list-entry:hover,
-.bpmn-io-shadcn-theme .bio-properties-panel-remove-list-entry:focus-visible {
+.c4-ui .bio-properties-panel-remove-entry:hover,
+.c4-ui .bio-properties-panel-remove-entry:focus-visible,
+.c4-ui .bio-properties-panel-remove-list-entry:hover,
+.c4-ui .bio-properties-panel-remove-list-entry:focus-visible {
   background-color: var(--remove-entry-hover-background-color);
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-select-template-button,
-.bpmn-io-shadcn-theme .bio-properties-panel-applied-template-button
+.c4-ui .bio-properties-panel-select-template-button,
+.c4-ui .bio-properties-panel-applied-template-button
   .bio-properties-panel-group-header-button {
   display: inline-flex;
   align-items: center;
@@ -213,28 +223,22 @@
   color: var(--list-entry-add-entry-label-color);
   fill: var(--list-entry-add-entry-fill-color);
   background-color: var(--list-entry-add-entry-background-color);
-  border-radius: calc(var(--shadcn-radius) - 2px);
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-templates-group
-  .bio-properties-panel-group-header-button.bio-properties-panel-select-template-button {
-  border-radius: calc(var(--shadcn-radius) - 2px);
-}
-
-.bpmn-io-shadcn-theme .bio-properties-panel-select-template-button:hover,
-.bpmn-io-shadcn-theme .bio-properties-panel-select-template-button:focus-visible,
-.bpmn-io-shadcn-theme .bio-properties-panel-applied-template-button
+.c4-ui .bio-properties-panel-select-template-button:hover,
+.c4-ui .bio-properties-panel-select-template-button:focus-visible,
+.c4-ui .bio-properties-panel-applied-template-button
   .bio-properties-panel-group-header-button:hover,
-.bpmn-io-shadcn-theme .bio-properties-panel-applied-template-button
+.c4-ui .bio-properties-panel-applied-template-button
   .bio-properties-panel-group-header-button:focus-visible {
   background-color: var(--list-entry-add-entry-empty-hover-background-color);
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-select-template-button svg {
+.c4-ui .bio-properties-panel-select-template-button svg {
   fill: currentColor;
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-applied-template-button.open {
+.c4-ui .bio-properties-panel-applied-template-button.open {
   z-index: 11;
 }
 
@@ -244,7 +248,7 @@
  * Balance the vertical padding so one line centres within the control height;
  * extra lines just flow down from there.
  */
-.bpmn-io-shadcn-theme textarea.bio-properties-panel-input {
+.c4-ui textarea.bio-properties-panel-input {
   padding-top: 5px;
   padding-bottom: 4px;
 }
@@ -254,12 +258,12 @@
  * control beneath them doesn't crowd the label. Inline checkbox/toggle labels
  * sit beside their control, so keep those flush.
  */
-.bpmn-io-shadcn-theme .bio-properties-panel-label {
+.c4-ui .bio-properties-panel-label {
   margin-bottom: 5px;
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-checkbox > .bio-properties-panel-label,
-.bpmn-io-shadcn-theme .bio-properties-panel-toggle-switch > .bio-properties-panel-label {
+.c4-ui .bio-properties-panel-checkbox > .bio-properties-panel-label,
+.c4-ui .bio-properties-panel-toggle-switch > .bio-properties-panel-label {
   margin-bottom: 0;
 }
 
@@ -268,28 +272,21 @@
  * (16px glyph + 4px padding = 24px) sitting 4px from the top and right borders,
  * which centres it vertically in the shared 2rem control height.
  */
-.bpmn-io-shadcn-theme .bio-properties-panel-feelers-editor-container .bio-properties-panel-open-feel-popup,
-.bpmn-io-shadcn-theme .bio-properties-panel-feel-container .bio-properties-panel-open-feel-popup,
-.bpmn-io-shadcn-theme .bio-properties-panel-textarea-container .bio-properties-panel-open-feel-popup {
+.c4-ui .bio-properties-panel-feelers-editor-container .bio-properties-panel-open-feel-popup,
+.c4-ui .bio-properties-panel-feel-container .bio-properties-panel-open-feel-popup,
+.c4-ui .bio-properties-panel-textarea-container .bio-properties-panel-open-feel-popup {
   top: 0;
   right: 0;
   margin: 4px;
   padding: 4px;
   line-height: 0;
-  border-radius: calc(var(--shadcn-radius) - 4px);
+  border-radius: var(--chip-border-radius);
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-feelers-editor-container .bio-properties-panel-open-feel-popup:hover,
-.bpmn-io-shadcn-theme .bio-properties-panel-feel-container .bio-properties-panel-open-feel-popup:hover,
-.bpmn-io-shadcn-theme .bio-properties-panel-textarea-container .bio-properties-panel-open-feel-popup:hover {
-  background-color: hsl(var(--shadcn-accent));
-}
-
-.bpmn-io-shadcn-theme .bio-properties-panel-dropdown-button__menu {
-  border: 1px solid hsl(var(--shadcn-border));
-  border-radius: calc(var(--shadcn-radius) - 2px);
-  box-shadow: 0 4px 6px -1px hsl(var(--shadcn-foreground) / 0.1),
-    0 2px 4px -2px hsl(var(--shadcn-foreground) / 0.1);
+.c4-ui .bio-properties-panel-dropdown-button__menu {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
 }
 
 /*
@@ -310,7 +307,7 @@
  * specificity, so without the guard it would keep the inline editor visible
  * beneath the placeholder.
  */
-.bpmn-io-shadcn-theme .bio-properties-panel-entry .bio-properties-panel-feel-editor-container:not(.popupOpen) .bio-properties-panel-input {
+.c4-ui .bio-properties-panel-entry .bio-properties-panel-feel-editor-container:not(.popupOpen) .bio-properties-panel-input {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -326,19 +323,19 @@
  * feelers is popup-capable, so it is scoped to the non-popup state for the same
  * reason as FEEL above; the JSON editor has no popup.
  */
-.bpmn-io-shadcn-theme .bio-properties-panel-entry .bio-properties-panel-feelers-editor-container:not(.popupOpen) .bio-properties-panel-feelers-editor.bio-properties-panel-input,
-.bpmn-io-shadcn-theme .bio-properties-panel-entry .bio-properties-panel-json-editor .bio-properties-panel-input {
+.c4-ui .bio-properties-panel-entry .bio-properties-panel-feelers-editor-container:not(.popupOpen) .bio-properties-panel-feelers-editor.bio-properties-panel-input,
+.c4-ui .bio-properties-panel-entry .bio-properties-panel-json-editor .bio-properties-panel-input {
   display: flex;
   flex-direction: column;
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-entry .bio-properties-panel-feelers-editor .cm-editor,
-.bpmn-io-shadcn-theme .bio-properties-panel-entry .bio-properties-panel-json-editor .cm-editor {
+.c4-ui .bio-properties-panel-entry .bio-properties-panel-feelers-editor .cm-editor,
+.c4-ui .bio-properties-panel-entry .bio-properties-panel-json-editor .cm-editor {
   flex: 1;
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-entry .bio-properties-panel-feelers-editor .cm-scroller,
-.bpmn-io-shadcn-theme .bio-properties-panel-entry .bio-properties-panel-json-editor .cm-scroller {
+.c4-ui .bio-properties-panel-entry .bio-properties-panel-feelers-editor .cm-scroller,
+.c4-ui .bio-properties-panel-entry .bio-properties-panel-json-editor .cm-scroller {
   flex: 1;
 }
 
@@ -355,75 +352,76 @@
  * only then can `align-self: stretch` fill the field. Core's gutter carries no
  * distinct fill, so this notch only surfaces once we tint it.
  */
-.bpmn-io-shadcn-theme .bio-properties-panel-entry .bio-properties-panel-feelers-editor .cm-gutters,
-.bpmn-io-shadcn-theme .bio-properties-panel-entry .bio-properties-panel-json-editor .cm-gutters {
-  background: hsl(var(--shadcn-muted));
+.c4-ui .bio-properties-panel-entry .bio-properties-panel-feelers-editor .cm-gutters,
+.c4-ui .bio-properties-panel-entry .bio-properties-panel-json-editor .cm-gutters {
+  background: var(--neutral-background-medium);
   border: none;
-  border-radius: calc(var(--shadcn-radius) - 2px) 0 0 calc(var(--shadcn-radius) - 2px);
+  border-radius: var(--input-border-radius) 0 0 var(--input-border-radius);
   height: auto;
   align-self: stretch;
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-entry .cm-editor {
-  border-radius: calc(var(--shadcn-radius) - 2px);
+/* only the multi-line editors own their border; the inline FEEL editor is one
+   line tall, where the corner curve would clip the caret */
+.c4-ui .bio-properties-panel-entry .bio-properties-panel-feelers-editor .cm-editor,
+.c4-ui .bio-properties-panel-entry .bio-properties-panel-json-editor .cm-editor {
+  border-radius: var(--input-border-radius);
   overflow: hidden;
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-tooltip {
+.c4-ui .bio-properties-panel-tooltip {
   /* the code chip sits on the inverted surface, so it tints that surface
      instead of taking the light `--bio-surface-subtle` default */
-  --tooltip-code-background-color: hsl(var(--shadcn-primary) / 0.6);
-  --tooltip-code-border-color: hsl(var(--shadcn-primary-foreground) / 0.2);
+  --tooltip-code-background-color: color-mix(in srgb, var(--foreground) 60%, transparent);
+  --tooltip-code-border-color: color-mix(in srgb, var(--background) 20%, transparent);
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-tooltip-content {
-  border-radius: calc(var(--shadcn-radius) - 2px);
-  box-shadow: 0 4px 6px -1px hsl(var(--shadcn-foreground) / 0.1),
-    0 2px 4px -2px hsl(var(--shadcn-foreground) / 0.1);
+/* the design system's Tooltip is `shadow-md ring-1 ring-border` */
+.c4-ui .bio-properties-panel-tooltip-content {
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-tooltip-content code,
-.bpmn-io-shadcn-theme .bio-properties-panel-tooltip-content pre {
-  color: hsl(var(--shadcn-primary-foreground));
+.c4-ui .bio-properties-panel-tooltip-content code,
+.c4-ui .bio-properties-panel-tooltip-content pre {
+  color: var(--background);
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-popup {
+.c4-ui .bio-properties-panel-popup {
   /* the popup body is the app background, a shade apart from the card the
      header uses; the token default makes both the card */
-  --popup-background-color: hsl(var(--shadcn-background));
+  --popup-background-color: var(--background);
+  --popup-header-background-color: var(--neutral-background-subtle);
 
-  border: 1px solid hsl(var(--shadcn-border));
-  border-radius: calc(var(--shadcn-radius) - 2px);
-  box-shadow: 0 10px 15px -3px hsl(var(--shadcn-foreground) / 0.1),
-    0 4px 6px -4px hsl(var(--shadcn-foreground) / 0.1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
   font-family: var(--font-family);
 }
 
-/* shadcn separates a dialog/card header from its content with a divider rather
-   than a distinct fill — and here --shadcn-card and --shadcn-background resolve
-   to the same value in the light palette, so the header and the editor text run
-   together without one. Core exposes no header-border variable, so the
-   separator lives on the selector. */
-.bpmn-io-shadcn-theme .bio-properties-panel-popup .bio-properties-panel-popup__header {
-  border-bottom: 1px solid hsl(var(--shadcn-border));
+/* the header fill alone is a near-white against the popup body, so a divider
+   carries the separation. Core exposes no header-border variable, so it lives
+   on the selector. */
+.c4-ui .bio-properties-panel-popup .bio-properties-panel-popup__header {
+  border-bottom: 1px solid var(--border);
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-popup .bio-properties-panel-feel-popup__close-btn {
-  border-radius: calc(var(--shadcn-radius) - 2px);
+.c4-ui .bio-properties-panel-popup .bio-properties-panel-feel-popup__close-btn {
+  border-radius: var(--icon-button-border-radius);
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-popup .bio-properties-panel-popup__close {
+.c4-ui .bio-properties-panel-popup .bio-properties-panel-popup__close {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: calc(var(--shadcn-radius) - 4px);
-  color: hsl(var(--shadcn-muted-foreground));
+  border-radius: var(--icon-button-border-radius);
+  color: var(--neutral-foreground-subtle);
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-popup .bio-properties-panel-popup__close:hover,
-.bpmn-io-shadcn-theme .bio-properties-panel-popup .bio-properties-panel-popup__close:focus-visible {
-  color: hsl(var(--shadcn-foreground));
-  background-color: hsl(var(--shadcn-accent));
+.c4-ui .bio-properties-panel-popup .bio-properties-panel-popup__close:hover,
+.c4-ui .bio-properties-panel-popup .bio-properties-panel-popup__close:focus-visible {
+  color: var(--foreground);
+  background-color: var(--neutral-background-medium);
 }
 
 /*
@@ -434,33 +432,33 @@
  * `overflow: hidden` wrapper clips the gutter's top corner and exposes the popup
  * background behind it. Square it off so the editor sits flush in the body.
  */
-.bpmn-io-shadcn-theme .bio-properties-panel-feel-popup .bio-properties-panel-feel-editor-container .bio-properties-panel-input {
+.c4-ui .bio-properties-panel-feel-popup .bio-properties-panel-feel-editor-container .bio-properties-panel-input {
   border-radius: 0;
 }
 
 /* Keep any genuinely-needed scrollbars thin and muted, shadcn-style. */
-.bpmn-io-shadcn-theme .bio-properties-panel-feel-popup .cm-scroller {
+.c4-ui .bio-properties-panel-feel-popup .cm-scroller {
   scrollbar-width: thin;
-  scrollbar-color: hsl(var(--shadcn-border)) transparent;
+  scrollbar-color: var(--border) transparent;
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-feel-popup .cm-scroller::-webkit-scrollbar {
+.c4-ui .bio-properties-panel-feel-popup .cm-scroller::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-feel-popup .cm-scroller::-webkit-scrollbar-track {
+.c4-ui .bio-properties-panel-feel-popup .cm-scroller::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-feel-popup .cm-scroller::-webkit-scrollbar-thumb {
-  background-color: hsl(var(--shadcn-border));
+.c4-ui .bio-properties-panel-feel-popup .cm-scroller::-webkit-scrollbar-thumb {
+  background-color: var(--border);
   background-clip: padding-box;
   border: 3px solid transparent;
   border-radius: 9999px;
 }
 
-.bpmn-io-shadcn-theme .bio-properties-panel-feel-popup .cm-scroller::-webkit-scrollbar-thumb:hover {
-  background-color: hsl(var(--shadcn-muted-foreground));
+.c4-ui .bio-properties-panel-feel-popup .cm-scroller::-webkit-scrollbar-thumb:hover {
+  background-color: var(--neutral-foreground-subtle);
   background-clip: padding-box;
 }

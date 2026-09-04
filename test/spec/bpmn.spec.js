@@ -29,10 +29,13 @@ describe('bpmn-js playground', function() {
 
     // then
     expect(drilldown).to.exist;
-    expect(getComputedStyle(canvas).getPropertyValue('--drilldown-background-color'))
-      .to.equal('hsl(240 5.9% 10%)');
-    expect(getComputedStyle(canvas).getPropertyValue('--drilldown-fill-color'))
-      .to.equal('hsl(0 0% 98%)');
+
+    const canvasStyle = getComputedStyle(canvas);
+
+    expect(canvasStyle.getPropertyValue('--drilldown-background-color'))
+      .to.equal(canvasStyle.getPropertyValue('--primary-action-default'));
+    expect(canvasStyle.getPropertyValue('--drilldown-fill-color'))
+      .to.equal(canvasStyle.getPropertyValue('--primary-action-foreground'));
 
     // asserted once bpmn-js ships its token support; the published version does
     // not read `--bio-*`, so the focus binding is inert against it
@@ -50,7 +53,10 @@ describe('bpmn-js playground', function() {
 
     // then
     expect(playground.root.querySelector('.bjs-breadcrumbs')).to.exist;
-    expect(getComputedStyle(playground.root.querySelector('.djs-parent'))
-      .getPropertyValue('--breadcrumbs-item-color')).to.equal('hsl(240 5.9% 10%)');
+
+    const canvasStyle = getComputedStyle(playground.root.querySelector('.djs-parent'));
+
+    expect(canvasStyle.getPropertyValue('--breadcrumbs-item-color'))
+      .to.equal(canvasStyle.getPropertyValue('--primary-action-default'));
   });
 });

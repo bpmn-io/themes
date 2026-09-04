@@ -1,32 +1,28 @@
 /**
- * shadcn/ui adapter for the diagram-js / bpmn-js core UI: the palette, the
- * search pad, diagram selection and drilldown controls, and the popup menu
- * ("popup editor" — the create, append and replace menus, including their
- * element-template entries).
+ * Camunda Design System adapter for the diagram-js / bpmn-js core UI: the
+ * palette, the search pad, diagram selection and drilldown controls, and the
+ * popup menu ("popup editor" — the create, append and replace menus, including
+ * their element-template entries).
  *
  * diagram-js and bpmn-js expose their surfaces through `--palette-*`,
  * `--context-pad-*`, `--element-*`, `--popup-*`, `--search-*`,
  * `--breadcrumbs-*`, `--drilldown-*`, and `--tooltip-error-*` custom
- * properties. We remap those to shadcn tokens and only reach for structural
- * rules where a value is hard-coded upstream (radii, shadows, focus rings, a
- * handful of literal hovers). Selectors mirror diagram-js.css / bpmn-js.css so
- * the two stay aligned and resist drift.
+ * properties. We remap those to C4 tokens and only reach for structural rules
+ * where a value is hard-coded upstream (radii, shadows, focus rings, a handful
+ * of literal hovers). Selectors mirror diagram-js.css / bpmn-js.css so the two
+ * stay aligned and resist drift.
  *
- * Load this after diagram-js.css / bpmn-js.css and assets/tokens.css. Import
- * assets/c4.css afterwards to align it with the Camunda Design System instead.
+ * Load this after diagram-js.css / bpmn-js.css and assets/tokens.css, inside a
+ * C4 root.
  */
-.bpmn-io-shadcn-theme .djs-parent {
-  --font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+.c4-ui .djs-parent {
+  --font-family: var(--font-sans);
 
   /* only deviations from the token defaults belong here */
 
-  /* entries read as a flat toolbar, so hover darkens the glyph rather than tinting it */
-  --palette-entry-hover-color: hsl(var(--shadcn-foreground));
-  --palette-entry-selected-color: hsl(var(--shadcn-primary));
-  --palette-toggle-hover-background-color: hsl(var(--shadcn-accent));
-  --palette-background-color: hsl(var(--shadcn-background));
+  --palette-entry-color: var(--neutral-foreground-strong);
+  --palette-entry-hover-color: var(--neutral-foreground-strong);
+  --palette-background-color: var(--background);
 
   /*
    * Selection affordances — the selection/hover outline, bendpoints, resizers,
@@ -42,15 +38,10 @@
   /* a bordered, shadowed popover rather than diagram-js's borderless card */
   --popup-font-family: var(--font-family);
   --popup-header-font-weight: 600;
-  --popup-border-color: hsl(var(--shadcn-border));
-  --popup-header-entry-selected-color: hsl(var(--shadcn-primary));
-  --popup-search-focus-border-color: var(--bio-focus);
+  --popup-border-color: var(--border);
   --popup-search-focus-ring-color: var(--bio-focus-ring);
-  --popup-tab-active-border-color: hsl(var(--shadcn-primary));
-  --popup-tab-focus-border-color: var(--bio-focus);
   --popup-focus-outline-color: var(--bio-focus);
-  --popup-button-hover-background-color: hsl(var(--shadcn-accent));
-  --popup-scrollbar-thumb-color: hsl(var(--shadcn-muted-foreground) / 0.4);
+  --popup-scrollbar-thumb-color: var(--neutral-border-strong);
 
   /* search pad */
   --search-font-family: var(--font-family);
@@ -61,56 +52,52 @@
    * translucent blue, matching the blue selection outline it accompanies. The
    * dropdown result row keeps the grey `--search-result-hover-background-color`.
    */
-  --search-container-border-color: hsl(var(--shadcn-border));
+  --search-container-border-color: var(--border);
 
   /* drilldown — supplied by bpmn-js, so there is no token default to inherit */
   --breadcrumbs-font-family: var(--font-family);
-  --breadcrumbs-item-color: hsl(var(--shadcn-primary));
-  --drilldown-fill-color: hsl(var(--shadcn-primary-foreground));
-  --drilldown-background-color: hsl(var(--shadcn-primary));
-
-  /* error tooltip — a tinted wash rather than the token's flat surface */
-  --tooltip-error-background-color: hsl(var(--shadcn-destructive) / 0.1);
+  --breadcrumbs-item-color: var(--primary-action-default);
+  --drilldown-fill-color: var(--primary-action-foreground);
+  --drilldown-background-color: var(--primary-action-default);
 }
 
 /**
  * Structural overrides. diagram-js hard-codes a handful of radii, shadows and
- * literal hovers; re-derive them from shadcn tokens so both light and dark
- * modes stay consistent.
+ * literal hovers; re-derive them from C4 tokens so both light and dark modes
+ * stay consistent.
  */
 
 /* palette shares the token-driven radius */
-.bpmn-io-shadcn-theme .djs-palette {
-  border-radius: calc(var(--shadcn-radius) - 2px);
+.c4-ui .djs-palette {
+  border-radius: var(--radius-md);
 }
 
 /*
- * Palette icons stay at full foreground contrast in every state; hover adds a
- * background highlight (the shared toggle-hover token, so C4 stays aligned)
- * rather than dimming the icon. The highlight is a centred, inset square that
- * sits behind the glyph like a shadcn icon button — clear of the palette edge
- * and its neighbours — instead of a full-bleed slab pinned to the border. It is
- * drawn on an ::after pseudo behind the icon (the glyph itself rides on
- * ::before), so the grid never shifts on hover.
+ * Palette icons are muted glyphs that darken to full foreground on hover, and
+ * hover also adds a background highlight. The highlight is a centred, inset
+ * square that sits behind the glyph like a shadcn icon button — clear of the
+ * palette edge and its neighbours — instead of a full-bleed slab pinned to the
+ * border. It is drawn on an ::after pseudo behind the icon (the glyph itself
+ * rides on ::before), so the grid never shifts on hover.
  */
-.bpmn-io-shadcn-theme .djs-palette .entry {
+.c4-ui .djs-palette .entry {
   position: relative;
   z-index: 0;
 }
 
-.bpmn-io-shadcn-theme .djs-palette .entry:hover::after {
+.c4-ui .djs-palette .entry:hover::after {
   content: "";
   position: absolute;
   z-index: -1;
   inset: 5px;
   background: var(--palette-toggle-hover-background-color);
-  border-radius: calc(var(--shadcn-radius) - 2px);
+  border-radius: var(--radius-md);
 }
 
-.bpmn-io-shadcn-theme .djs-popup {
-  border-radius: calc(var(--shadcn-radius) - 2px);
-  box-shadow: 0 10px 15px -3px hsl(var(--shadcn-foreground) / 0.1),
-    0 4px 6px -4px hsl(var(--shadcn-foreground) / 0.1);
+/* the design system's Command surface is `rounded-lg` */
+.c4-ui .djs-popup {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
 }
 
 /*
@@ -122,41 +109,40 @@
  * there are results. One border plus one divider keeps the framing consistent
  * and stops the results reading as a second box stamped onto the input.
  */
-.bpmn-io-shadcn-theme .djs-search-container {
+.c4-ui .djs-search-container {
   padding: 0;
   overflow: hidden;
   background: var(--search-container-background-color);
   border: 1px solid var(--search-container-border-color);
-  border-radius: var(--shadcn-radius);
-  box-shadow: 0 10px 15px -3px var(--search-shadow-color),
-    0 4px 6px -4px var(--search-shadow-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
 }
 
-.bpmn-io-shadcn-theme .djs-search-input input {
+.c4-ui .djs-search-input input {
   padding: 9px 12px 9px 34px;
   background: transparent;
   border: none;
   border-radius: 0;
 }
 
-.bpmn-io-shadcn-theme .djs-search-input input:focus {
+.c4-ui .djs-search-input input:focus {
   background: transparent;
   border: none;
   outline: none;
   box-shadow: none;
 }
 
-.bpmn-io-shadcn-theme .djs-search-input svg {
+.c4-ui .djs-search-input svg {
   top: 50%;
   left: 12px;
   transform: translateY(-50%);
 }
 
-.bpmn-io-shadcn-theme .djs-search-icon path {
+.c4-ui .djs-search-icon path {
   fill: var(--search-result-secondary-color);
 }
 
-.bpmn-io-shadcn-theme .djs-search-results {
+.c4-ui .djs-search-results {
   background: transparent;
 }
 
@@ -164,73 +150,73 @@
  * The divider and list padding ride on the results, so the empty state stays a
  * symmetric single-row popover and only gains a separator once results exist.
  */
-.bpmn-io-shadcn-theme .djs-search-results:not(:empty) {
+.c4-ui .djs-search-results:not(:empty) {
   padding: 4px;
   border-top: 1px solid var(--search-container-border-color);
 }
 
-.bpmn-io-shadcn-theme .djs-search-result {
+.c4-ui .djs-search-result {
   padding: 7px 8px;
-  border-radius: calc(var(--shadcn-radius) - 2px);
+  border-radius: var(--radius-md);
 }
 
-/* a text input, so it takes the same radius and focus ring as the panel's */
-.bpmn-io-shadcn-theme .djs-popup-search input {
-  border-radius: calc(var(--shadcn-radius) - 2px);
+/* CommandInput is `rounded-md` */
+.c4-ui .djs-popup-search input {
+  border-radius: var(--radius-md);
 }
 
-.bpmn-io-shadcn-theme .djs-popup-search input:focus {
+.c4-ui .djs-popup-search input:focus {
   box-shadow: 0 0 0 3px var(--popup-search-focus-ring-color);
 }
 
-/* entries and tabs align to the token radius */
-.bpmn-io-shadcn-theme .djs-popup-header .entry,
-.bpmn-io-shadcn-theme .djs-popup-body .entry,
-.bpmn-io-shadcn-theme .djs-popup-body .entry-header {
-  border-radius: calc(var(--shadcn-radius) - 4px);
+/* CommandItem is `rounded-md` */
+.c4-ui .djs-popup-header .entry,
+.c4-ui .djs-popup-body .entry,
+.c4-ui .djs-popup-body .entry-header {
+  border-radius: var(--radius-md);
 }
 
-.bpmn-io-shadcn-theme .djs-popup-tab:focus-visible {
+.c4-ui .djs-popup-tab:focus-visible {
   outline-color: var(--popup-tab-focus-border-color);
 }
 
-/* both read as shadcn icon buttons, so they take the tighter radius */
-.bpmn-io-shadcn-theme .djs-popup-breadcrumbs-item--back,
-.bpmn-io-shadcn-theme .djs-popup-entry-docs {
-  border-radius: calc(var(--shadcn-radius) - 4px);
+/* both read as icon buttons, and the design system's Button is `rounded-lg` */
+.c4-ui .djs-popup-breadcrumbs-item--back,
+.c4-ui .djs-popup-entry-docs {
+  border-radius: var(--radius-lg);
 }
 
-.bpmn-io-shadcn-theme .djs-popup-breadcrumbs-item:focus-visible,
-.bpmn-io-shadcn-theme .djs-popup-entry-docs:focus-visible {
+.c4-ui .djs-popup-breadcrumbs-item:focus-visible,
+.c4-ui .djs-popup-entry-docs:focus-visible {
   outline-color: var(--popup-focus-outline-color);
 }
 
-.bpmn-io-shadcn-theme .bjs-breadcrumbs {
-  color: hsl(var(--shadcn-foreground));
+.c4-ui .bjs-breadcrumbs {
+  color: var(--foreground);
 }
 
-.bpmn-io-shadcn-theme .bjs-breadcrumbs li:not(:first-child)::before {
+.c4-ui .bjs-breadcrumbs li:not(:first-child)::before {
   content: "›";
   color: var(--breadcrumbs-arrow-color);
   font-size: 1.25em;
 }
 
-.bpmn-io-shadcn-theme .bjs-breadcrumbs li:not(:last-of-type) a:focus-visible,
-.bpmn-io-shadcn-theme .bjs-drilldown:focus-visible {
+.c4-ui .bjs-breadcrumbs li:not(:last-of-type) a:focus-visible,
+.c4-ui .bjs-drilldown:focus-visible {
   outline: 2px solid var(--popup-focus-outline-color);
   outline-offset: 2px;
 }
 
-.bpmn-io-shadcn-theme .bjs-drilldown {
-  border-radius: calc(var(--shadcn-radius) - 4px);
+.c4-ui .bjs-drilldown {
+  border-radius: var(--radius-lg);
 }
 
-.bpmn-io-shadcn-theme .bjs-drilldown:hover {
-  background-color: hsl(var(--shadcn-primary) / 0.9);
+.c4-ui .bjs-drilldown:hover {
+  background-color: var(--primary-action-hover);
 }
 
 /* element-template entry icons keep their aspect ratio */
-.bpmn-io-shadcn-theme .djs-popup-entry-icon img,
-.bpmn-io-shadcn-theme .djs-popup-entry-icon {
+.c4-ui .djs-popup-entry-icon img,
+.c4-ui .djs-popup-entry-icon {
   object-fit: contain;
 }

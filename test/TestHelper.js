@@ -44,13 +44,13 @@ import baseThemeCss from '@bpmn-io/theme/assets/theme.css';
 import tokensCss from '@bpmn-io/shadcn-theme/assets/tokens.css';
 import propertiesPanelThemeCss from '@bpmn-io/shadcn-theme/assets/properties-panel.css';
 import diagramThemeCss from '@bpmn-io/shadcn-theme/assets/diagram.css';
-import c4ThemeCss from '@bpmn-io/shadcn-theme/assets/c4.css';
 import playgroundCss from './playground.css';
 
 import defaultDiagram from './fixtures/playground.bpmn';
 import manyInputsDiagram from './fixtures/many-inputs.bpmn';
 
 let stylesInserted = false;
+const THEMES = [ 'bpmn-io', 'c4' ];
 let activeTheme = getThemeFromUrl();
 
 const templates = [
@@ -392,7 +392,6 @@ function insertStyles() {
   insertStyle('shadcn-tokens.css', tokensCss);
   insertStyle('shadcn-properties-panel.css', propertiesPanelThemeCss);
   insertStyle('shadcn-diagram.css', diagramThemeCss);
-  insertStyle('c4-properties-panel.css', c4ThemeCss);
   insertStyle('playground.css', playgroundCss);
 
   insertThemeSwitcher();
@@ -414,8 +413,7 @@ function insertThemeSwitcher() {
   switcher.setAttribute('role', 'group');
   switcher.innerHTML = `
     <span class="theme-switcher__label">Theme</span>
-    <button type="button" data-theme="original">Original</button>
-    <button type="button" data-theme="shadcn">Shadcn</button>
+    <button type="button" data-theme="bpmn-io">bpmn-io</button>
     <button type="button" data-theme="c4">C4</button>
   `;
 
@@ -436,7 +434,7 @@ function insertThemeSwitcher() {
 }
 
 function setTheme(theme, persist = true) {
-  if (theme !== 'original' && theme !== 'shadcn' && theme !== 'c4') {
+  if (!THEMES.includes(theme)) {
     return;
   }
 
@@ -450,11 +448,11 @@ function setTheme(theme, persist = true) {
   }
 }
 
-// consumers apply a theme at the app root, which is what puts portaled UI
-// (the FEEL popup, tooltips) in scope
+// the theme is scoped to the design system's own `c4-ui`, which a consumer
+// applies at the app root — that is also what puts portaled UI (the FEEL popup,
+// tooltips) in scope
 function applyTheme() {
-  document.body.classList.toggle('bpmn-io-shadcn-theme', activeTheme !== 'original');
-  document.documentElement.classList.toggle('c4-ui', activeTheme === 'c4');
+  document.documentElement.classList.toggle('c4-ui', activeTheme !== 'bpmn-io');
 }
 
 function updateThemeSwitcher(switcher) {
@@ -466,7 +464,7 @@ function updateThemeSwitcher(switcher) {
 function getThemeFromUrl() {
   const theme = new URLSearchParams(window.location.search).get('theme');
 
-  return theme === 'original' || theme === 'shadcn' || theme === 'c4' ? theme : 'shadcn';
+  return THEMES.includes(theme) ? theme : 'c4';
 }
 
 function persistThemeInUrl() {
