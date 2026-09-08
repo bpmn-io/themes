@@ -41,9 +41,9 @@ import elementTemplatesCss from 'bpmn-js-element-templates/dist/assets/element-t
 import popupMenuCss from 'camunda-bpmn-js/styles/popup-menu.css';
 
 import baseThemeCss from '@bpmn-io/theme/assets/theme.css';
-import tokensCss from '@bpmn-io/shadcn-theme/assets/tokens.css';
-import propertiesPanelThemeCss from '@bpmn-io/shadcn-theme/assets/properties-panel.css';
-import diagramThemeCss from '@bpmn-io/shadcn-theme/assets/diagram.css';
+import tokensCss from '@bpmn-io/c4-theme/assets/tokens.css';
+import propertiesPanelThemeCss from '@bpmn-io/c4-theme/assets/properties-panel.css';
+import diagramThemeCss from '@bpmn-io/c4-theme/assets/diagram.css';
 import playgroundCss from './playground.css';
 
 import defaultDiagram from './fixtures/playground.bpmn';
@@ -57,7 +57,7 @@ const templates = [
   {
     $schema: 'https://unpkg.com/@camunda/zeebe-element-templates-json-schema/resources/schema.json',
     name: 'Example worker',
-    id: 'io.bpmn-io.shadcn-theme.example-worker',
+    id: 'io.bpmn-io.c4-theme.example-worker',
     version: 1,
     appliesTo: [
       'bpmn:ServiceTask'
@@ -389,9 +389,9 @@ function insertStyles() {
   insertStyle('element-templates.css', elementTemplatesCss);
   insertStyle('popup-menu.css', popupMenuCss);
   insertStyle('element-template-chooser.css', elementTemplateChooserCss);
-  insertStyle('shadcn-tokens.css', tokensCss);
-  insertStyle('shadcn-properties-panel.css', propertiesPanelThemeCss);
-  insertStyle('shadcn-diagram.css', diagramThemeCss);
+  insertStyle('c4-tokens.css', tokensCss);
+  insertStyle('c4-properties-panel.css', propertiesPanelThemeCss);
+  insertStyle('c4-diagram.css', diagramThemeCss);
   insertStyle('playground.css', playgroundCss);
 
   insertThemeSwitcher();
