@@ -82,6 +82,49 @@ It has to be the application root, not a wrapper around the canvas. Popups and
 tooltips are appended to the end of `<body>`, outside the component that opened
 them, and a theme only reaches what it contains.
 
+## Validation
+
+A library copies the tokens it reads into its own stylesheet, so the copy can
+drift. `bpmn-io-theme-validate` compares it against this package and reports
+names it doesn't define and values that no longer match.
+
+Run it on your own stylesheet, as a step of your `all` check:
+
+```json
+"all": "run-s lint lint:theme …",
+"lint:theme": "bpmn-io-theme-validate assets/diagram-js.css"
+```
+
+It fails the build on a mismatch, against the `@bpmn-io/theme` version you have
+installed — so a token change reaches you when you bump the dependency.
+
+## Integration audit
+
+Internal check to this repository; consumers do not run it.
+
+Changing a token means following up in every library that copied it. To see
+which ones still need work:
+
+```sh
+npm run audit:consumers
+```
+
+```
+  ✔  diagram-js — in sync
+  ✘  @bpmn-io/properties-panel — 2 problem(s)
+     14  `--bio-border` drifted from the theme — expected …
+```
+
+Each stylesheet listed in `tasks/consumers.js` is validated exactly as the
+consumer validates itself, so the output matches what that repository's own
+`lint:theme` will report once it bumps `@bpmn-io/theme`. Add a package to the
+list when it adopts the tokens. The checkouts are expected next to this
+repository; pass another directory with `npm run audit:consumers -- ~/some/where`.
+
+It reports rather than fails, and stays out of `npm run all`. Right after a token
+changes every consumer is out of sync — the expected state, until each one is
+released and updated.
+
 ## License
 
 MIT

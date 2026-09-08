@@ -2,12 +2,18 @@
   "name": "@bpmn-io/theme",
   "version": "0.0.0",
   "description": "Design tokens and the default theme for bpmn.io",
+  "type": "module",
   "scripts": {
     "all": "npm --prefix ../.. run all"
   },
   "files": [
-    "assets"
+    "assets",
+    "bin",
+    "lib"
   ],
+  "bin": {
+    "bpmn-io-theme-validate": "bin/validate.js"
+  },
   "publishConfig": {
     "access": "public"
   },

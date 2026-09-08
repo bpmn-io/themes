@@ -17,6 +17,7 @@
   "scripts": {
     "all": "run-s lint test",
     "lint": "eslint .",
+    "audit:consumers": "node packages/theme/tasks/audit.js",
     "release": "bio-release",
     "test": "karma start karma.config.cjs",
     "capture": "node scripts/capture.js",
