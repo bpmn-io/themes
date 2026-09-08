@@ -63,9 +63,9 @@ describe('diagram-js playground', function() {
 
     expect(outline).to.exist;
 
+    // `color-mix()` computes to `color(srgb r g b / a)`, plain colours to `rgba()`
     const fill = getComputedStyle(outline).fill;
-    const channels = (fill.match(/rgba?\(([^)]+)\)/) || [ '', '' ])[1].split(',');
-    const alpha = channels.length === 4 ? parseFloat(channels[3]) : 1;
+    const alpha = parseFloat((fill.match(/\/\s*([\d.]+)\s*\)/) || fill.match(/rgba\([^)]+,\s*([\d.]+)\s*\)/) || [ '', '1' ])[1]);
 
     expect(alpha, `preselected outline fill "${fill}" must be translucent`).to.be.below(1);
   });
