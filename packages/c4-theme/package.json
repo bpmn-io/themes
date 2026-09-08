@@ -1,7 +1,7 @@
 {
-  "name": "@bpmn-io/shadcn-theme",
-  "version": "0.0.1",
-  "description": "A shadcn/ui theme for bpmn.io, adapted to the Camunda Design System",
+  "name": "@bpmn-io/c4-theme",
+  "version": "0.0.0",
+  "description": "A Camunda Design System theme for bpmn.io",
   "scripts": {
     "all": "npm --prefix ../.. run all"
   },
@@ -16,8 +16,8 @@
     "./package.json": "./package.json"
   },
   "keywords": [
-    "shadcn",
     "camunda",
+    "design system",
     "bpmn.io",
     "theme"
   ],
@@ -28,7 +28,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bpmn-io/themes.git",
-    "directory": "packages/shadcn-theme"
+    "directory": "packages/c4-theme"
   },
   "license": "MIT",
   "author": "bpmn.io Contributors",

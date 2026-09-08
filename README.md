@@ -7,7 +7,7 @@ The shared design-token layer for bpmn.io, and the themes built on top of it.
 | Package | Description |
 | --- | --- |
 | [`@bpmn-io/theme`](./packages/theme) | The design tokens and the default bpmn.io look. Consumed by the libraries themselves. |
-| [`@bpmn-io/shadcn-theme`](./packages/shadcn-theme) | A [shadcn/ui](https://ui.shadcn.com/) theme, adapted to the [Camunda Design System](https://github.com/camunda/design-system) (C4), which is itself shadcn-based. |
+| [`@bpmn-io/c4-theme`](./packages/c4-theme) | Adopts bpmn.io components to fit visually into [Camunda Design System](https://github.com/camunda/design-system) (C4) built applications. |
 
 ## Applying a theme
 

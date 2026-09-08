@@ -1,14 +1,14 @@
-# @bpmn-io/shadcn-theme
+# @bpmn-io/c4-theme
 
 [![CI](https://github.com/bpmn-io/themes/actions/workflows/CI.yml/badge.svg)](https://github.com/bpmn-io/themes/actions/workflows/CI.yml)
 
-A [shadcn/ui](https://ui.shadcn.com/) theme for bpmn.io, adapted to the
-[Camunda Design System](https://github.com/camunda/design-system) (C4) — which
-is itself built on shadcn. Structure (radii, spacing, control heights, ghost
-buttons) is shadcn-derived; colour comes from C4 tokens.
+Makes bpmn.io look like the [Camunda Design System](https://github.com/camunda/design-system) (C4).
 
 It works by re-pointing the [`@bpmn-io/theme`](../theme) semantic tokens at C4
-tokens, so one import themes every bpmn.io component at once.
+tokens, so one import themes every bpmn.io component at once. Colour always
+comes from C4; the structure it implies — radii, spacing, control heights, ghost
+buttons — follows the [shadcn/ui](https://ui.shadcn.com/) conventions C4 is
+built on.
 
 ## Usage
 
@@ -27,8 +27,8 @@ is the only opt-in:
 ```js
 import '@camunda/design-system/styles.css';
 import '@bpmn-io/properties-panel/dist/assets/properties-panel.css';
-import '@bpmn-io/shadcn-theme/assets/tokens.css';
-import '@bpmn-io/shadcn-theme/assets/properties-panel.css';
+import '@bpmn-io/c4-theme/assets/tokens.css';
+import '@bpmn-io/c4-theme/assets/properties-panel.css';
 ```
 
 Each adapter loads after the base CSS of the component it themes. To also theme
@@ -39,8 +39,8 @@ stylesheets:
 ```js
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-js/dist/assets/bpmn-js.css';
-import '@bpmn-io/shadcn-theme/assets/tokens.css';
-import '@bpmn-io/shadcn-theme/assets/diagram.css';
+import '@bpmn-io/c4-theme/assets/tokens.css';
+import '@bpmn-io/c4-theme/assets/diagram.css';
 ```
 
 Dark mode follows the design system's own `dark` class — the theme carries no

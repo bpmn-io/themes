@@ -10,9 +10,9 @@ this theme departs from the default token semantics. Everything applies beneath
 `.c4-ui`, so the theme requires `@camunda/design-system` and renders unstyled
 without it.
 
-Structure (radii, spacing, control heights, ghost buttons) stays shadcn-derived;
-colour always comes from C4 tokens — never a literal, and never a shadcn
-palette value.
+Colour always comes from C4 tokens — never a literal, and never a shadcn palette
+value. Structure (radii, spacing, control heights, ghost buttons) follows the
+shadcn conventions C4 is built on.
 
 New adapters follow the same split: keep base component packages design-system
 neutral; brand-specific mappings live here.
