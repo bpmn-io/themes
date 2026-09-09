@@ -155,6 +155,10 @@
   /* a wash behind a focused control, where the design fills rather than rings */
   --bio-focus-surface: var(--color-blue-205-100-95);
 
+  /* canvas interactions — selection outlines, bendpoints, resizers, the lasso, etc. */
+  --bio-canvas-accent: hsl(205, 100%, 40%);
+  --bio-canvas-accent-subtle: hsl(205, 100%, 75%);
+
   /* elevation */
   --bio-shadow: var(--color-black-opacity-30);
   --bio-shadow-subtle: var(--color-black-opacity-10);
