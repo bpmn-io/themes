@@ -9,4 +9,4 @@ ___Note:__ Yet to be released changes appear here._
 ## 0.1.0
 
 * `FEAT`: add the bpmn.io design tokens
-* `FEAT`: add `bpmn-io-theme-validate` and `bpmn-io-theme-audit` to check the tokens a library copied
+* `FEAT`: add `bpmn-io-theme-validate` to check the tokens a library copied
