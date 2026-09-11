@@ -52,6 +52,10 @@
   --bio-neutral: hsl(225, 10%, 35%);
   --bio-neutral-hover: hsl(225, 10%, 30%);
 
+  /* its light counterpart — a filled grey chip that carries dark text */
+  --bio-neutral-subtle: hsl(225, 10%, 80%);
+  --bio-neutral-subtle-hover: hsl(225, 10%, 75%);
+
   /* danger */
   --bio-danger: hsl(360, 100%, 45%);
   --bio-danger-hover: hsl(360, 100%, 40%);
