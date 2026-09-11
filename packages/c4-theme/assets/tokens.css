@@ -80,6 +80,11 @@
   --bio-neutral: var(--neutral-action-default);
   --bio-neutral-hover: var(--neutral-action-hover);
 
+  /* the design system's dismissible Badge leaves the remove control unfilled
+     and only tints it on hover */
+  --bio-neutral-subtle: transparent;
+  --bio-neutral-subtle-hover: var(--neutral-background-strong);
+
   /* `--bio-canvas-accent` is deliberately not bound: it is drawn over the black
      element strokes on the canvas, where a dark colour disappears. Overriding it
      means taking on that constraint. */
