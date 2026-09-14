@@ -6,6 +6,10 @@ All notable changes to [@bpmn-io/theme](https://github.com/bpmn-io/themes) are d
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.2.0
+
+* `FEAT`: add `--bio-neutral-subtle` tokens ([#10](https://github.com/bpmn-io/themes/pull/10))
+
 ## 0.1.0
 
 * `FEAT`: add the bpmn.io design tokens
