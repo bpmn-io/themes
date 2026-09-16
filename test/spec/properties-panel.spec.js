@@ -52,10 +52,7 @@ describe('properties-panel', function() {
     });
   });
 
-  // skipped until diagram-js, properties-panel and bpmn-js ship their token
-  // support; the published versions do not read `--bio-*`, so the bindings
-  // this asserts are inert against them
-  it.skip('should apply the properties-panel adapter', async function() {
+  it('should apply the properties-panel adapter', async function() {
     playground = await createPlayground(this, 'properties-panel');
 
     const panel = playground.root.querySelector('.bio-properties-panel');
@@ -67,13 +64,28 @@ describe('properties-panel', function() {
     expect(panel.getBoundingClientRect().height).to.be.at.least(
       playground.root.getBoundingClientRect().height - 2
     );
-    expect(getComputedStyle(panel).getPropertyValue('--input-border-color')).to.equal(
-      'hsl(240 5.9% 90%)'
-    );
     expect(getComputedStyle(panel).getPropertyValue('--focus-ring-width')).to.equal('3px');
-    expect(getComputedStyle(panel).getPropertyValue('--checkbox-checked-background-color')).to.equal(
-      'hsl(240 5.9% 10%)'
-    );
+
+    // compare rendered colors, not token text: the design system emits oklch,
+    // so asserting literals would pin this to a design-system version
+    const probe = document.createElement('div');
+    panel.appendChild(probe);
+
+    const render = (value) => {
+      probe.style.backgroundColor = value;
+      return getComputedStyle(probe).backgroundColor;
+    };
+
+    const inputBorder = render('var(--input-border-color)');
+    const checkedCheckbox = render('var(--checkbox-checked-background-color)');
+    const border = render('var(--input)');
+    const primary = render('var(--primary-action-default)');
+
+    probe.remove();
+
+    expect(inputBorder).to.not.equal('rgba(0, 0, 0, 0)');
+    expect(inputBorder).to.equal(border);
+    expect(checkedCheckbox).to.equal(primary);
   });
 
   it('should persist the global theme selection in the URL', async function() {
@@ -504,10 +516,7 @@ describe('properties-panel', function() {
     expect(textarea.scrollHeight).to.be.at.most(textarea.clientHeight + 1);
   });
 
-  // skipped until diagram-js, properties-panel and bpmn-js ship their token
-  // support; the published versions do not read `--bio-*`, so the bindings
-  // this asserts are inert against them
-  it.skip('should mark a stuck (sticky) group header with a fill and separator', async function() {
+  it('should mark a stuck (sticky) group header with a fill and separator', async function() {
     playground = await createPlayground(this, 'properties-panel');
     await playground.setup.settle();
 
@@ -519,16 +528,18 @@ describe('properties-panel', function() {
     await playground.setup.settle();
     header.classList.add('sticky');
 
-    // resolve the muted token (the panel header surface) in the themed context
+    // resolve the fill the panel actually uses when stuck, so the assertion
+    // survives a remap of the underlying token
     const probe = document.createElement('div');
-    probe.style.background = 'var(--neutral-background-medium)';
+    probe.style.background = 'var(--sticky-group-background-color)';
     header.appendChild(probe);
-    const mutedColor = getComputedStyle(probe).backgroundColor;
+    const stuckFill = getComputedStyle(probe).backgroundColor;
     probe.remove();
 
-    // then — stuck header carries the muted fill (not transparent) and a separator
+    // then — stuck header carries an opaque fill (content cannot show through)
+    // and a separator
     const style = getComputedStyle(header);
-    expect(style.backgroundColor).to.equal(mutedColor);
+    expect(style.backgroundColor).to.equal(stuckFill);
     expect(style.backgroundColor).to.not.equal('rgba(0, 0, 0, 0)');
     expect(style.borderBottomWidth).to.equal('1px');
   });

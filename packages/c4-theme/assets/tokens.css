@@ -5,15 +5,6 @@
  * takes — importing this stylesheet is the opt-in. Dark mode follows the design
  * system's `dark` class; this theme carries no palette of its own.
  */
-.c4-ui {
-  /* the design system exposes its radius steps as `rounded-*` utilities, not as
-     variables — only `--radius` resolves, so re-derive them with its formulas */
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-}
-
 /**
  * Bind the bpmn.io semantic tokens to C4 tokens. This is the whole theme, for
  * every bpmn.io component — the per-component adapters only carry the places
@@ -50,12 +41,13 @@
   --bio-primary-surface: var(--input-background);
   --bio-primary-surface-strong: var(--primary-background-strong);
 
-  /* no semantic step flips with the inverted surface, so take the palette
-     directly — light enough for the dark tooltip, darkened below for the light */
-  --bio-info-on-inverted: var(--color-blue-400);
+  /* a link is text on the inverted surface, so this is the design system's
+     `--info-foreground-subtle` — from its dark scale here, its light one below,
+     taken from the palette because the semantic token follows the page instead */
+  --bio-info-on-inverted: var(--color-sky-300);
 
-  --bio-danger: var(--danger-action-default);
-  --bio-danger-hover: var(--danger-action-default);
+  --bio-danger: var(--danger-foreground-subtle);
+  --bio-danger-hover: var(--danger-foreground-subtle);
   --bio-danger-text: var(--danger-foreground-strong);
   --bio-danger-surface: var(--danger-background-strong);
   --bio-danger-surface-subtle: var(--danger-background-subtle);
@@ -95,16 +87,19 @@
   /* alphas and mixing space follow the design system's own Input:
      `focus-visible:ring-ring/20 dark:focus-visible:ring-ring/40` */
   --bio-focus-ring: color-mix(in oklab, var(--ring) 20%, transparent);
-  --bio-focus-ring-danger: color-mix(in oklab, var(--danger-action-default) 20%, transparent);
+  --bio-focus-ring-danger: color-mix(in oklab, var(--danger-foreground-subtle) 20%, transparent);
   --bio-focus-ring-warning: color-mix(in oklab, var(--warning-action-default) 20%, transparent);
 
   /* `--shadow-*` are whole box-shadow values; our libraries take just the colour */
   --bio-shadow: color-mix(in srgb, var(--foreground) 12%, transparent);
   --bio-shadow-subtle: color-mix(in srgb, var(--foreground) 8%, transparent);
 
-  --bio-radius-sm: var(--radius-sm);
-  --bio-radius-md: var(--radius-md);
-  --bio-radius-lg: var(--radius-lg);
+  /* the design system exposes no radius steps as variables, only `--radius` —
+     its `.rounded-sm` / `.rounded-md` classes compile these formulas in, so keep
+     them in sync by hand */
+  --bio-radius-sm: calc(var(--radius) - 4px);
+  --bio-radius-md: calc(var(--radius) - 2px);
+  --bio-radius-lg: var(--radius);
 }
 
 /* the design system doubles the ring alpha in dark mode; it flips its own
@@ -114,9 +109,9 @@
 .c4-ui.dark .bio-theme-parent,
 .c4-ui.dark.bio-theme-parent {
   --bio-focus-ring: color-mix(in oklab, var(--ring) 40%, transparent);
-  --bio-focus-ring-danger: color-mix(in oklab, var(--danger-action-default) 40%, transparent);
+  --bio-focus-ring-danger: color-mix(in oklab, var(--danger-foreground-subtle) 40%, transparent);
   --bio-focus-ring-warning: color-mix(in oklab, var(--warning-action-default) 40%, transparent);
 
   /* the tooltip turns light in dark mode, so its link darkens to match */
-  --bio-info-on-inverted: var(--color-blue-600);
+  --bio-info-on-inverted: var(--color-sky-700);
 }
