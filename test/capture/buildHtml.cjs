@@ -10,17 +10,21 @@ const ROOT = path.resolve(__dirname, '..', '..');
  */
 const STYLESHEETS = [
   'node_modules/@camunda/design-system/dist/styles.css',
-  'node_modules/bpmn-js/dist/assets/diagram-js.css',
+  'node_modules/diagram-js/assets/diagram-js.css',
   'node_modules/bpmn-js/dist/assets/bpmn-js.css',
   'node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css',
+  'node_modules/@bpmn-io/form-js/dist/assets/form-js.css',
+  'node_modules/@bpmn-io/form-js/dist/assets/form-js-editor.css',
+  'node_modules/@bpmn-io/form-js/dist/assets/form-js-playground.css',
   'node_modules/@bpmn-io/properties-panel/dist/assets/properties-panel.css',
+  'packages/theme/assets/theme.css',
   'node_modules/bpmn-js-element-templates/dist/assets/element-templates.css',
   'node_modules/camunda-bpmn-js/styles/popup-menu.css',
   'node_modules/@bpmn-io/element-template-chooser/dist/element-template-chooser.css',
-  'packages/theme/assets/theme.css',
   'packages/c4-theme/assets/tokens.css',
   'packages/c4-theme/assets/properties-panel.css',
   'packages/c4-theme/assets/diagram.css',
+  'packages/c4-theme/assets/form-js.css',
   'test/playground.css'
 ];
 
@@ -78,6 +82,18 @@ function cell(theme, capture) {
     <figcaption>${theme.label}</figcaption>
     <div class="${rootClasses.join(' ')}">
       <div class="djs-container djs-parent bjs-container bjs-breadcrumbs-shown bio-theme-parent capture-surfaces">${capture.diagram.join('\n')}</div>
+    </div>
+  </figure>`;
+  }
+
+  // form scenarios ship the rendered viewer form or the whole editor
+  if (capture.form) {
+    rootClasses.push('capture-cell-form', `capture-cell-form--${capture.formVariant}`);
+
+    return `<figure class="${figureClasses.join(' ')}">
+    <figcaption>${theme.label}</figcaption>
+    <div class="${rootClasses.join(' ')}">
+      <div class="playground-form playground-form--${capture.formVariant}">${capture.form}</div>
     </div>
   </figure>`;
   }
@@ -192,6 +208,23 @@ ${styles()}
     align-self: center;
     width: 340px;
   }
+
+  /*
+   * Form scenarios: the viewer renders a single form column; the editor renders
+   * its full three-part layout (palette / form / properties). Give each a fixed
+   * frame so the export mirrors the live playground.
+   */
+  .capture-cell-form {
+    box-sizing: border-box;
+    border: 1px solid rgba(0, 0, 0, .12);
+    background: #ffffff;
+  }
+  .capture-cell.dark .capture-cell-form { border-color: #27272a; background: #18181b; }
+  .capture-cell-form--viewer { width: 420px; }
+  .capture-cell-form--viewer .playground-form--viewer { padding: 24px; }
+  .capture-cell-form--editor { width: 960px; }
+  .capture-cell-form--editor .fjs-editor-container,
+  .capture-cell-form--editor .playground-form--editor { height: 640px; }
 
   /*
    * Portaled overlays position themselves against the live viewport. In the

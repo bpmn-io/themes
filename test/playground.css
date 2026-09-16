@@ -100,6 +100,28 @@ body {
   background: var(--card, hsl(0 0% 100%));
 }
 
+/*
+ * form-js scenarios mount a single surface (the viewer form, or the editor with
+ * its own palette / properties layout) that fills the scenario, so they replace
+ * the two-column canvas/panel grid.
+ */
+.playground-main--form {
+  display: block;
+  height: 100%;
+  min-height: 0;
+}
+
+.playground-form {
+  height: 100%;
+  min-height: 0;
+}
+
+.playground-form--viewer {
+  overflow: auto;
+  padding: 24px;
+  background: var(--background, hsl(0 0% 100%));
+}
+
 .playground-properties > .bio-properties-panel {
   display: flex;
   flex-direction: column;

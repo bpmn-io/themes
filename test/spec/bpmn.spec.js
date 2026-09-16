@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import {
-  createPlayground,
+  createBpmnPlayground,
   isPlaygroundEnabled,
   shouldKeepPlayground
 } from '../TestHelper.js';
@@ -22,7 +22,7 @@ describe('bpmn-js playground', function() {
   });
 
   it('should theme the drilldown control', async function() {
-    playground = await createPlayground(this, 'bpmn-drilldown');
+    playground = await createBpmnPlayground(this, 'bpmn-drilldown');
 
     const drilldown = playground.root.querySelector('.bjs-drilldown');
     const canvas = playground.root.querySelector('.djs-parent');
@@ -46,7 +46,7 @@ describe('bpmn-js playground', function() {
   });
 
   it('should theme drilldown breadcrumbs', async function() {
-    playground = await createPlayground(this, 'bpmn-breadcrumbs');
+    playground = await createBpmnPlayground(this, 'bpmn-breadcrumbs');
 
     // when
     playground.setup.drilldown();
