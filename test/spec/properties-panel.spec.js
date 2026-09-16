@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { EditorView } from '@codemirror/view';
 
 import {
-  createPlayground,
+  createBpmnPlayground,
   isPlaygroundEnabled,
   shouldKeepPlayground
 } from '../TestHelper.js';
@@ -24,7 +24,7 @@ describe('properties-panel', function() {
   });
 
   it('should keep expanded list-item titles at a consistent standard weight', async function() {
-    playground = await createPlayground(this, 'properties-panel');
+    playground = await createBpmnPlayground(this, 'properties-panel');
     const root = playground.root;
     await playground.setup.settle();
 
@@ -56,7 +56,7 @@ describe('properties-panel', function() {
   // support; the published versions do not read `--bio-*`, so the bindings
   // this asserts are inert against them
   it.skip('should apply the properties-panel adapter', async function() {
-    playground = await createPlayground(this, 'properties-panel');
+    playground = await createBpmnPlayground(this, 'properties-panel');
 
     const panel = playground.root.querySelector('.bio-properties-panel');
     const testContainer = playground.root.closest('.test-container');
@@ -77,7 +77,7 @@ describe('properties-panel', function() {
   });
 
   it('should persist the global theme selection in the URL', async function() {
-    playground = await createPlayground(this, 'properties-panel-theme-switcher');
+    playground = await createBpmnPlayground(this, 'properties-panel-theme-switcher');
 
     const bpmnIoButton = document.querySelector(
       '.theme-switcher button[data-theme="bpmn-io"]'
@@ -108,7 +108,7 @@ describe('properties-panel', function() {
   });
 
   it('should distinguish open and closed group headers', async function() {
-    playground = await createPlayground(this, 'properties-panel-section-hierarchy');
+    playground = await createBpmnPlayground(this, 'properties-panel-section-hierarchy');
 
     // when
     await playground.setup.settle();
@@ -141,7 +141,7 @@ describe('properties-panel', function() {
   });
 
   it('should render focused, invalid and disabled input states', async function() {
-    playground = await createPlayground(this, 'properties-panel-input-states', {
+    playground = await createBpmnPlayground(this, 'properties-panel-input-states', {
       themeControls: true
     });
 
@@ -164,7 +164,7 @@ describe('properties-panel', function() {
   });
 
   it('should render select, checkbox, toggle and list states', async function() {
-    playground = await createPlayground(this, 'properties-panel-controls', {
+    playground = await createBpmnPlayground(this, 'properties-panel-controls', {
       themeControls: true
     });
 
@@ -186,7 +186,7 @@ describe('properties-panel', function() {
   });
 
   it('should distinguish primary and ghost header actions', async function() {
-    playground = await createPlayground(this, 'properties-panel-button-hierarchy', {
+    playground = await createBpmnPlayground(this, 'properties-panel-button-hierarchy', {
       themeControls: true
     });
 
@@ -231,7 +231,7 @@ describe('properties-panel', function() {
   });
 
   it('should render a themed tooltip', async function() {
-    playground = await createPlayground(this, 'properties-panel-tooltip');
+    playground = await createBpmnPlayground(this, 'properties-panel-tooltip');
 
     // when
     await playground.setup.settle();
@@ -247,7 +247,7 @@ describe('properties-panel', function() {
   });
 
   it('should render an open themed dropdown', async function() {
-    playground = await createPlayground(this, 'properties-panel-dropdown', {
+    playground = await createBpmnPlayground(this, 'properties-panel-dropdown', {
       themeControls: true
     });
 
@@ -263,7 +263,7 @@ describe('properties-panel', function() {
   });
 
   it('should render the example data JSON editor', async function() {
-    playground = await createPlayground(this, 'properties-panel-example-data', {
+    playground = await createBpmnPlayground(this, 'properties-panel-example-data', {
       exampleData: true
     });
 
@@ -283,7 +283,7 @@ describe('properties-panel', function() {
   });
 
   it('should give the JSON editor gutter the muted indicator fill', async function() {
-    playground = await createPlayground(this, 'properties-panel-example-data', {
+    playground = await createBpmnPlayground(this, 'properties-panel-example-data', {
       exampleData: true
     });
 
@@ -334,7 +334,7 @@ describe('properties-panel', function() {
   });
 
   it('should align FEEL editor and input font sizing', async function() {
-    playground = await createPlayground(this, 'properties-panel-feel-typography');
+    playground = await createBpmnPlayground(this, 'properties-panel-feel-typography');
 
     // when
     playground.setup['open-group']('taskDefinition');
@@ -355,7 +355,7 @@ describe('properties-panel', function() {
   });
 
   it('should vertically centre single-line FEEL editor content', async function() {
-    playground = await createPlayground(this, 'properties-panel-feel-typography');
+    playground = await createBpmnPlayground(this, 'properties-panel-feel-typography');
 
     // when
     playground.setup['open-group']('taskDefinition');
@@ -387,7 +387,7 @@ describe('properties-panel', function() {
   });
 
   it('should vertically centre single-line JSON editor content', async function() {
-    playground = await createPlayground(this, 'properties-panel-validation', {
+    playground = await createBpmnPlayground(this, 'properties-panel-validation', {
       exampleData: true
     });
 
@@ -419,7 +419,7 @@ describe('properties-panel', function() {
   });
 
   it('should vertically centre a single-line auto-resize textarea', async function() {
-    playground = await createPlayground(this, 'properties-panel');
+    playground = await createBpmnPlayground(this, 'properties-panel');
 
     // when
     const group = playground.setup['open-group']('documentation');
@@ -442,7 +442,7 @@ describe('properties-panel', function() {
   });
 
   it('should render the example data JSON validation error', async function() {
-    playground = await createPlayground(this, 'properties-panel-validation', {
+    playground = await createBpmnPlayground(this, 'properties-panel-validation', {
       exampleData: true
     });
 
@@ -470,7 +470,7 @@ describe('properties-panel', function() {
   });
 
   it('should theme the text popup', async function() {
-    playground = await createPlayground(this, 'popup');
+    playground = await createBpmnPlayground(this, 'popup');
 
     // when
     playground.setup['text-popup']();
@@ -508,7 +508,7 @@ describe('properties-panel', function() {
   // support; the published versions do not read `--bio-*`, so the bindings
   // this asserts are inert against them
   it.skip('should mark a stuck (sticky) group header with a fill and separator', async function() {
-    playground = await createPlayground(this, 'properties-panel');
+    playground = await createBpmnPlayground(this, 'properties-panel');
     await playground.setup.settle();
 
     // a scrolled-away open group header gains the `.sticky` class from core; the
@@ -534,7 +534,7 @@ describe('properties-panel', function() {
   });
 
   it('should render the FEEL popup editor edge-to-edge (no border)', async function() {
-    playground = await createPlayground(this, 'feel-popup');
+    playground = await createBpmnPlayground(this, 'feel-popup');
 
     // when
     playground.setup['feel-popup']();
@@ -559,7 +559,7 @@ describe('properties-panel', function() {
   });
 
   it('should hide the inline FEEL editor while its popup is open', async function() {
-    playground = await createPlayground(this, 'feel-popup');
+    playground = await createBpmnPlayground(this, 'feel-popup');
 
     // core renders the inline FEEL field like this while its popup is open: the
     // "Opened in editor" placeholder is shown and the inline editor is hidden via

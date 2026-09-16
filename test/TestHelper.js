@@ -29,29 +29,39 @@ import { ZeebeVariableResolverModule } from '@bpmn-io/variable-resolver';
 import ZeebeBehaviorModule from 'camunda-bpmn-js-behaviors/lib/camunda-cloud';
 import ZeebeModdle from 'zeebe-bpmn-moddle/resources/zeebe.json';
 
+import { Form } from '@bpmn-io/form-js-viewer';
+import { FormEditor } from '@bpmn-io/form-js-editor';
+import { Playground } from '@bpmn-io/form-js-playground';
+
 import ThemeControlsModule from './ThemeControlsProvider.js';
 
 import camundaDesignSystemCss from '@camunda/design-system/styles.css';
-import diagramJsCss from 'bpmn-js/dist/assets/diagram-js.css';
+import diagramJsCss from 'diagram-js/assets/diagram-js.css';
 import bpmnJsCss from 'bpmn-js/dist/assets/bpmn-js.css';
 import bpmnFontCss from 'bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css';
 import propertiesPanelCss from '@bpmn-io/properties-panel/dist/assets/properties-panel.css';
 import elementTemplateChooserCss from '@bpmn-io/element-template-chooser/dist/element-template-chooser.css';
 import elementTemplatesCss from 'bpmn-js-element-templates/dist/assets/element-templates.css';
 import popupMenuCss from 'camunda-bpmn-js/styles/popup-menu.css';
+import formViewerCss from '@bpmn-io/form-js/dist/assets/form-js.css';
+import formEditorCss from '@bpmn-io/form-js/dist/assets/form-js-editor.css';
+import formPlaygroundCss from '@bpmn-io/form-js/dist/assets/form-js-playground.css';
 
 import baseThemeCss from '@bpmn-io/theme/assets/theme.css';
 import tokensCss from '@bpmn-io/c4-theme/assets/tokens.css';
 import propertiesPanelThemeCss from '@bpmn-io/c4-theme/assets/properties-panel.css';
 import diagramThemeCss from '@bpmn-io/c4-theme/assets/diagram.css';
+import formThemeCss from '@bpmn-io/c4-theme/assets/form-js.css';
 import playgroundCss from './playground.css';
 
 import defaultDiagram from './fixtures/playground.bpmn';
 import manyInputsDiagram from './fixtures/many-inputs.bpmn';
+import defaultForm from './fixtures/form.json';
 
 let stylesInserted = false;
 const THEMES = [ 'bpmn-io', 'c4' ];
 let activeTheme = getThemeFromUrl();
+let darkMode = getDarkFromUrl();
 
 const templates = [
   {
@@ -98,7 +108,7 @@ function isCaptureGrid() {
   return (window.__env__ && window.__env__.SINGLE_START) === 'all';
 }
 
-export async function createPlayground(context, name, options = {}) {
+export async function createBpmnPlayground(context, name, options = {}) {
   insertStyles();
 
   const {
@@ -360,6 +370,156 @@ export async function createPlayground(context, name, options = {}) {
   return playground;
 }
 
+/**
+ * Mount a form-js scenario — the viewer (`@bpmn-io/form-js-viewer` `Form`) or the
+ * editor (`@bpmn-io/form-js-editor` `FormEditor`) — into a themed playground root,
+ * mirroring `createBpmnPlayground` so the global switcher and capture hook treat
+ * form scenarios like any other.
+ *
+ * @param {object} context mocha context
+ * @param {string} name scenario name, used as the capture key
+ * @param {object} [options]
+ * @param {object} [options.schema] form schema to import (defaults to the fixture)
+ * @param {'viewer'|'editor'} [options.variant] which surface to mount
+ * @param {string} [options.selectedFieldId] editor: field to select on mount
+ */
+export async function createFormPlayground(context, name, options = {}) {
+  insertStyles();
+
+  const {
+    schema = defaultForm,
+    variant = 'viewer',
+    selectedFieldId = null
+  } = options;
+
+  const root = document.createElement('div');
+  root.className = 'playground playground--form';
+  root.dataset.playground = name;
+  root.dataset.formVariant = variant;
+  root.innerHTML = `
+    <div class="playground-main playground-main--form">
+      <div class="playground-form playground-form--${variant}"></div>
+    </div>
+  `;
+
+  TestContainer.get(context).appendChild(root);
+  applyTheme(root);
+
+  const formContainer = root.querySelector('.playground-form');
+
+  const form = variant === 'editor'
+    ? new FormEditor({ container: formContainer })
+    : new Form({ container: formContainer });
+
+  if (variant === 'editor') {
+    await form.importSchema(schema);
+  } else {
+    await form.importSchema(schema, {});
+  }
+
+  const selectField = (id) => {
+    if (variant !== 'editor') {
+      return null;
+    }
+
+    const field = form.get('formFieldRegistry').get(id);
+
+    form.get('selection').set(field);
+
+    return field;
+  };
+
+  if (selectedFieldId) {
+    selectField(selectedFieldId);
+  }
+
+  const setup = {
+    'select-field': selectField,
+    'open-palette-group': (title) => {
+      const group = [ ...root.querySelectorAll('.fjs-palette-group') ].find(
+        (el) => el.querySelector('.fjs-palette-group-title')?.textContent.trim() === title
+      );
+
+      if (group && [ ...group.classList ].includes('closed')) {
+        group.querySelector('.fjs-palette-group-header').click();
+      }
+
+      return group;
+    },
+    settle: async () => {
+      await new Promise(resolve => requestAnimationFrame(resolve));
+      await new Promise(resolve => requestAnimationFrame(resolve));
+    }
+  };
+
+  const playground = {
+    root,
+    form,
+    setup,
+    destroy() {
+      form.destroy();
+      root.remove();
+    }
+  };
+
+  if (shouldKeepPlayground()) {
+    const registry = window.__playgrounds__ || (window.__playgrounds__ = {});
+
+    registry[name] = playground;
+  }
+
+  return playground;
+}
+
+export async function createFormPlaygroundApp(context, name, options = {}) {
+  insertStyles();
+
+  const {
+    schema = defaultForm,
+    data = {}
+  } = options;
+
+  const root = document.createElement('div');
+  root.className = 'playground playground--form-app';
+  root.dataset.playground = name;
+
+  TestContainer.get(context).appendChild(root);
+  applyTheme(root);
+
+  const app = new Playground({
+    container: root,
+    schema,
+    data
+  });
+
+  await new Promise(resolve => app.on('formPlayground.init', resolve));
+
+  const setup = {
+    settle: async () => {
+      await new Promise(resolve => requestAnimationFrame(resolve));
+      await new Promise(resolve => requestAnimationFrame(resolve));
+    }
+  };
+
+  const playground = {
+    root,
+    app,
+    setup,
+    destroy() {
+      app.destroy();
+      root.remove();
+    }
+  };
+
+  if (shouldKeepPlayground()) {
+    const registry = window.__playgrounds__ || (window.__playgrounds__ = {});
+
+    registry[name] = playground;
+  }
+
+  return playground;
+}
+
 export {
   manyInputsDiagram
 };
@@ -381,6 +541,14 @@ function insertStyles() {
   insertStyle('diagram-js.css', diagramJsCss);
   insertStyle('bpmn-js.css', bpmnJsCss);
   insertStyle('bpmn-font.css', bpmnFontCss);
+
+  // form-js vendors a copy of the properties-panel and CodeMirror base styles as
+  // bare (unscoped) rules; load it before the bpmn properties-panel base so the
+  // latter wins those shared rules and the bpmn panel renders unchanged.
+  insertStyle('form-js.css', formViewerCss);
+  insertStyle('form-js-editor.css', formEditorCss);
+  insertStyle('form-js-playground.css', formPlaygroundCss);
+
   insertStyle('properties-panel.css', propertiesPanelCss);
 
   // the libraries copy the tokens into their own stylesheets once released;
@@ -392,6 +560,7 @@ function insertStyles() {
   insertStyle('c4-tokens.css', tokensCss);
   insertStyle('c4-properties-panel.css', propertiesPanelThemeCss);
   insertStyle('c4-diagram.css', diagramThemeCss);
+  insertStyle('c4-form-js.css', formThemeCss);
   insertStyle('playground.css', playgroundCss);
 
   insertThemeSwitcher();
@@ -415,17 +584,25 @@ function insertThemeSwitcher() {
     <span class="theme-switcher__label">Theme</span>
     <button type="button" data-theme="bpmn-io">bpmn-io</button>
     <button type="button" data-theme="c4">C4</button>
+    <button type="button" data-mode="dark">Dark</button>
   `;
 
   switcher.addEventListener('click', event => {
-    const button = event.target.closest('button[data-theme]');
+    const button = event.target.closest('button[data-theme], button[data-mode]');
 
-    if (button) {
+    if (!button) {
+      return;
+    }
+
+    if (button.dataset.mode === 'dark') {
+      setDarkMode(!darkMode);
+    } else {
       setTheme(button.dataset.theme);
     }
   });
 
   window.addEventListener('popstate', () => {
+    darkMode = getDarkFromUrl();
     setTheme(getThemeFromUrl(), false);
   });
 
@@ -448,17 +625,38 @@ function setTheme(theme, persist = true) {
   }
 }
 
+function setDarkMode(dark, persist = true) {
+  darkMode = dark;
+
+  applyTheme();
+  updateThemeSwitcher(document.querySelector('.theme-switcher'));
+
+  if (persist) {
+    persistThemeInUrl();
+  }
+}
+
 // the theme is scoped to the design system's own `c4-ui`, which a consumer
 // applies at the app root — that is also what puts portaled UI (the FEEL popup,
 // tooltips) in scope
 function applyTheme() {
   document.documentElement.classList.toggle('c4-ui', activeTheme !== 'bpmn-io');
+
+  // dark mode follows the design system's own class, so it only resolves under C4
+  document.documentElement.classList.toggle('dark', darkMode);
 }
 
 function updateThemeSwitcher(switcher) {
   switcher.querySelectorAll('button[data-theme]').forEach(button => {
     button.setAttribute('aria-pressed', String(button.dataset.theme === activeTheme));
   });
+
+  switcher.querySelector('button[data-mode="dark"]')
+    .setAttribute('aria-pressed', String(darkMode));
+}
+
+function getDarkFromUrl() {
+  return new URLSearchParams(window.location.search).get('dark') === 'true';
 }
 
 function getThemeFromUrl() {
@@ -471,5 +669,6 @@ function persistThemeInUrl() {
   const url = new URL(window.location.href);
 
   url.searchParams.set('theme', activeTheme);
+  url.searchParams.set('dark', String(darkMode));
   window.history.pushState(null, '', url);
 }
