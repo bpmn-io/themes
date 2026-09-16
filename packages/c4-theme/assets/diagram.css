@@ -69,7 +69,7 @@
 
 /* palette shares the token-driven radius */
 .c4-ui .djs-palette {
-  border-radius: var(--radius-md);
+  border-radius: var(--bio-radius-md);
 }
 
 /*
@@ -91,12 +91,12 @@
   z-index: -1;
   inset: 5px;
   background: var(--palette-toggle-hover-background-color);
-  border-radius: var(--radius-md);
+  border-radius: var(--bio-radius-md);
 }
 
 /* the design system's Command surface is `rounded-lg` */
 .c4-ui .djs-popup {
-  border-radius: var(--radius-lg);
+  border-radius: var(--bio-radius-lg);
   box-shadow: var(--shadow-lg);
 }
 
@@ -114,7 +114,7 @@
   overflow: hidden;
   background: var(--search-container-background-color);
   border: 1px solid var(--search-container-border-color);
-  border-radius: var(--radius-lg);
+  border-radius: var(--bio-radius-lg);
   box-shadow: var(--shadow-lg);
 }
 
@@ -157,12 +157,12 @@
 
 .c4-ui .djs-search-result {
   padding: 7px 8px;
-  border-radius: var(--radius-md);
+  border-radius: var(--bio-radius-md);
 }
 
 /* CommandInput is `rounded-md` */
 .c4-ui .djs-popup-search input {
-  border-radius: var(--radius-md);
+  border-radius: var(--bio-radius-md);
 }
 
 .c4-ui .djs-popup-search input:focus {
@@ -173,7 +173,7 @@
 .c4-ui .djs-popup-header .entry,
 .c4-ui .djs-popup-body .entry,
 .c4-ui .djs-popup-body .entry-header {
-  border-radius: var(--radius-md);
+  border-radius: var(--bio-radius-md);
 }
 
 .c4-ui .djs-popup-tab:focus-visible {
@@ -183,7 +183,7 @@
 /* both read as icon buttons, and the design system's Button is `rounded-lg` */
 .c4-ui .djs-popup-breadcrumbs-item--back,
 .c4-ui .djs-popup-entry-docs {
-  border-radius: var(--radius-lg);
+  border-radius: var(--bio-radius-lg);
 }
 
 .c4-ui .djs-popup-breadcrumbs-item:focus-visible,
@@ -208,7 +208,7 @@
 }
 
 .c4-ui .bjs-drilldown {
-  border-radius: var(--radius-lg);
+  border-radius: var(--bio-radius-lg);
 }
 
 .c4-ui .bjs-drilldown:hover {

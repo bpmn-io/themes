@@ -18,11 +18,11 @@
 .c4-ui .bio-properties-panel {
   /* Input and Button are `rounded-lg`, Checkbox `rounded-[4px]`, Tooltip
      `rounded-md`; Badge stays a pill */
-  --input-border-radius: var(--radius-lg);
+  --input-border-radius: var(--bio-radius-lg);
   --checkbox-border-radius: 4px;
-  --chip-border-radius: var(--radius-sm);
-  --surface-border-radius: var(--radius-md);
-  --icon-button-border-radius: var(--radius-lg);
+  --chip-border-radius: var(--bio-radius-sm);
+  --surface-border-radius: var(--bio-radius-md);
+  --icon-button-border-radius: var(--bio-radius-lg);
 
   /* the design system's small control (`h-8`) — this panel is a dense sidebar,
      not a page form */
@@ -285,7 +285,7 @@
 
 .c4-ui .bio-properties-panel-dropdown-button__menu {
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--bio-radius-lg);
   box-shadow: var(--shadow-md);
 }
 
@@ -394,7 +394,7 @@
   --popup-header-background-color: var(--neutral-background-subtle);
 
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--bio-radius-lg);
   box-shadow: var(--shadow-lg);
   font-family: var(--font-family);
 }
