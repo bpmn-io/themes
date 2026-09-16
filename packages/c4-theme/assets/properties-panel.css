@@ -8,11 +8,19 @@
 /*
  * Font stacks live on the theme root (not only the panel) so portaled surfaces
  * — the FEEL popup and tooltips — inherit them too instead of falling back to
- * the browser serif default.
+ * the browser serif default. The panel declares both variables on itself, and a
+ * value set on the element beats an inherited one, so it has to be listed too.
  */
-.c4-ui {
+.c4-ui,
+.c4-ui .bio-properties-panel {
   --font-family: var(--font-sans);
   --font-family-monospace: var(--font-mono);
+}
+
+/* CodeMirror sets its own `monospace` on the scroller, so the FEEL editors
+   never pick up the variable above */
+.c4-ui .cm-scroller {
+  font-family: var(--font-family-monospace);
 }
 
 .c4-ui .bio-properties-panel {
@@ -86,7 +94,8 @@
   color: var(--neutral-foreground-subtle);
 }
 
-.c4-ui .bio-properties-panel-input[type="checkbox"],
+/* the checkbox is a custom control (`appearance: none`), so it takes its fill
+   from `--checkbox-*`; only the radio is still native */
 .c4-ui .bio-properties-panel-input[type="radio"] {
   accent-color: var(--primary-action-default);
 }
@@ -318,7 +327,8 @@
  * editor (and its scroller) must fill the wrapper so the editing surface,
  * background, gutter diagnostics and focus ring stay flush with the field box
  * and span its full height (core sizes them with an editor/scroller min-height,
- * not wrapper padding). Content stays top-aligned, as in the untethered editor.
+ * not wrapper padding). JSON content stays top-aligned, as in the untethered
+ * editor; feelers is a single-line field in practice, so it centres instead.
  *
  * feelers is popup-capable, so it is scoped to the non-popup state for the same
  * reason as FEEL above; the JSON editor has no popup.
@@ -337,6 +347,14 @@
 .c4-ui .bio-properties-panel-entry .bio-properties-panel-feelers-editor .cm-scroller,
 .c4-ui .bio-properties-panel-entry .bio-properties-panel-json-editor .cm-scroller {
   flex: 1;
+}
+
+/* A single line does not fill the height the wrapper's min-height sets, and the
+   scroller pins it to the top, so it rides ~2px above the plain inputs next to
+   it. CodeMirror sets `align-items: flex-start !important`, hence the override;
+   `safe` keeps the top reachable once the content overflows. */
+.c4-ui .bio-properties-panel-entry .bio-properties-panel-feelers-editor .cm-scroller {
+  align-items: safe center !important;
 }
 
 /*

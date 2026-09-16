@@ -1,0 +1,142 @@
+{
+  "type": "default",
+  "id": "shadcn-theme-form",
+  "components": [
+    {
+      "type": "text",
+      "id": "Heading_1",
+      "text": "# Registration\n\nComplete every field so each styled surface is present."
+    },
+    {
+      "type": "html",
+      "id": "Html_1",
+      "content": "<h2>Before you start</h2><p>Read the <em>terms</em> below.</p><ul><li>First</li><li>Second</li></ul><blockquote>Quoted note.</blockquote><pre>code block</pre>"
+    },
+    {
+      "type": "separator",
+      "id": "Separator_1"
+    },
+    {
+      "type": "textfield",
+      "id": "Textfield_1",
+      "key": "name",
+      "label": "Full name",
+      "description": "As it appears on your ID.",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "type": "number",
+      "id": "Number_1",
+      "key": "age",
+      "label": "Age",
+      "description": "In full years."
+    },
+    {
+      "type": "datetime",
+      "id": "Datetime_1",
+      "key": "date",
+      "subtype": "date",
+      "dateLabel": "Start date"
+    },
+    {
+      "type": "select",
+      "id": "Select_1",
+      "key": "country",
+      "label": "Country",
+      "values": [
+        { "label": "Germany", "value": "de" },
+        { "label": "United States", "value": "us" },
+        { "label": "Japan", "value": "jp" }
+      ]
+    },
+    {
+      "type": "radio",
+      "id": "Radio_1",
+      "key": "plan",
+      "label": "Plan",
+      "values": [
+        { "label": "Free", "value": "free" },
+        { "label": "Pro", "value": "pro" }
+      ]
+    },
+    {
+      "type": "checklist",
+      "id": "Checklist_1",
+      "key": "interests",
+      "label": "Interests",
+      "values": [
+        { "label": "BPMN", "value": "bpmn" },
+        { "label": "DMN", "value": "dmn" },
+        { "label": "Forms", "value": "forms" }
+      ]
+    },
+    {
+      "type": "taglist",
+      "id": "Taglist_1",
+      "key": "tags",
+      "label": "Tags",
+      "values": [
+        { "label": "Design", "value": "design" },
+        { "label": "Engineering", "value": "engineering" },
+        { "label": "Product", "value": "product" }
+      ]
+    },
+    {
+      "type": "textarea",
+      "id": "Textarea_1",
+      "key": "comment",
+      "label": "Comment",
+      "description": "Anything else we should know?"
+    },
+    {
+      "type": "checkbox",
+      "id": "Checkbox_1",
+      "key": "newsletter",
+      "label": "Subscribe to the newsletter"
+    },
+    {
+      "type": "group",
+      "id": "Group_1",
+      "label": "Address",
+      "showOutline": true,
+      "components": [
+        {
+          "type": "textfield",
+          "id": "Textfield_2",
+          "key": "street",
+          "label": "Street"
+        },
+        {
+          "type": "textfield",
+          "id": "Textfield_3",
+          "key": "city",
+          "label": "City"
+        }
+      ]
+    },
+    {
+      "type": "filepicker",
+      "id": "Filepicker_1",
+      "key": "attachment",
+      "label": "Attachment"
+    },
+    {
+      "type": "table",
+      "id": "Table_1",
+      "label": "Previous orders",
+      "columns": [
+        { "key": "order", "label": "Order" },
+        { "key": "total", "label": "Total" }
+      ],
+      "dataSource": "=orders"
+    },
+    {
+      "type": "button",
+      "id": "Button_1",
+      "action": "submit",
+      "label": "Submit"
+    }
+  ]
+}
