@@ -1,0 +1,138 @@
+/**
+ * Camunda Design System adapter for @bpmn-io/form-js (viewer + editor).
+ *
+ * Load after form-js.css / form-js-editor.css and assets/tokens.css. It carries
+ * only the deviations the `--bio-*` bindings do not already reproduce.
+ */
+
+/* the editor mounts the same container for its live preview, so these reach the
+   viewer and the editor alike */
+.c4-ui .fjs-container {
+  --font-family: var(--font-sans);
+
+  --color-text-light: var(--foreground);
+
+  --color-background: var(--input-background);
+
+  --color-background-pre: var(--neutral-background-medium);
+
+  --color-accent-readonly: var(--input);
+  --color-datepicker-focused-day: var(--primary-action-default);
+
+  /* form-js assigns inputs the small radius step; the design system rounds
+     inputs, buttons and popovers alike with `rounded-lg` */
+  --input-border-radius: var(--bio-radius-lg);
+  --button-border-radius: var(--bio-radius-lg);
+}
+
+/* group and dynamic list frames are square in form-js; an outline follows
+   `border-radius`, so the same step rounds the viewer and the editor */
+.c4-ui .fjs-container .fjs-form-field-grouplike.fjs-outlined,
+.c4-ui .fjs-editor-container .fjs-children .fjs-element.fjs-outlined,
+.c4-ui .fjs-editor-container .fjs-children .fjs-element.fjs-dashed-outlined {
+  border-radius: var(--surface-border-radius);
+}
+
+/* The design system ships a Tailwind preflight that flattens `h1`-`h6`, drops
+   list markers and zeroes every margin inside `.c4-ui`. form-js renders
+   markdown to those elements and relies on the browser defaults, so the text
+   and html fields need them back. */
+.c4-ui .fjs-container .fjs-form-field-text h1,
+.c4-ui .fjs-container .fjs-form-field-html h1,
+.c4-ui .fjs-container .fjs-form-field-text h2,
+.c4-ui .fjs-container .fjs-form-field-html h2,
+.c4-ui .fjs-container .fjs-form-field-text h3,
+.c4-ui .fjs-container .fjs-form-field-html h3,
+.c4-ui .fjs-container .fjs-form-field-text h4,
+.c4-ui .fjs-container .fjs-form-field-html h4,
+.c4-ui .fjs-container .fjs-form-field-text h5,
+.c4-ui .fjs-container .fjs-form-field-html h5,
+.c4-ui .fjs-container .fjs-form-field-text h6,
+.c4-ui .fjs-container .fjs-form-field-html h6 {
+  font-weight: var(--font-weight-semibold);
+  margin: 0.83em 0 0.5em;
+}
+
+.c4-ui .fjs-container .fjs-form-field-text h1,
+.c4-ui .fjs-container .fjs-form-field-html h1 {
+  font-size: var(--text-2xl);
+}
+
+.c4-ui .fjs-container .fjs-form-field-text h2,
+.c4-ui .fjs-container .fjs-form-field-html h2 {
+  font-size: var(--text-xl);
+}
+
+.c4-ui .fjs-container .fjs-form-field-text h3,
+.c4-ui .fjs-container .fjs-form-field-html h3 {
+  font-size: var(--text-lg);
+}
+
+.c4-ui .fjs-container .fjs-form-field-text h4,
+.c4-ui .fjs-container .fjs-form-field-html h4 {
+  font-size: var(--text-base);
+}
+
+.c4-ui .fjs-container .fjs-form-field-text h5,
+.c4-ui .fjs-container .fjs-form-field-html h5 {
+  font-size: var(--text-sm);
+}
+
+.c4-ui .fjs-container .fjs-form-field-text h6,
+.c4-ui .fjs-container .fjs-form-field-html h6 {
+  font-size: var(--text-xs);
+}
+
+.c4-ui .fjs-container .fjs-form-field-text p,
+.c4-ui .fjs-container .fjs-form-field-html p,
+.c4-ui .fjs-container .fjs-form-field-text blockquote,
+.c4-ui .fjs-container .fjs-form-field-html blockquote,
+.c4-ui .fjs-container .fjs-form-field-text pre,
+.c4-ui .fjs-container .fjs-form-field-html pre {
+  margin: 1em 0;
+}
+
+.c4-ui .fjs-container .fjs-form-field-text ul,
+.c4-ui .fjs-container .fjs-form-field-html ul,
+.c4-ui .fjs-container .fjs-form-field-text ol,
+.c4-ui .fjs-container .fjs-form-field-html ol {
+  margin: 1em 0;
+  padding-left: 40px;
+}
+
+.c4-ui .fjs-container .fjs-form-field-text ul,
+.c4-ui .fjs-container .fjs-form-field-html ul {
+  list-style: disc;
+}
+
+.c4-ui .fjs-container .fjs-form-field-text ol,
+.c4-ui .fjs-container .fjs-form-field-html ol {
+  list-style: decimal;
+}
+
+/* the editor chrome carries its own tokens; its embedded properties panel reuses
+   the contract already themed by properties-panel.css */
+.c4-ui .fjs-editor-container {
+  /* core ties selection, hover and the drop marker to one colour; `--bio-primary`
+     is near-black here, so the whole family follows the ring instead */
+  --color-children-selected-border: var(--ring);
+  --color-children-hover-border: color-mix(in srgb, var(--ring) 50%, transparent);
+
+  --color-context-pad-item-fill: var(--neutral-foreground-subtle);
+
+  --color-resize-handle-background: var(--ring);
+  --color-resize-handle-border: var(--ring);
+
+  --color-dragula-background: color-mix(in srgb, var(--ring) 10%, transparent);
+  --color-dragula-border: var(--ring);
+  --color-dragula-mirror-background: var(--popover);
+  --color-dragula-error-background: var(--danger-background-subtle);
+}
+
+/* the palette declares its own variables, so this has to match that element
+   rather than the editor container around it */
+.c4-ui .fjs-palette-container {
+  /* core focuses a dragged field with `--bio-primary`, near-black here; every
+     other focus in the app is the ring */
+  --color-palette-field-focus: var(--ring);
+}
