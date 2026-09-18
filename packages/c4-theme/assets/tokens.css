@@ -5,6 +5,18 @@
  * takes — importing this stylesheet is the opt-in. Dark mode follows the design
  * system's `dark` class; this theme carries no palette of its own.
  */
+
+/* native controls are painted by the user agent, which needs to be told which
+   way the surface goes; the design system declares no `color-scheme` */
+.c4-ui {
+  color-scheme: light;
+}
+
+.dark .c4-ui,
+.c4-ui.dark {
+  color-scheme: dark;
+}
+
 /**
  * Bind the bpmn.io semantic tokens to C4 tokens. This is the whole theme, for
  * every bpmn.io component — the per-component adapters only carry the places

@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import {
-  createPlayground,
+  createBpmnPlayground,
   isPlaygroundEnabled,
   shouldKeepPlayground
 } from '../TestHelper.js';
@@ -22,7 +22,7 @@ describe('element-template-chooser playground', function() {
   });
 
   it('should expose the chooser popup surface', async function() {
-    playground = await createPlayground(this, 'element-template-chooser');
+    playground = await createBpmnPlayground(this, 'element-template-chooser');
 
     // when
     playground.setup.chooser();
@@ -41,7 +41,7 @@ describe('element-template-chooser playground', function() {
   });
 
   it('should render the properties-panel template selector', async function() {
-    playground = await createPlayground(this, 'element-template-selector');
+    playground = await createBpmnPlayground(this, 'element-template-selector');
 
     const selector = playground.root.querySelector(
       '[data-group-id="group-ElementTemplates__Template"] .bio-properties-panel-select-template-button'
@@ -53,7 +53,7 @@ describe('element-template-chooser playground', function() {
   });
 
   it('should render an applied template action above later group headers', async function() {
-    playground = await createPlayground(this, 'element-template-actions');
+    playground = await createBpmnPlayground(this, 'element-template-actions');
 
     // when
     await playground.setup.settle();

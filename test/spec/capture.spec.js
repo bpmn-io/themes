@@ -132,6 +132,34 @@ after(function() {
       return;
     }
 
+    // Form scenarios ship the rendered viewer form or the editor (with its own
+    // palette / properties layout), which mounts inside `.playground-form`.
+    if (name.startsWith('form')) {
+      const surface = root.querySelector('.playground-form');
+
+      if (!surface || !surface.innerHTML.trim()) {
+        return;
+      }
+
+      seen.add(name);
+
+      const clone = surface.cloneNode(true);
+
+      bakeGeometry(surface, clone);
+
+      const payload = JSON.stringify({
+        form: clone.innerHTML,
+        formVariant: root.dataset.formVariant || 'viewer',
+        runtimeStyles
+      });
+
+      const encoded = btoa(unescape(encodeURIComponent(payload)));
+
+      console.log(`CAPTURE::${name}::${encoded}`);
+
+      return;
+    }
+
     const panel = root.querySelector('.playground-properties');
 
     if (!panel || !panel.innerHTML.trim()) {
