@@ -126,8 +126,9 @@ function screenshotAll() {
         '--force-device-scale-factor=2',
 
         // a viewport screenshot, so the window must fit every theme column —
+        // `3 * cell + 80`, the dmn decision table being the widest at ~1040px.
         // trimming below is best-effort and only runs when ImageMagick is around
-        '--window-size=2400,2600',
+        '--window-size=3300,2600',
         `--screenshot=${pngFile}`,
         htmlFile
       ], { stdio: 'ignore' });

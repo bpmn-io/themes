@@ -24,6 +24,10 @@
   --palette-entry-hover-color: var(--neutral-foreground-strong);
   --palette-background-color: var(--background);
 
+  /* the palette shares the canvas background, so its outline has to carry it;
+     the design system's 20% `--border` is lost against the canvas */
+  --palette-border-color: var(--neutral-border-strong);
+
   /*
    * Selection affordances — the selection/hover outline, bendpoints, resizers,
    * draggers, lasso and snap lines — deliberately keep bpmn-js's blue. Blue is
