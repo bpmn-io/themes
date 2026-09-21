@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1" name="Dish" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.0.0">
+  <decision id="Decision_1" name="Dish Selection">
+    <informationRequirement id="InformationRequirement_1">
+      <requiredDecision href="#Decision_2" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_1" hitPolicy="UNIQUE">
+      <input id="Input_1" label="Season">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text>season</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_1">
+          <text>"Fall","Winter","Spring","Summer"</text>
+        </inputValues>
+      </input>
+      <input id="Input_2" label="Guest Count">
+        <inputExpression id="InputExpression_2" typeRef="number">
+          <text>guestCount</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Dish" name="dish" typeRef="string" />
+      <rule id="Rule_1">
+        <description>Cold winter evening</description>
+        <inputEntry id="UnaryTests_2">
+          <text>"Winter"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_3">
+          <text>&lt;= 8</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1">
+          <text>"Spareribs"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_2">
+        <inputEntry id="UnaryTests_4">
+          <text>"Fall"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_5">
+          <text>&lt;= 8</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_2">
+          <text>"Pumpkin Soup"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_3">
+        <inputEntry id="UnaryTests_6">
+          <text>"Summer"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_7">
+          <text>&gt; 8</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_3">
+          <text>"Light Salad"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="Decision_2" name="Season">
+    <literalExpression id="LiteralExpression_4">
+      <text>if month in ["December".."February"] then "Winter" else "Summer"</text>
+    </literalExpression>
+  </decision>
+  <businessKnowledgeModel id="BusinessKnowledgeModel_1" name="Portion Size">
+    <encapsulatedLogic id="FunctionDefinition_1" kind="FEEL">
+      <formalParameter id="InformationItem_1" name="guestCount" typeRef="number" />
+      <literalExpression id="LiteralExpression_5">
+        <text>if guestCount &gt; 8 then "large" else "regular"</text>
+      </literalExpression>
+    </encapsulatedLogic>
+  </businessKnowledgeModel>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_1">
+      <dmndi:DMNShape id="DMNShape_1" dmnElementRef="Decision_1">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_2" dmnElementRef="Decision_2">
+        <dc:Bounds height="80" width="180" x="160" y="240" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_3" dmnElementRef="BusinessKnowledgeModel_1">
+        <dc:Bounds height="80" width="180" x="400" y="100" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_1" dmnElementRef="InformationRequirement_1">
+        <di:waypoint xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" x="250" y="240" />
+        <di:waypoint xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" x="250" y="180" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

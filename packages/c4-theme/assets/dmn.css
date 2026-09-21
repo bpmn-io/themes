@@ -1,0 +1,71 @@
+/**
+ * Camunda Design System adapter for dmn-js.
+ *
+ * Load after the dmn-js stylesheets and tokens.css, inside a c4 root. Only the
+ * places where this theme departs from the default token semantics belong here.
+ *
+ * Each view declares its variables on its own container, so an override has to
+ * target that container rather than `.dmn-js-parent`.
+ *
+ * The DRD canvas is diagram-js, themed by assets/diagram.css.
+ */
+.c4-ui .dmn-decision-table-container {
+  --decision-table-font-family: var(--font-sans);
+
+  /* the design system has no filled neutral step — its only filled action is
+     the near-black primary */
+  --add-column-icon-color: var(--neutral-foreground-strong);
+  --add-column-icon-background-color: var(--neutral-background-subtle);
+  --action-icon-color: var(--neutral-foreground-strong);
+  --action-icon-hover-color: var(--neutral-foreground-strong);
+  --action-icon-hover-background-color: var(--neutral-background-medium);
+}
+
+.c4-ui .dmn-decision-table-container .create-inputs .action-icon,
+.c4-ui .dmn-decision-table-container .add-input .action-icon,
+.c4-ui .dmn-decision-table-container .add-output .action-icon {
+  border: 1px solid var(--input);
+}
+
+.c4-ui .dmn-literal-expression-container {
+  --literal-expression-font-family: var(--font-sans);
+  --literal-expression-font-family-monospace: var(--font-mono);
+}
+
+.c4-ui .dmn-boxed-expression-container {
+  --boxed-expression-font-family: var(--font-sans);
+  --boxed-expression-font-family-monospace: var(--font-mono);
+}
+
+.c4-ui .dmn-drd-container {
+  --drd-font-family-monospace: var(--font-mono);
+}
+
+/* dmn-js draws a hard 1px shadow; the design system's popovers are soft */
+.c4-ui .dmn-js-parent .context-menu {
+  box-shadow: var(--shadow-lg);
+}
+
+/* the design system's Command item is `rounded-md` */
+.c4-ui .dmn-js-parent .context-menu-group-entry {
+  border-radius: var(--bio-radius-md);
+}
+
+/* DataTable and Card are `rounded-xl`, which the design system exposes only as
+   a utility; Input and Button are `rounded-lg` */
+.c4-ui .dmn-js-parent,
+.c4-ui .dmn-drd-container,
+.c4-ui .dmn-decision-table-container,
+.c4-ui .dmn-literal-expression-container,
+.c4-ui .dmn-boxed-expression-container {
+  --table-border-radius: calc(var(--radius) + 4px);
+  --panel-border-radius: calc(var(--radius) + 4px);
+  --input-border-radius: var(--bio-radius-lg);
+  --button-border-radius: var(--bio-radius-lg);
+}
+
+/* read this as the design system's secondary Button */
+.c4-ui .dmn-boxed-expression-container .formal-parameters .add-parameter {
+  padding: 3px 10px;
+  border: 1px solid var(--input);
+}
