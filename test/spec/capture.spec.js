@@ -134,8 +134,13 @@ after(function() {
 
     // Form scenarios ship the rendered viewer form or the editor (with its own
     // palette / properties layout), which mounts inside `.playground-form`.
-    if (name.startsWith('form')) {
-      const surface = root.querySelector('.playground-form');
+    // dmn scenarios ship the opened view, which is neither a canvas nor a panel.
+    const surfaceSelector = name.startsWith('form')
+      ? '.playground-form'
+      : name.startsWith('dmn') ? '.playground-canvas' : null;
+
+    if (surfaceSelector) {
+      const surface = root.querySelector(surfaceSelector);
 
       if (!surface || !surface.innerHTML.trim()) {
         return;
@@ -148,8 +153,9 @@ after(function() {
       bakeGeometry(surface, clone);
 
       const payload = JSON.stringify({
-        form: clone.innerHTML,
-        formVariant: root.dataset.formVariant || 'viewer',
+        ...(name.startsWith('form')
+          ? { form: clone.innerHTML, formVariant: root.dataset.formVariant || 'viewer' }
+          : { dmn: clone.innerHTML, dmnVariant: root.dataset.dmnVariant || 'drd' }),
         runtimeStyles
       });
 

@@ -7,6 +7,7 @@ All notable changes to [@bpmn-io/c4-theme](https://github.com/bpmn-io/themes) ar
 ___Note:__ Yet to be released changes appear here._
 
 * `FEAT`: bind the `--bio-*-marker` tokens
+* `FEAT`: theme dmn-js ([#13](https://github.com/bpmn-io/themes/pull/13))
 
 ## 0.1.0
 
