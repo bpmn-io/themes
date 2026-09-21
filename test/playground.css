@@ -52,6 +52,11 @@ body {
   min-height: 0;
 }
 
+/* dmn-js switches between its own views instead of showing a properties panel */
+.playground--dmn .playground-main {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 /* no `transform` here: it would become the containing block for the
    `position: fixed` hover tooltip, which is placed from viewport coordinates */
 .playground-canvas {
