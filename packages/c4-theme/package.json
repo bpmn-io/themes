@@ -1,6 +1,6 @@
 {
   "name": "@bpmn-io/c4-theme",
-  "version": "0.0.0",
+  "version": "0.0.1-alpha.0",
   "description": "A Camunda Design System theme for bpmn.io",
   "scripts": {
     "all": "npm --prefix ../.. run all"
