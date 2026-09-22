@@ -109,11 +109,11 @@ describe('form-js playground', function() {
     checkbox.checked = true;
 
     const probe = document.createElement('div');
-    probe.style.backgroundColor = 'var(--primary-action-default)';
+    probe.style.backgroundColor = 'var(--accent-action-default)';
     panel.appendChild(probe);
-    const primary = getComputedStyle(probe).backgroundColor;
+    const accent = getComputedStyle(probe).backgroundColor;
     probe.remove();
 
-    expect(getComputedStyle(checkbox).backgroundColor).to.equal(primary);
+    expect(getComputedStyle(checkbox).backgroundColor).to.equal(accent);
   });
 });

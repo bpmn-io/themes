@@ -48,6 +48,12 @@
      ring, never a tinted fill */
   --input-error-background-color: var(--input-background);
 
+  /* checked state is the accent, following the design system's own Checkbox and
+     Switch; the filled-button tokens below stay on primary */
+  --checkbox-checked-background-color: var(--accent-action-default);
+  --checkbox-checked-border-color: var(--accent-action-default);
+  --toggle-switch-on-background-color: var(--accent-action-default);
+
   /* the design system's link variant underlines on hover only */
   --link-text-decoration: none;
   --link-hover-text-decoration: underline;
@@ -97,7 +103,7 @@
 /* the checkbox is a custom control (`appearance: none`), so it takes its fill
    from `--checkbox-*`; only the radio is still native */
 .c4-ui .bio-properties-panel-input[type="radio"] {
-  accent-color: var(--primary-action-default);
+  accent-color: var(--accent-action-default);
 }
 
 /* the placeholders stand in for an input, so they match it */
