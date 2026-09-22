@@ -11,3 +11,4 @@ ___Note:__ Yet to be released changes appear here._
 * `FEAT`: source colors from [`@bpmn-io/theme`](https://github.com/bpmn-io/themes/tree/main/packages/theme) ([#7](https://github.com/bpmn-io/themes/pull/7))
 * `FEAT`: scope the theme to the design system's `c4-ui` ([#8](https://github.com/bpmn-io/themes/pull/8))
 * `FEAT`: theme the form-js viewer and editor ([#12](https://github.com/bpmn-io/themes/pull/12))
+* `FEAT`: take the checked checkbox, radio and toggle state from the design system's accent ([#14](https://github.com/bpmn-io/themes/pull/14))

@@ -78,14 +78,20 @@ describe('properties-panel', function() {
 
     const inputBorder = render('var(--input-border-color)');
     const checkedCheckbox = render('var(--checkbox-checked-background-color)');
+    const toggleOn = render('var(--toggle-switch-on-background-color)');
     const border = render('var(--input)');
     const primary = render('var(--primary-action-default)');
+    const accent = render('var(--accent-action-default)');
 
     probe.remove();
 
     expect(inputBorder).to.not.equal('rgba(0, 0, 0, 0)');
     expect(inputBorder).to.equal(border);
-    expect(checkedCheckbox).to.equal(primary);
+
+    // checked state follows the accent, not the filled-button primary
+    expect(checkedCheckbox).to.equal(accent);
+    expect(toggleOn).to.equal(accent);
+    expect(accent).to.not.equal(primary);
   });
 
   it('should persist the global theme selection in the URL', async function() {
