@@ -7,6 +7,7 @@ All notable changes to [@bpmn-io/c4-theme](https://github.com/bpmn-io/themes) ar
 ___Note:__ Yet to be released changes appear here._
 
 * `FEAT`: bind the `--bio-*-marker` tokens
+* `FEAT`: theme `@camunda/improved-canvas`
 * `DEPS`: align with `@camunda/design-system@0.63.0`
 
 ## 0.1.0

@@ -1,0 +1,13 @@
+/**
+ * Camunda Design System adapter for @camunda/improved-canvas.
+ *
+ * Load after the improved-canvas stylesheets and assets/tokens.css. It carries
+ * only the deviations the `--bio-*` bindings do not already reproduce.
+ */
+
+/* the design system's neutral backgrounds stop at `strong`, still too light to
+   read against the canvas, so both steps are derived from it */
+.c4-ui .bio-improved-canvas .djs-append-indicator {
+  --bio-neutral-subtle: color-mix(in oklab, var(--neutral-background-strong) 87%, var(--foreground));
+  --bio-neutral-subtle-hover: color-mix(in oklab, var(--neutral-background-strong) 80%, var(--foreground));
+}
