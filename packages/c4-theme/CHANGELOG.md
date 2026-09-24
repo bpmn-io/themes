@@ -7,6 +7,7 @@ All notable changes to [@bpmn-io/c4-theme](https://github.com/bpmn-io/themes) ar
 ___Note:__ Yet to be released changes appear here._
 
 * `FEAT`: theme dmn-js ([#13](https://github.com/bpmn-io/themes/pull/13))
+* `DEPS`: align with `@camunda/design-system@0.63.0` ([#16](https://github.com/bpmn-io/themes/pull/16))
 
 ## 0.2.0
 
