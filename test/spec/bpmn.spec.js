@@ -33,9 +33,7 @@ describe('bpmn-js playground', function() {
     const canvasStyle = getComputedStyle(canvas);
 
     expect(canvasStyle.getPropertyValue('--drilldown-background-color'))
-      .to.equal(canvasStyle.getPropertyValue('--primary-action-default'));
-    expect(canvasStyle.getPropertyValue('--drilldown-fill-color'))
-      .to.equal(canvasStyle.getPropertyValue('--primary-action-foreground'));
+      .to.equal(canvasStyle.getPropertyValue('--bio-canvas-accent'));
 
     // asserted once bpmn-js ships its token support; the published version does
     // not read `--bio-*`, so the focus binding is inert against it

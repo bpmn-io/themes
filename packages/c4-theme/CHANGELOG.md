@@ -8,6 +8,7 @@ ___Note:__ Yet to be released changes appear here._
 
 * `FEAT`: theme dmn-js ([#13](https://github.com/bpmn-io/themes/pull/13))
 * `DEPS`: align with `@camunda/design-system@0.63.0` ([#16](https://github.com/bpmn-io/themes/pull/16))
+* `FIX`: improve the contrast of the drill-down badge, palette tooltip, breadcrumbs and subtle text ([#16](https://github.com/bpmn-io/themes/pull/16))
 
 ## 0.2.0
 

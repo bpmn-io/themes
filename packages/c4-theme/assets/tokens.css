@@ -35,10 +35,10 @@
 
   /* the design system's Tooltip is `bg-foreground text-background` */
   --bio-surface-inverted: var(--foreground);
-  --bio-surface-inverted-subtle: color-mix(in srgb, var(--background) 15%, transparent);
+  --bio-surface-inverted-subtle: color-mix(in oklab, var(--foreground) 88%, var(--background));
 
   --bio-text: var(--foreground);
-  --bio-text-subtle: var(--neutral-foreground-subtle);
+  --bio-text-subtle: var(--neutral-foreground-strong);
   --bio-text-subtlest: var(--neutral-foreground-subtle);
   --bio-text-on-primary: var(--primary-action-foreground);
   --bio-text-on-inverted: var(--background);
@@ -92,10 +92,9 @@
   --bio-neutral: var(--neutral-action-default);
   --bio-neutral-hover: var(--neutral-action-hover);
 
-  /* the design system's dismissible Badge leaves the remove control unfilled
-     and only tints it on hover */
-  --bio-neutral-subtle: transparent;
-  --bio-neutral-subtle-hover: var(--neutral-background-strong);
+  /* the design system has no neutral step above `strong`, so the hover is derived */
+  --bio-neutral-subtle: var(--neutral-background-strong);
+  --bio-neutral-subtle-hover: color-mix(in oklab, var(--neutral-background-strong) 92%, var(--foreground));
 
   /* `--bio-canvas-accent` is deliberately not bound: it is drawn over the black
      element strokes on the canvas, where a dark colour disappears. Overriding it
