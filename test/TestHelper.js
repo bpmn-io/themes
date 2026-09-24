@@ -1,4 +1,7 @@
 import BpmnModeler from 'bpmn-js/lib/Modeler';
+import MinimapModule from 'diagram-js-minimap';
+import TokenSimulationModule from 'bpmn-js-token-simulation';
+import LintingModule from '@camunda/linting/modeler';
 import { BpmnImprovedCanvasModule } from '@camunda/improved-canvas';
 import TestContainer from 'mocha-test-container-support';
 import {
@@ -48,17 +51,28 @@ import formViewerCss from '@bpmn-io/form-js/dist/assets/form-js.css';
 import formEditorCss from '@bpmn-io/form-js/dist/assets/form-js-editor.css';
 import formPlaygroundCss from '@bpmn-io/form-js/dist/assets/form-js-playground.css';
 
+import minimapCss from 'diagram-js-minimap/assets/diagram-js-minimap.css';
+import tokenSimulationCss from 'bpmn-js-token-simulation/assets/css/bpmn-js-token-simulation.css';
+import lintingCss from '@camunda/linting/assets/linting.css';
+
 import baseThemeCss from '@bpmn-io/theme/assets/theme.css';
 import tokensCss from '@bpmn-io/c4-theme/assets/tokens.css';
 import propertiesPanelThemeCss from '@bpmn-io/c4-theme/assets/properties-panel.css';
 import diagramThemeCss from '@bpmn-io/c4-theme/assets/diagram.css';
 import formThemeCss from '@bpmn-io/c4-theme/assets/form-js.css';
 import improvedCanvasThemeCss from '@bpmn-io/c4-theme/assets/improved-canvas.css';
+import tokenSimulationThemeCss from '@bpmn-io/c4-theme/assets/token-simulation.css';
 import playgroundCss from './playground.css';
 
 import defaultDiagram from './fixtures/playground.bpmn';
 import manyInputsDiagram from './fixtures/many-inputs.bpmn';
 import defaultForm from './fixtures/form.json';
+
+const defaultLintReports = [
+  { id: 'ServiceTask_1', message: 'Example warning', category: 'warn' },
+  { id: 'StartEvent_1', message: 'Example error', category: 'error' },
+  { id: 'EndEvent_1', message: 'Example info', category: 'info' }
+];
 
 let stylesInserted = false;
 const THEMES = [ 'bpmn-io', 'c4' ];
@@ -118,6 +132,9 @@ export async function createBpmnPlayground(context, name, options = {}) {
     exampleData = false,
     selectedElementId = 'ServiceTask_1',
     themeControls = false,
+    minimap = false,
+    tokenSimulation = false,
+    linting = false,
     improvedCanvas = false
   } = options;
 
@@ -171,6 +188,9 @@ export async function createBpmnPlayground(context, name, options = {}) {
         ZeebeVariableResolverModule,
         ExampleDataProviderModule
       ] : []),
+      ...(minimap ? [ MinimapModule ] : []),
+      ...(tokenSimulation ? [ TokenSimulationModule ] : []),
+      ...(linting ? [ LintingModule ] : []),
       ...(improvedCanvas ? [ BpmnImprovedCanvasModule ] : []),
       ...(themeControls ? [ ThemeControlsModule ] : [])
     ]
@@ -228,6 +248,28 @@ export async function createBpmnPlayground(context, name, options = {}) {
       width: 'var(--bpmn-append-popup-width, 300px)',
       search: true
     }),
+    lint: (reports = defaultLintReports) => {
+      const linting = modeler.get('linting');
+
+      linting.setErrors(reports);
+      linting.activate();
+
+      return reports;
+    },
+    minimap: () => {
+      const minimap = modeler.get('minimap');
+
+      minimap.open();
+
+      return minimap;
+    },
+    simulate: () => {
+      const toggleMode = modeler.get('toggleMode');
+
+      toggleMode.toggleMode(true);
+
+      return toggleMode;
+    },
     'text-popup': () => eventBus.fire('propertiesPanel.openPopup', {
       entryId: 'ServiceTask_1-name',
       element: task,
@@ -249,7 +291,6 @@ export async function createBpmnPlayground(context, name, options = {}) {
       onInput: () => {},
       sourceElement: root.querySelector('input')
     }),
-    chooser: () => modeler.get('elementTemplateChooser').open(task),
     drilldown: () => {
       const button = canvasContainer.querySelector('.bjs-drilldown');
 
@@ -555,6 +596,10 @@ function insertStyles() {
 
   insertStyle('properties-panel.css', propertiesPanelCss);
 
+  insertStyle('diagram-js-minimap.css', minimapCss);
+  insertStyle('bpmn-js-token-simulation.css', tokenSimulationCss);
+  insertStyle('linting.css', lintingCss);
+
   // the libraries copy the tokens into their own stylesheets once released;
   // until then the installed copies carry none, so the playground supplies them
   insertStyle('bio-theme.css', baseThemeCss);
@@ -566,6 +611,7 @@ function insertStyles() {
   insertStyle('c4-diagram.css', diagramThemeCss);
   insertStyle('c4-form-js.css', formThemeCss);
   insertStyle('c4-improved-canvas.css', improvedCanvasThemeCss);
+  insertStyle('c4-token-simulation.css', tokenSimulationThemeCss);
   insertStyle('playground.css', playgroundCss);
 
   insertThemeSwitcher();

@@ -28,7 +28,8 @@
     "start:properties-panel": "cross-env SINGLE_START=properties-panel npm run dev",
     "start:form": "cross-env SINGLE_START=form-playground npm run dev",
     "start:improved-canvas": "cross-env SINGLE_START=improved-canvas npm run dev",
-    "start:element-template-chooser": "cross-env SINGLE_START=element-template-chooser npm run dev"
+    "start:token-simulation": "cross-env SINGLE_START=token-simulation npm run dev",
+    "start:linting": "cross-env SINGLE_START=linting npm run dev"
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",

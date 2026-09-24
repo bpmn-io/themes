@@ -72,6 +72,30 @@ body {
 }
 
 /*
+ * The minimap renders its toggle as `content: attr(title)` and ships no
+ * typography with it, leaving the host page to style it — the Modeler draws an
+ * icon here instead.
+ */
+.playground-canvas .djs-minimap .toggle {
+  color: var(--bio-text-subtle);
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* improved-canvas relies on the host's border-box reset and font, as its own
+   test page provides; zero specificity leaves the C4 bindings in charge */
+:where(.playground-canvas .bio-improved-canvas) {
+  --font-family: "IBM Plex Sans", sans-serif;
+}
+
+:where(.playground-canvas .bio-improved-canvas) *,
+:where(.playground-canvas .bio-improved-canvas) *::before,
+:where(.playground-canvas .bio-improved-canvas) *::after {
+  box-sizing: border-box;
+}
+
+/*
  * Components use viewport coordinates for application-level overlays. Each
  * scenario instead renders in a finite test container, so center overlays
  * inside their owning scenario to keep retained playgrounds independent.
