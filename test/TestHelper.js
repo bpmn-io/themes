@@ -1,5 +1,6 @@
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 import DmnModeler from 'dmn-js/lib/Modeler';
+import { BpmnImprovedCanvasModule } from '@camunda/improved-canvas';
 import TestContainer from 'mocha-test-container-support';
 import {
   BpmnPropertiesPanelModule,
@@ -63,6 +64,7 @@ import propertiesPanelThemeCss from '@bpmn-io/c4-theme/assets/properties-panel.c
 import diagramThemeCss from '@bpmn-io/c4-theme/assets/diagram.css';
 import formThemeCss from '@bpmn-io/c4-theme/assets/form-js.css';
 import dmnThemeCss from '@bpmn-io/c4-theme/assets/dmn.css';
+import improvedCanvasThemeCss from '@bpmn-io/c4-theme/assets/improved-canvas.css';
 import playgroundCss from './playground.css';
 
 import defaultDiagram from './fixtures/playground.bpmn';
@@ -127,7 +129,8 @@ export async function createBpmnPlayground(context, name, options = {}) {
     diagram = defaultDiagram,
     exampleData = false,
     selectedElementId = 'ServiceTask_1',
-    themeControls = false
+    themeControls = false,
+    improvedCanvas = false
   } = options;
 
   const root = document.createElement('div');
@@ -180,6 +183,7 @@ export async function createBpmnPlayground(context, name, options = {}) {
         ZeebeVariableResolverModule,
         ExampleDataProviderModule
       ] : []),
+      ...(improvedCanvas ? [ BpmnImprovedCanvasModule ] : []),
       ...(themeControls ? [ ThemeControlsModule ] : [])
     ]
   });
@@ -627,6 +631,7 @@ function insertStyles() {
   insertStyle('c4-diagram.css', diagramThemeCss);
   insertStyle('c4-form-js.css', formThemeCss);
   insertStyle('c4-dmn.css', dmnThemeCss);
+  insertStyle('c4-improved-canvas.css', improvedCanvasThemeCss);
   insertStyle('playground.css', playgroundCss);
 
   insertThemeSwitcher();
