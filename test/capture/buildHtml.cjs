@@ -55,7 +55,7 @@ function read(rel) {
   if (rel.includes('@camunda/design-system')) {
     const filesDir = path.join(ROOT, 'node_modules/@camunda/design-system/dist/files');
 
-    css = css.replaceAll('url(./files/', `url(file://${filesDir}/`);
+    css = css.replaceAll('url("./files/', `url("file://${filesDir}/`);
   }
 
   return css;
