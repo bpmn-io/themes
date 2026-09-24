@@ -78,7 +78,6 @@ npm run start:properties-panel
 npm run start:diagram
 npm run start:bpmn
 npm run start:dmn
-npm run start:element-template-chooser
 ```
 
 ## License
