@@ -78,6 +78,14 @@
   --bio-info-text: hsl(205, 100%, 35%);
   --bio-info-surface: hsl(205, 100%, 95%);
 
+  /* severity markers — a filled shape that stands on its own, so it has to be
+     identifiable by color alone (3:1) and carry a light glyph; the status
+     colors above only have to work next to a label */
+  --bio-danger-marker: var(--bio-danger);
+  --bio-warning-marker: hsl(28, 100%, 45%);
+  --bio-success-marker: hsl(150, 86%, 30%);
+  --bio-info-marker: var(--bio-info);
+
   /* a link on `--bio-surface-inverted` */
   --bio-info-on-inverted: hsl(218, 100%, 74%);
 

@@ -6,6 +6,8 @@ All notable changes to [@bpmn-io/c4-theme](https://github.com/bpmn-io/themes) ar
 
 ___Note:__ Yet to be released changes appear here._
 
+* `FEAT`: bind the `--bio-*-marker` tokens
+
 ## 0.1.0
 
 * `FEAT`: theme the properties panel ([#1](https://github.com/bpmn-io/themes/pull/1))
