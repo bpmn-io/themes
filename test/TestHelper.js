@@ -534,7 +534,7 @@ function insertStyles() {
   insertStyle(
     'camunda-design-system.css',
     camundaDesignSystemCss.replaceAll(
-      'url(./files/',
+      'url("./files/',
       'url("/base/node_modules/@camunda/design-system/dist/files/'
     )
   );
