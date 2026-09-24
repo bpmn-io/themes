@@ -1,0 +1,22 @@
+/**
+ * Camunda Design System adapter for @camunda/improved-canvas.
+ *
+ * Load after the improved-canvas stylesheets and assets/tokens.css. It carries
+ * only the deviations the `--bio-*` bindings do not already reproduce.
+ */
+
+/* `rounded-lg` reads too round on these small buttons; the stock theme draws them at 4px too */
+.c4-ui .djs-parent.bio-improved-canvas {
+  --button-border-radius: var(--bio-radius-sm);
+
+  /* the near-black primary disappears against the black element strokes */
+  --context-pad-entry-call-to-action-background-color: var(--bio-canvas-accent);
+  --context-pad-entry-call-to-action-hover-background-color: color-mix(in oklab, var(--bio-canvas-accent) 88%, var(--foreground));
+}
+
+/* the design system's neutral backgrounds stop at `strong`, still too light to
+   read against the canvas, so both steps are derived from it */
+.c4-ui .bio-improved-canvas .djs-append-indicator {
+  --bio-neutral-subtle: color-mix(in oklab, var(--neutral-background-strong) 87%, var(--foreground));
+  --bio-neutral-subtle-hover: color-mix(in oklab, var(--neutral-background-strong) 80%, var(--foreground));
+}
