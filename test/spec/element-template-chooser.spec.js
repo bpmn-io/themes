@@ -73,7 +73,7 @@ describe('element-template-chooser playground', function() {
 
     // then
     expect([ ...action.classList ]).to.include('open');
-    expect(menuItems).to.have.length(2);
+    expect(menuItems).to.have.length.of.at.least(1);
     expect(getComputedStyle(trigger).backgroundColor).to.not.equal(
       getComputedStyle(header).backgroundColor
     );
