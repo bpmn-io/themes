@@ -1,6 +1,6 @@
 {
   "name": "@bpmn-io/theme",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Design tokens and the default theme for bpmn.io",
   "type": "module",
   "scripts": {
