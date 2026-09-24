@@ -118,8 +118,10 @@ npm run audit:consumers
 Each stylesheet listed in `tasks/consumers.js` is validated exactly as the
 consumer validates itself, so the output matches what that repository's own
 `lint:theme` will report once it bumps `@bpmn-io/theme`. Add a package to the
-list when it adopts the tokens. The checkouts are expected next to this
-repository; pass another directory with `npm run audit:consumers -- ~/some/where`.
+list when it adopts the tokens. The consumers are read from this repository's
+`node_modules`, so the report covers the installed versions, or a checkout where
+a consumer is linked; pass another directory holding a `node_modules` with
+`npm run audit:consumers -- ~/some/project`.
 
 It reports rather than fails, and stays out of `npm run all`. Right after a token
 changes every consumer is out of sync — the expected state, until each one is
