@@ -6,6 +6,8 @@ All notable changes to [@bpmn-io/theme](https://github.com/bpmn-io/themes) are d
 
 ___Note:__ Yet to be released changes appear here._
 
+* `FEAT`: add `--bio-*-marker` tokens for standalone status shapes
+
 ## 0.2.0
 
 * `FEAT`: add `--bio-neutral-subtle` tokens ([#10](https://github.com/bpmn-io/themes/pull/10))

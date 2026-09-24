@@ -76,6 +76,14 @@
   --bio-info-text: var(--info-foreground-strong);
   --bio-info-surface: var(--info-background-strong);
 
+  /* the `foreground-subtle` rung is the one strong enough to carry a light
+     glyph across all four severities; `action-default` is not — danger's is a
+     light rose fill */
+  --bio-danger-marker: var(--danger-foreground-subtle);
+  --bio-warning-marker: var(--warning-foreground-subtle);
+  --bio-success-marker: var(--success-foreground-subtle);
+  --bio-info-marker: var(--info-foreground-subtle);
+
   /* a menu row is too much surface for the brand accent, so selection stays
      neutral — a step darker than hover to still read as selected */
   --bio-selected-surface: var(--neutral-background-strong);
