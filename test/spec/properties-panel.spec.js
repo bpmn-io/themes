@@ -606,6 +606,62 @@ describe('properties-panel', function() {
     expect(getComputedStyle(closedField.querySelector('.bio-properties-panel-input')).display)
       .to.equal('flex');
   });
+
+  it('should open the template chooser from the properties-panel selector', async function() {
+    playground = await createBpmnPlayground(this, 'element-template-selector');
+
+    const selector = playground.root.querySelector(
+      '[data-group-id="group-ElementTemplates__Template"] .bio-properties-panel-select-template-button'
+    );
+
+    // when
+    selector.click();
+    await playground.setup.settle();
+
+    // then
+    expect(selector.textContent.trim()).to.equal('Select');
+    expect(playground.root.querySelector('.element-template-chooser')).to.exist;
+  });
+
+  it('should render an applied template action above later group headers', async function() {
+    playground = await createBpmnPlayground(this, 'element-template-actions');
+
+    // when
+    await playground.setup.settle();
+    playground.setup['apply-template']();
+    await playground.setup.settle();
+
+    const action = playground.root.querySelector('.bio-properties-panel-applied-template-button');
+
+    action.click();
+    action.scrollIntoView({ block: 'center' });
+    await playground.setup.settle();
+
+    const menu = action.querySelector('.bio-properties-panel-dropdown-button__menu');
+    const menuItems = menu.querySelectorAll('.bio-properties-panel-dropdown-button__menu-item--actionable');
+    const trigger = action.querySelector('.bio-properties-panel-group-header-button');
+    const header = action.closest('.bio-properties-panel-group-header');
+
+    // then
+    expect([ ...action.classList ]).to.include('open');
+    expect(menuItems).to.have.length.of.at.least(1);
+    expect(getComputedStyle(trigger).backgroundColor).to.not.equal(
+      getComputedStyle(header).backgroundColor
+    );
+
+    menuItems.forEach(menuItem => {
+      const bounds = menuItem.getBoundingClientRect();
+      const element = document.elementFromPoint(
+        bounds.left + bounds.width / 2,
+        bounds.top + bounds.height / 2
+      );
+
+      expect(
+        menu.contains(element),
+        `expected menu item to be topmost, received ${element?.className || element?.tagName}`
+      ).to.be.true;
+    });
+  });
 });
 
 function expectVerticallyCentered(inner, outer, tolerance = 3) {

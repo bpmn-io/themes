@@ -72,6 +72,18 @@ body {
 }
 
 /*
+ * The minimap renders its toggle as `content: attr(title)` and ships no
+ * typography with it, leaving the host page to style it — the Modeler draws an
+ * icon here instead.
+ */
+.playground-canvas .djs-minimap .toggle {
+  color: var(--bio-text-subtle);
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/*
  * Components use viewport coordinates for application-level overlays. Each
  * scenario instead renders in a finite test container, so center overlays
  * inside their owning scenario to keep retained playgrounds independent.
