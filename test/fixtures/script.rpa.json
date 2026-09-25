@@ -1,0 +1,11 @@
+{
+  "id": "RPA_theme_playground",
+  "name": "Theme playground",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.8.0",
+  "script": "*** Settings ***\nLibrary             Camunda\n\n*** Tasks ***\nMain\n    Log    Hello from the theme playground\n",
+  "files": {
+    "screenshot.png": "base64data",
+    "input.csv": "base64data"
+  }
+}

@@ -61,6 +61,17 @@ after(function() {
     'extensions-linting': (setup) => setup.lint()
   };
 
+  /*
+   * These scenarios are about surfaces whose styles are injected at runtime
+   * (improved-canvas, Monaco), which the exporter does not carry yet. Skip them
+   * rather than capture the unrelated properties panel the fallback would pick.
+   */
+  const UNSUPPORTED = [
+    'improved-canvas',
+    'improved-canvas-append',
+    'rpa-editor'
+  ];
+
   const runtimeStyles = Array.from(document.querySelectorAll('style'))
     .map((el) => el.textContent || '')
     .filter((css) => CM_STYLE_RE.test(css));
@@ -95,7 +106,7 @@ after(function() {
   document.querySelectorAll('.playground[data-playground]').forEach((root) => {
     const name = root.dataset.playground;
 
-    if (seen.has(name)) {
+    if (seen.has(name) || UNSUPPORTED.includes(name)) {
       return;
     }
 

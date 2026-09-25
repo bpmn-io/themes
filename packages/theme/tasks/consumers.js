@@ -16,5 +16,6 @@ export default {
   'bpmn-js-token-simulation': 'assets/css/bpmn-js-token-simulation.css',
 
   // these ship their stylesheets inside the bundle only
-  '@camunda/improved-canvas': 'dist/index.es.js'
+  '@camunda/improved-canvas': 'dist/index.es.js',
+  '@camunda/rpa-integration': 'dist/client.esm.js'
 };
