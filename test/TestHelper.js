@@ -568,7 +568,7 @@ export {
   manyInputsDiagram
 };
 
-function insertStyles() {
+export function insertStyles() {
   if (stylesInserted) {
     return;
   }
@@ -622,6 +622,19 @@ function insertStyle(id, css) {
   style.textContent = css;
 
   document.head.appendChild(style);
+}
+
+/**
+ * Move the stylesheets a package injects when it is imported after the ones the
+ * playground inserts, so it wins the shared rules it overrides -- the order an
+ * app that bundles it gets. Imports run first, `insertStyles` only on mount.
+ *
+ * Package sheets are the ones without an id; `insertStyle` ids every sheet.
+ */
+export function moveImportedStylesLast() {
+  for (const style of document.head.querySelectorAll('style:not([id])')) {
+    document.head.appendChild(style);
+  }
 }
 
 function insertThemeSwitcher() {
@@ -688,7 +701,7 @@ function setDarkMode(dark, persist = true) {
 // the theme is scoped to the design system's own `c4-ui`, which a consumer
 // applies at the app root — that is also what puts portaled UI (the FEEL popup,
 // tooltips) in scope
-function applyTheme() {
+export function applyTheme() {
   document.documentElement.classList.toggle('c4-ui', activeTheme !== 'bpmn-io');
 
   // dark mode follows the design system's own class, so it only resolves under C4
