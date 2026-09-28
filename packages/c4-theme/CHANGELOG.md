@@ -11,6 +11,7 @@ ___Note:__ Yet to be released changes appear here._
 * `FIX`: improve the contrast of the drill-down badge, palette tooltip, breadcrumbs and subtle text ([#16](https://github.com/bpmn-io/themes/pull/16))
 * `FEAT`: theme `@camunda/improved-canvas` ([#16](https://github.com/bpmn-io/themes/pull/16))
 * `FEAT`: theme `bpmn-js-token-simulation` ([#16](https://github.com/bpmn-io/themes/pull/16))
+* `FEAT`: align the properties panel sections, labels, checkboxes and tooltip with the design system ([#16](https://github.com/bpmn-io/themes/pull/16))
 
 ## 0.2.0
 
