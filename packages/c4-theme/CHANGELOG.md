@@ -8,6 +8,7 @@ ___Note:__ Yet to be released changes appear here._
 
 * `FEAT`: bind the `--bio-*-marker` tokens
 * `FEAT`: theme `@camunda/improved-canvas`
+* `FEAT`: align the properties panel sections, labels, checkboxes and tooltip with the design system
 * `DEPS`: align with `@camunda/design-system@0.63.0`
 
 ## 0.1.0

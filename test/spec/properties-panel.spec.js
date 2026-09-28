@@ -142,10 +142,15 @@ describe('properties-panel', function() {
     expect([ ...openHeader.classList ]).to.include('open');
     expect([ ...closedHeader.classList ]).to.not.include('open');
 
-    // The hierarchy is carried by the bold title and a flush, border-less header
-    // (as in the stock panel) rather than an extra header fill.
+    // The open section is tinted as a whole, so its header stays flush and
+    // border-less; the chevron and the title weight mark the state.
+    expect(getComputedStyle(openHeader.parentElement).backgroundColor)
+      .to.not.equal(getComputedStyle(closedHeader.parentElement).backgroundColor);
     expect(getComputedStyle(openHeader).backgroundColor).to.equal('rgba(0, 0, 0, 0)');
     expect(getComputedStyle(openHeader).borderBottomWidth).to.equal('0px');
+
+    expect(openHeader.querySelector('.bio-properties-panel-arrow-down')).to.exist;
+    expect(closedHeader.querySelector('.bio-properties-panel-arrow-right')).to.exist;
 
     const openTitleWeight = getComputedStyle(
       openHeader.querySelector('.bio-properties-panel-group-header-title')
@@ -154,8 +159,8 @@ describe('properties-panel', function() {
       closedHeader.querySelector('.bio-properties-panel-group-header-title')
     ).fontWeight;
 
-    expect(openTitleWeight).to.equal('600');
-    expect(closedTitleWeight).to.not.equal('600');
+    expect(openTitleWeight).to.equal('500');
+    expect(closedTitleWeight).to.equal('400');
   });
 
   it('should render focused, invalid and disabled input states', async function() {
