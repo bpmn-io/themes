@@ -8,6 +8,7 @@ ___Note:__ Yet to be released changes appear here._
 
 * `FEAT`: bind the `--bio-*-marker` tokens
 * `FEAT`: theme `@camunda/improved-canvas`
+* `FEAT`: align the properties panel sections, labels, checkboxes and tooltip with the design system
 * `FIX`: keep read-only checkbox, checklist and radio selections visible ([#19](https://github.com/bpmn-io/themes/pull/19))
 * `DEPS`: align with `@camunda/design-system@0.63.0`
 

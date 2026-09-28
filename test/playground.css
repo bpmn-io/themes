@@ -153,11 +153,6 @@ body {
   min-height: 0;
 }
 
-.playground .bio-properties-panel-group-header.open
-  .bio-properties-panel-group-header-title {
-  font-weight: 600;
-}
-
 .playground.dark .djs-container,
 .playground.dark .djs-palette,
 .playground.dark .djs-context-pad,
