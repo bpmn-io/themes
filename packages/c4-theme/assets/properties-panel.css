@@ -58,15 +58,21 @@
   --link-text-decoration: none;
   --link-hover-text-decoration: underline;
 
-  /* the panel header carries the fill; an open group stays flush with its
-     content, so the bold title alone carries the hierarchy */
-  --header-background-color: var(--neutral-background-medium);
+  /* like the design system Sheet header: the panel surface, split off by the
+     header's border */
+  --header-background-color: var(--neutral-background-subtle);
+  --group-background-color: var(--neutral-background-subtle);
   --sticky-group-background-color: var(--neutral-background-subtle);
+  --sticky-list-entry-background-color: var(--neutral-background-subtle);
   --open-group-header-background-color: transparent;
 
-  --add-entry-hover-fill-color: var(--primary-action-foreground);
-  --add-entry-hover-background-color: var(--primary-action-default);
-  --arrow-hover-background-color: var(--neutral-background-medium);
+  /* the add button is a ghost button like the arrow; the tokens carry that too,
+     so core's hover rule matches when a later copy of it wins the cascade */
+  --add-entry-hover-fill-color: var(--foreground);
+  --add-entry-hover-background-color: var(--neutral-background-strong);
+  --add-entry-label-color: var(--foreground);
+  /* one step above the header's own hover fill */
+  --arrow-hover-background-color: var(--neutral-background-strong);
 
   --secondary-action-background-color: var(--neutral-background-medium);
   --secondary-action-hover-background-color: var(--neutral-background-strong);
@@ -78,12 +84,11 @@
 
   /*
    * Structural nesting connectors: the side lines and the list-entry dot that
-   * sits on them. The lines follow the border token so they read as subtle
-   * guides, which also stops subpixel rounding at browser zoom from making the
-   * 2px lines look unevenly wide across levels.
+   * sits on them. Core draws a line in two overlapping pieces, so the colour
+   * has to be opaque: the translucent `--border` doubles up where they meet.
    */
-  --side-line-background-color: var(--border);
-  --side-line-extension-background-color: var(--border);
+  --side-line-background-color: var(--neutral-border-subtle);
+  --side-line-extension-background-color: var(--neutral-border-subtle);
   --list-entry-dot-background-color: var(--neutral-foreground-subtle);
 
   --feel-active-color: var(--primary-action-default);
@@ -142,21 +147,83 @@
   border-bottom: 0;
 }
 
-.c4-ui .bio-properties-panel-group-header.open
-  .bio-properties-panel-group-header-title {
-  font-weight: 600;
+/* between the design system accordion's `sm` (h-8) and default (h-10) */
+.c4-ui .bio-properties-panel-group-header {
+  height: 36px;
 }
 
-/*
- * Open list-section headers ("Input mapping", "Extension properties", …) carry
- * the same emphasis as open group headers. Individual list items are left at the
- * core (unstyled) weight: the stock panel never bolds
- * `.bio-properties-panel-collapsible-entry-header-title`, so neither do we —
- * every expanded item label then stays at one consistent, standard weight
- * instead of some items rendering bold and others not.
- */
-.c4-ui .bio-properties-panel-list-entry-header-title.open {
-  font-weight: 600;
+.c4-ui .bio-properties-panel-list-entry-header.sticky {
+  top: 36px;
+}
+
+.c4-ui .bio-properties-panel-group-header .bio-properties-panel-group-header-title {
+  margin-inline: 16px;
+}
+
+.c4-ui .bio-properties-panel-group-header:has(.bio-properties-panel-arrow) {
+  cursor: pointer;
+}
+
+.c4-ui .bio-properties-panel-group-header:has(.bio-properties-panel-arrow):hover {
+  background-color: var(--neutral-background-medium);
+}
+
+.c4-ui .bio-properties-panel-arrow svg {
+  transition: transform 150ms ease;
+}
+
+/* the design system DefinitionTooltip draws a 1px dotted rule */
+.c4-ui .bio-properties-panel-tooltip-wrapper {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+/* monospace runs wider than the sans titles around it at the same size; core
+   sets the size on every element, so the `code` needs its own */
+.c4-ui .bio-properties-panel-collapsible-entry-header-title code {
+  font-size: var(--text-size-small);
+}
+
+.c4-ui .bio-properties-panel-group-entries {
+  padding-top: 6px;
+}
+
+/* top-level only: the nested side lines and list dots are positioned against
+   the core entry margins */
+.c4-ui .bio-properties-panel-group-entries > .bio-properties-panel-entry {
+  margin: 0 16px 12px;
+}
+
+.c4-ui .bio-properties-panel-group-entries > .bio-properties-panel-entry:last-child {
+  padding-bottom: 4px;
+}
+
+/* a top-level list has no side line for its dot to sit on; the wider inset
+   would pull the dot into view at the panel edge */
+.c4-ui .bio-properties-panel-group-entries > .bio-properties-panel-list-entry::before {
+  display: none;
+}
+
+/* the side line is painted after the dot and is opaque, so it would cross it */
+.c4-ui .bio-properties-panel-list-entry::before {
+  z-index: 1;
+}
+
+/* Core reveals the label with `display` and swaps the margin by a fixed 50px,
+   which only matches its own font, so the + shifts on hover. Reserving the
+   label's space keeps the + still. */
+.c4-ui .bio-properties-panel-group-header.empty .bio-properties-panel-add-entry,
+.c4-ui .bio-properties-panel-group-header.empty .bio-properties-panel-add-entry:hover {
+  margin-right: 19px;
+}
+
+.c4-ui .bio-properties-panel-group-header.empty .bio-properties-panel-add-entry-label {
+  display: block;
+  visibility: hidden;
+}
+
+.c4-ui .bio-properties-panel-group-header.empty .bio-properties-panel-add-entry:is(:hover, :focus-visible) .bio-properties-panel-add-entry-label {
+  visibility: visible;
 }
 
 /* the only chip core does not route through `--chip-border-radius` */
@@ -234,7 +301,6 @@
   align-items: center;
   gap: 2px;
   width: auto;
-  padding: 0 6px;
   color: var(--list-entry-add-entry-label-color);
   fill: var(--list-entry-add-entry-fill-color);
   background-color: var(--list-entry-add-entry-background-color);
@@ -275,11 +341,26 @@
  */
 .c4-ui .bio-properties-panel-label {
   margin-bottom: 5px;
+
+  /* the design system Label at `label-md` */
+  font-size: var(--text-size-base);
+  line-height: 18px;
 }
 
-.c4-ui .bio-properties-panel-checkbox > .bio-properties-panel-label,
 .c4-ui .bio-properties-panel-toggle-switch > .bio-properties-panel-label {
   margin-bottom: 0;
+}
+
+/* the design system Checkbox field is `flex items-center gap-2`; core's inline
+   layout leaves the box off the text's centre line */
+.c4-ui .bio-properties-panel-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.c4-ui .bio-properties-panel-checkbox > .bio-properties-panel-label {
+  margin: 0;
 }
 
 /*
@@ -363,6 +444,12 @@
   align-items: safe center !important;
 }
 
+/* JSON stays top-aligned, so the padding centres its first line in the 2rem
+   control instead; core's 3px / 2px suits its shorter one */
+.c4-ui .bio-properties-panel-entry .bio-properties-panel-json-editor .cm-content {
+  padding-block: 5px 4px;
+}
+
 /*
  * Give the CodeMirror gutter the same muted fill and left rounding as the FEEL
  * `=` indicator: it is the semantic equivalent — a prefix column down the left
@@ -396,19 +483,23 @@
 .c4-ui .bio-properties-panel-tooltip {
   /* the code chip sits on the inverted surface, so it tints that surface
      instead of taking the light `--bio-surface-subtle` default */
-  --tooltip-code-background-color: color-mix(in srgb, var(--foreground) 60%, transparent);
-  --tooltip-code-border-color: color-mix(in srgb, var(--background) 20%, transparent);
+  --tooltip-code-background-color: color-mix(in srgb, var(--background) 15%, transparent);
+  --tooltip-code-border-color: color-mix(in srgb, var(--background) 25%, transparent);
 }
 
-/* the design system's Tooltip is `shadow-md ring-1 ring-border` */
+/* the design system's Tooltip is `rounded-md shadow-md ring-1 ring-border`,
+   with the `px-3 py-2` of its sentence-length DefinitionTooltip */
 .c4-ui .bio-properties-panel-tooltip-content {
+  padding: 8px 12px;
   border: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 2px);
   box-shadow: var(--shadow-md);
 }
 
 .c4-ui .bio-properties-panel-tooltip-content code,
 .c4-ui .bio-properties-panel-tooltip-content pre {
   color: var(--background);
+  font-family: var(--font-family-monospace);
 }
 
 .c4-ui .bio-properties-panel-popup {
