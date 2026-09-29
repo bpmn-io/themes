@@ -181,6 +181,40 @@ describe('properties-panel', function() {
     expect(disabledInput.disabled).to.be.true;
   });
 
+  it('should render warning, dot and badge severity states', async function() {
+
+    // given
+    playground = await createBpmnPlayground(this, 'properties-panel-severity-states', {
+      themeControls: true
+    });
+
+    await playground.setup.settle();
+    playground.setup['open-group']('theme-controls');
+    await playground.setup.settle();
+
+    const root = playground.root;
+
+    // when
+    const warning = root.querySelector('[data-entry-id="theme-warning"] .bio-properties-panel-warning');
+
+    const background = selector => getComputedStyle(root.querySelector(selector)).backgroundColor;
+
+    // then
+    expect(getComputedStyle(warning).color).to.equal(resolvedColor(warning, '--bio-warning-text'));
+
+    const dots = [ '', '--warning', '--error' ].map(variant => background(`.bio-properties-panel-dot${ variant }`));
+    const badges = [ '', '--accent', '--warning', '--error' ].map(
+      variant => background(`[data-entry-id="theme-markers"] .bio-properties-panel-list-badge${ variant }`)
+    );
+
+    for (const color of [ ...dots, ...badges ]) {
+      expect(color, 'every severity must be filled').to.not.equal('rgba(0, 0, 0, 0)');
+    }
+
+    expect(new Set(dots).size, 'dot severities must be distinct').to.equal(dots.length);
+    expect(new Set(badges).size, 'badge severities must be distinct').to.equal(badges.length);
+  });
+
   it('should render select, checkbox, toggle and list states', async function() {
     playground = await createBpmnPlayground(this, 'properties-panel-controls', {
       themeControls: true
@@ -672,4 +706,20 @@ function expectVerticallyCentered(inner, outer, tolerance = 3) {
   const outerCenter = outerBounds.top + outerBounds.height / 2;
 
   expect(Math.abs(innerCenter - outerCenter)).to.be.at.most(tolerance);
+}
+
+/**
+ * Resolve a color token to the computed value a rule reading it would get.
+ */
+function resolvedColor(scope, token) {
+  const probe = document.createElement('span');
+
+  probe.style.color = `var(${ token })`;
+  scope.appendChild(probe);
+
+  const color = getComputedStyle(probe).color;
+
+  probe.remove();
+
+  return color;
 }
