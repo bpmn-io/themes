@@ -77,7 +77,7 @@ const defaultLintReports = [
 let stylesInserted = false;
 const THEMES = [ 'bpmn-io', 'c4' ];
 let activeTheme = getThemeFromUrl();
-let darkMode = getDarkFromUrl();
+let darkMode = supportsDarkMode() && getDarkFromUrl();
 
 const templates = [
   {
@@ -648,7 +648,7 @@ function insertThemeSwitcher() {
     <span class="theme-switcher__label">Theme</span>
     <button type="button" data-theme="bpmn-io">bpmn-io</button>
     <button type="button" data-theme="c4">C4</button>
-    <button type="button" data-mode="dark">Dark</button>
+    ${supportsDarkMode() ? '<button type="button" data-mode="dark">Dark</button>' : ''}
   `;
 
   switcher.addEventListener('click', event => {
@@ -666,7 +666,7 @@ function insertThemeSwitcher() {
   });
 
   window.addEventListener('popstate', () => {
-    darkMode = getDarkFromUrl();
+    darkMode = supportsDarkMode() && getDarkFromUrl();
     setTheme(getThemeFromUrl(), false);
   });
 
@@ -716,7 +716,12 @@ function updateThemeSwitcher(switcher) {
   });
 
   switcher.querySelector('button[data-mode="dark"]')
-    .setAttribute('aria-pressed', String(darkMode));
+    ?.setAttribute('aria-pressed', String(darkMode));
+}
+
+// only form-js supports dark mode so far
+function supportsDarkMode() {
+  return (window.__env__ && window.__env__.SINGLE_START) === 'form-playground';
 }
 
 function getDarkFromUrl() {
@@ -733,6 +738,12 @@ function persistThemeInUrl() {
   const url = new URL(window.location.href);
 
   url.searchParams.set('theme', activeTheme);
-  url.searchParams.set('dark', String(darkMode));
+
+  if (supportsDarkMode()) {
+    url.searchParams.set('dark', String(darkMode));
+  } else {
+    url.searchParams.delete('dark');
+  }
+
   window.history.pushState(null, '', url);
 }
