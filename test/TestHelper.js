@@ -1,4 +1,8 @@
 import BpmnModeler from 'bpmn-js/lib/Modeler';
+import MinimapModule from 'diagram-js-minimap';
+import TokenSimulationModule from 'bpmn-js-token-simulation';
+import LintingModule from '@camunda/linting/modeler';
+import { BpmnImprovedCanvasModule } from '@camunda/improved-canvas';
 import TestContainer from 'mocha-test-container-support';
 import {
   BpmnPropertiesPanelModule,
@@ -47,21 +51,32 @@ import formViewerCss from '@bpmn-io/form-js/dist/assets/form-js.css';
 import formEditorCss from '@bpmn-io/form-js/dist/assets/form-js-editor.css';
 import formPlaygroundCss from '@bpmn-io/form-js/dist/assets/form-js-playground.css';
 
+import minimapCss from 'diagram-js-minimap/assets/diagram-js-minimap.css';
+import tokenSimulationCss from 'bpmn-js-token-simulation/assets/css/bpmn-js-token-simulation.css';
+import lintingCss from '@camunda/linting/assets/linting.css';
+
 import baseThemeCss from '@bpmn-io/theme/assets/theme.css';
 import tokensCss from '@bpmn-io/c4-theme/assets/tokens.css';
 import propertiesPanelThemeCss from '@bpmn-io/c4-theme/assets/properties-panel.css';
 import diagramThemeCss from '@bpmn-io/c4-theme/assets/diagram.css';
 import formThemeCss from '@bpmn-io/c4-theme/assets/form-js.css';
+import improvedCanvasThemeCss from '@bpmn-io/c4-theme/assets/improved-canvas.css';
 import playgroundCss from './playground.css';
 
 import defaultDiagram from './fixtures/playground.bpmn';
 import manyInputsDiagram from './fixtures/many-inputs.bpmn';
 import defaultForm from './fixtures/form.json';
 
+const defaultLintReports = [
+  { id: 'ServiceTask_1', message: 'Example warning', category: 'warn' },
+  { id: 'StartEvent_1', message: 'Example error', category: 'error' },
+  { id: 'EndEvent_1', message: 'Example info', category: 'info' }
+];
+
 let stylesInserted = false;
 const THEMES = [ 'bpmn-io', 'c4' ];
 let activeTheme = getThemeFromUrl();
-let darkMode = getDarkFromUrl();
+let darkMode = supportsDarkMode() && getDarkFromUrl();
 
 const templates = [
   {
@@ -115,7 +130,11 @@ export async function createBpmnPlayground(context, name, options = {}) {
     diagram = defaultDiagram,
     exampleData = false,
     selectedElementId = 'ServiceTask_1',
-    themeControls = false
+    themeControls = false,
+    minimap = false,
+    tokenSimulation = false,
+    linting = false,
+    improvedCanvas = false
   } = options;
 
   const root = document.createElement('div');
@@ -168,6 +187,10 @@ export async function createBpmnPlayground(context, name, options = {}) {
         ZeebeVariableResolverModule,
         ExampleDataProviderModule
       ] : []),
+      ...(minimap ? [ MinimapModule ] : []),
+      ...(tokenSimulation ? [ TokenSimulationModule ] : []),
+      ...(linting ? [ LintingModule ] : []),
+      ...(improvedCanvas ? [ BpmnImprovedCanvasModule ] : []),
       ...(themeControls ? [ ThemeControlsModule ] : [])
     ]
   });
@@ -224,6 +247,28 @@ export async function createBpmnPlayground(context, name, options = {}) {
       width: 'var(--bpmn-append-popup-width, 300px)',
       search: true
     }),
+    lint: (reports = defaultLintReports) => {
+      const linting = modeler.get('linting');
+
+      linting.setErrors(reports);
+      linting.activate();
+
+      return reports;
+    },
+    minimap: () => {
+      const minimap = modeler.get('minimap');
+
+      minimap.open();
+
+      return minimap;
+    },
+    simulate: () => {
+      const toggleMode = modeler.get('toggleMode');
+
+      toggleMode.toggleMode(true);
+
+      return toggleMode;
+    },
     'text-popup': () => eventBus.fire('propertiesPanel.openPopup', {
       entryId: 'ServiceTask_1-name',
       element: task,
@@ -245,7 +290,6 @@ export async function createBpmnPlayground(context, name, options = {}) {
       onInput: () => {},
       sourceElement: root.querySelector('input')
     }),
-    chooser: () => modeler.get('elementTemplateChooser').open(task),
     drilldown: () => {
       const button = canvasContainer.querySelector('.bjs-drilldown');
 
@@ -524,7 +568,7 @@ export {
   manyInputsDiagram
 };
 
-function insertStyles() {
+export function insertStyles() {
   if (stylesInserted) {
     return;
   }
@@ -534,7 +578,7 @@ function insertStyles() {
   insertStyle(
     'camunda-design-system.css',
     camundaDesignSystemCss.replaceAll(
-      'url(./files/',
+      'url("./files/',
       'url("/base/node_modules/@camunda/design-system/dist/files/'
     )
   );
@@ -551,6 +595,10 @@ function insertStyles() {
 
   insertStyle('properties-panel.css', propertiesPanelCss);
 
+  insertStyle('diagram-js-minimap.css', minimapCss);
+  insertStyle('bpmn-js-token-simulation.css', tokenSimulationCss);
+  insertStyle('linting.css', lintingCss);
+
   // the libraries copy the tokens into their own stylesheets once released;
   // until then the installed copies carry none, so the playground supplies them
   insertStyle('bio-theme.css', baseThemeCss);
@@ -561,6 +609,7 @@ function insertStyles() {
   insertStyle('c4-properties-panel.css', propertiesPanelThemeCss);
   insertStyle('c4-diagram.css', diagramThemeCss);
   insertStyle('c4-form-js.css', formThemeCss);
+  insertStyle('c4-improved-canvas.css', improvedCanvasThemeCss);
   insertStyle('playground.css', playgroundCss);
 
   insertThemeSwitcher();
@@ -575,6 +624,19 @@ function insertStyle(id, css) {
   document.head.appendChild(style);
 }
 
+/**
+ * Move the stylesheets a package injects when it is imported after the ones the
+ * playground inserts, so it wins the shared rules it overrides -- the order an
+ * app that bundles it gets. Imports run first, `insertStyles` only on mount.
+ *
+ * Package sheets are the ones without an id; `insertStyle` ids every sheet.
+ */
+export function moveImportedStylesLast() {
+  for (const style of document.head.querySelectorAll('style:not([id])')) {
+    document.head.appendChild(style);
+  }
+}
+
 function insertThemeSwitcher() {
   const switcher = document.createElement('div');
   switcher.className = 'theme-switcher';
@@ -584,7 +646,7 @@ function insertThemeSwitcher() {
     <span class="theme-switcher__label">Theme</span>
     <button type="button" data-theme="bpmn-io">bpmn-io</button>
     <button type="button" data-theme="c4">C4</button>
-    <button type="button" data-mode="dark">Dark</button>
+    ${supportsDarkMode() ? '<button type="button" data-mode="dark">Dark</button>' : ''}
   `;
 
   switcher.addEventListener('click', event => {
@@ -602,7 +664,7 @@ function insertThemeSwitcher() {
   });
 
   window.addEventListener('popstate', () => {
-    darkMode = getDarkFromUrl();
+    darkMode = supportsDarkMode() && getDarkFromUrl();
     setTheme(getThemeFromUrl(), false);
   });
 
@@ -639,7 +701,7 @@ function setDarkMode(dark, persist = true) {
 // the theme is scoped to the design system's own `c4-ui`, which a consumer
 // applies at the app root — that is also what puts portaled UI (the FEEL popup,
 // tooltips) in scope
-function applyTheme() {
+export function applyTheme() {
   document.documentElement.classList.toggle('c4-ui', activeTheme !== 'bpmn-io');
 
   // dark mode follows the design system's own class, so it only resolves under C4
@@ -652,7 +714,12 @@ function updateThemeSwitcher(switcher) {
   });
 
   switcher.querySelector('button[data-mode="dark"]')
-    .setAttribute('aria-pressed', String(darkMode));
+    ?.setAttribute('aria-pressed', String(darkMode));
+}
+
+// only form-js supports dark mode so far
+function supportsDarkMode() {
+  return (window.__env__ && window.__env__.SINGLE_START) === 'form-playground';
 }
 
 function getDarkFromUrl() {
@@ -669,6 +736,12 @@ function persistThemeInUrl() {
   const url = new URL(window.location.href);
 
   url.searchParams.set('theme', activeTheme);
-  url.searchParams.set('dark', String(darkMode));
+
+  if (supportsDarkMode()) {
+    url.searchParams.set('dark', String(darkMode));
+  } else {
+    url.searchParams.delete('dark');
+  }
+
   window.history.pushState(null, '', url);
 }

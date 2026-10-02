@@ -18,6 +18,9 @@ const STYLESHEETS = [
   'node_modules/@bpmn-io/form-js/dist/assets/form-js-playground.css',
   'node_modules/@bpmn-io/properties-panel/dist/assets/properties-panel.css',
   'packages/theme/assets/theme.css',
+  'node_modules/diagram-js-minimap/assets/diagram-js-minimap.css',
+  'node_modules/bpmn-js-token-simulation/assets/css/bpmn-js-token-simulation.css',
+  'node_modules/@camunda/linting/assets/linting.css',
   'node_modules/bpmn-js-element-templates/dist/assets/element-templates.css',
   'node_modules/camunda-bpmn-js/styles/popup-menu.css',
   'node_modules/@bpmn-io/element-template-chooser/dist/element-template-chooser.css',
@@ -46,7 +49,7 @@ function read(rel) {
   if (rel.includes('@camunda/design-system')) {
     const filesDir = path.join(ROOT, 'node_modules/@camunda/design-system/dist/files');
 
-    css = css.replaceAll('url(./files/', `url(file://${filesDir}/`);
+    css = css.replaceAll('url("./files/', `url("file://${filesDir}/`);
   }
 
   return css;
@@ -75,13 +78,15 @@ function cell(theme, capture) {
   if (capture.diagram) {
     rootClasses.push('capture-cell-canvas');
 
-    // the backdrop carries both container classes because that is where each
-    // library declares its variables (`.djs-parent`, `.bjs-container`), and
-    // `bjs-breadcrumbs-shown` because the trail is display:none without it
+    // both libraries declare `--accent-color`, so the containers have to nest
+    // like they do live — merged onto one element the classes tie on
+    // specificity and the later stylesheet silently wins
     return `<figure class="${figureClasses.join(' ')}">
     <figcaption>${theme.label}</figcaption>
     <div class="${rootClasses.join(' ')}">
-      <div class="djs-container djs-parent bjs-container bjs-breadcrumbs-shown bio-theme-parent capture-surfaces">${capture.diagram.join('\n')}</div>
+      <div class="bjs-container bjs-breadcrumbs-shown bio-theme-parent">
+        <div class="djs-container djs-parent bio-theme-parent capture-surfaces">${capture.diagram.join('\n')}</div>
+      </div>
     </div>
   </figure>`;
   }
@@ -192,7 +197,10 @@ ${styles()}
   .capture-surfaces .djs-popup-parent,
   .capture-surfaces .djs-popup,
   .capture-surfaces .bjs-breadcrumbs,
-  .capture-surfaces .bjs-drilldown {
+  .capture-surfaces .bjs-drilldown,
+  .capture-surfaces .djs-minimap,
+  .capture-surfaces .bts-palette,
+  .capture-surfaces .bts-toggle-mode {
     position: static !important;
     inset: auto !important;
     top: auto !important;

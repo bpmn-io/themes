@@ -24,6 +24,10 @@
   --palette-entry-hover-color: var(--neutral-foreground-strong);
   --palette-background-color: var(--background);
 
+  /* the shortcut sits on the tooltip rather than varying it, so it needs a
+     wider step than `--bio-surface-inverted-subtle` gives a hover */
+  --palette-tooltip-shortcut-background-color: color-mix(in oklab, var(--foreground) 70%, var(--background));
+
   /*
    * Selection affordances — the selection/hover outline, bendpoints, resizers,
    * draggers, lasso and snap lines — deliberately keep bpmn-js's blue. Blue is
@@ -201,9 +205,10 @@
   font-size: 1.25em;
 }
 
-.c4-ui .bjs-breadcrumbs li:not(:last-of-type) a:focus-visible,
+/* the design system focus ring is 2px, bpmn-js draws 1px */
+.c4-ui .bjs-breadcrumbs a.bjs-crumb:focus-visible,
 .c4-ui .bjs-drilldown:focus-visible {
-  outline: 2px solid var(--popup-focus-outline-color);
+  outline: 2px solid var(--bio-focus);
   outline-offset: 2px;
 }
 

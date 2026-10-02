@@ -40,7 +40,10 @@ after(function() {
     'diagram-create': [ '.djs-popup-parent' ],
     'diagram-append': [ '.djs-popup-parent' ],
     'bpmn-drilldown': [ '.bjs-drilldown' ],
-    'bpmn-breadcrumbs': [ '.bjs-breadcrumbs' ]
+    'bpmn-breadcrumbs': [ '.bjs-breadcrumbs' ],
+    'extensions-minimap': [ '.djs-minimap' ],
+    'extensions-token-simulation': [ '.bts-toggle-mode', '.bts-palette' ],
+    'extensions-linting': [ '.cl-icon' ]
   };
 
   /*
@@ -52,8 +55,22 @@ after(function() {
     'diagram-search': (setup) => setup.search('Review'),
     'diagram-replace': (setup) => setup.replace(),
     'diagram-create': (setup) => setup.create(),
-    'diagram-append': (setup) => setup.append()
+    'diagram-append': (setup) => setup.append(),
+    'extensions-minimap': (setup) => setup.minimap(),
+    'extensions-token-simulation': (setup) => setup.simulate(),
+    'extensions-linting': (setup) => setup.lint()
   };
+
+  /*
+   * These scenarios are about surfaces whose styles are injected at runtime
+   * (improved-canvas, Monaco), which the exporter does not carry yet. Skip them
+   * rather than capture the unrelated properties panel the fallback would pick.
+   */
+  const UNSUPPORTED = [
+    'improved-canvas',
+    'improved-canvas-append',
+    'rpa-editor'
+  ];
 
   const runtimeStyles = Array.from(document.querySelectorAll('style'))
     .map((el) => el.textContent || '')
@@ -89,7 +106,15 @@ after(function() {
   document.querySelectorAll('.playground[data-playground]').forEach((root) => {
     const name = root.dataset.playground;
 
-    if (seen.has(name)) {
+    if (seen.has(name) || UNSUPPORTED.includes(name)) {
+      return;
+    }
+
+    const playground = (window.__playgrounds__ || {})[name];
+
+    // several specs may share a scenario name; the registry holds the last one
+    // mounted, so a `REOPEN` interaction acts on that root and no other
+    if (playground && REOPEN[name] && playground.root !== root) {
       return;
     }
 
@@ -102,7 +127,6 @@ after(function() {
     if (surfaceSelectors) {
       const canvas = root.querySelector('.playground-canvas');
 
-      const playground = (window.__playgrounds__ || {})[name];
       const reopen = REOPEN[name];
 
       if (playground && reopen) {

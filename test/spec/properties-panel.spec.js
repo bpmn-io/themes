@@ -142,10 +142,15 @@ describe('properties-panel', function() {
     expect([ ...openHeader.classList ]).to.include('open');
     expect([ ...closedHeader.classList ]).to.not.include('open');
 
-    // The hierarchy is carried by the bold title and a flush, border-less header
-    // (as in the stock panel) rather than an extra header fill.
+    // The open section is tinted as a whole, so its header stays flush and
+    // border-less; the chevron and the title weight mark the state.
+    expect(getComputedStyle(openHeader.parentElement).backgroundColor)
+      .to.not.equal(getComputedStyle(closedHeader.parentElement).backgroundColor);
     expect(getComputedStyle(openHeader).backgroundColor).to.equal('rgba(0, 0, 0, 0)');
     expect(getComputedStyle(openHeader).borderBottomWidth).to.equal('0px');
+
+    expect(openHeader.querySelector('.bio-properties-panel-arrow-down')).to.exist;
+    expect(closedHeader.querySelector('.bio-properties-panel-arrow-right')).to.exist;
 
     const openTitleWeight = getComputedStyle(
       openHeader.querySelector('.bio-properties-panel-group-header-title')
@@ -154,8 +159,8 @@ describe('properties-panel', function() {
       closedHeader.querySelector('.bio-properties-panel-group-header-title')
     ).fontWeight;
 
-    expect(openTitleWeight).to.equal('600');
-    expect(closedTitleWeight).to.not.equal('600');
+    expect(openTitleWeight).to.equal('500');
+    expect(closedTitleWeight).to.equal('400');
   });
 
   it('should render focused, invalid and disabled input states', async function() {
@@ -179,6 +184,40 @@ describe('properties-panel', function() {
     expect([ ...errorEntry.classList ]).to.include('has-error');
     expect(errorEntry.querySelector('.bio-properties-panel-error')).to.exist;
     expect(disabledInput.disabled).to.be.true;
+  });
+
+  it('should render warning, dot and badge severity states', async function() {
+
+    // given
+    playground = await createBpmnPlayground(this, 'properties-panel-severity-states', {
+      themeControls: true
+    });
+
+    await playground.setup.settle();
+    playground.setup['open-group']('theme-controls');
+    await playground.setup.settle();
+
+    const root = playground.root;
+
+    // when
+    const warning = root.querySelector('[data-entry-id="theme-warning"] .bio-properties-panel-warning');
+
+    const background = selector => getComputedStyle(root.querySelector(selector)).backgroundColor;
+
+    // then
+    expect(getComputedStyle(warning).color).to.equal(resolvedColor(warning, '--bio-warning-text'));
+
+    const dots = [ '', '--warning', '--error' ].map(variant => background(`.bio-properties-panel-dot${ variant }`));
+    const badges = [ '', '--accent', '--warning', '--error' ].map(
+      variant => background(`[data-entry-id="theme-markers"] .bio-properties-panel-list-badge${ variant }`)
+    );
+
+    for (const color of [ ...dots, ...badges ]) {
+      expect(color, 'every severity must be filled').to.not.equal('rgba(0, 0, 0, 0)');
+    }
+
+    expect(new Set(dots).size, 'dot severities must be distinct').to.equal(dots.length);
+    expect(new Set(badges).size, 'badge severities must be distinct').to.equal(badges.length);
   });
 
   it('should render select, checkbox, toggle and list states', async function() {
@@ -606,6 +645,62 @@ describe('properties-panel', function() {
     expect(getComputedStyle(closedField.querySelector('.bio-properties-panel-input')).display)
       .to.equal('flex');
   });
+
+  it('should open the template chooser from the properties-panel selector', async function() {
+    playground = await createBpmnPlayground(this, 'element-template-selector');
+
+    const selector = playground.root.querySelector(
+      '[data-group-id="group-ElementTemplates__Template"] .bio-properties-panel-select-template-button'
+    );
+
+    // when
+    selector.click();
+    await playground.setup.settle();
+
+    // then
+    expect(selector.textContent.trim()).to.equal('Select');
+    expect(playground.root.querySelector('.element-template-chooser')).to.exist;
+  });
+
+  it('should render an applied template action above later group headers', async function() {
+    playground = await createBpmnPlayground(this, 'element-template-actions');
+
+    // when
+    await playground.setup.settle();
+    playground.setup['apply-template']();
+    await playground.setup.settle();
+
+    const action = playground.root.querySelector('.bio-properties-panel-applied-template-button');
+
+    action.click();
+    action.scrollIntoView({ block: 'center' });
+    await playground.setup.settle();
+
+    const menu = action.querySelector('.bio-properties-panel-dropdown-button__menu');
+    const menuItems = menu.querySelectorAll('.bio-properties-panel-dropdown-button__menu-item--actionable');
+    const trigger = action.querySelector('.bio-properties-panel-group-header-button');
+    const header = action.closest('.bio-properties-panel-group-header');
+
+    // then
+    expect([ ...action.classList ]).to.include('open');
+    expect(menuItems).to.have.length.of.at.least(1);
+    expect(getComputedStyle(trigger).backgroundColor).to.not.equal(
+      getComputedStyle(header).backgroundColor
+    );
+
+    menuItems.forEach(menuItem => {
+      const bounds = menuItem.getBoundingClientRect();
+      const element = document.elementFromPoint(
+        bounds.left + bounds.width / 2,
+        bounds.top + bounds.height / 2
+      );
+
+      expect(
+        menu.contains(element),
+        `expected menu item to be topmost, received ${element?.className || element?.tagName}`
+      ).to.be.true;
+    });
+  });
 });
 
 function expectVerticallyCentered(inner, outer, tolerance = 3) {
@@ -616,4 +711,20 @@ function expectVerticallyCentered(inner, outer, tolerance = 3) {
   const outerCenter = outerBounds.top + outerBounds.height / 2;
 
   expect(Math.abs(innerCenter - outerCenter)).to.be.at.most(tolerance);
+}
+
+/**
+ * Resolve a color token to the computed value a rule reading it would get.
+ */
+function resolvedColor(scope, token) {
+  const probe = document.createElement('span');
+
+  probe.style.color = `var(${ token })`;
+  scope.appendChild(probe);
+
+  const color = getComputedStyle(probe).color;
+
+  probe.remove();
+
+  return color;
 }
