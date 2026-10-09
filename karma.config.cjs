@@ -17,6 +17,13 @@ fs.mkdirSync(tmpDir, { recursive: true });
 // headless launcher a throwaway one.
 const firefoxProfile = fs.mkdtempSync(path.join(tmpDir, 'firefox-profile'));
 
+// The RPA editor bundles Monaco and triples the size of the test bundle, and
+// karma-webpack ignores custom `optimization`, so it cannot be split off into a
+// lazy chunk. Leave its spec out of the bundle unless it is the one being run.
+const specPattern = !singleStart || singleStart === 'all' || singleStart === 'rpa'
+  ? /\.spec\.js$/
+  : /^(?!.*rpa\.spec\.js$).*\.spec\.js$/;
+
 module.exports = function(karma) {
   const config = {
     basePath: '.',
@@ -67,7 +74,8 @@ module.exports = function(karma) {
       },
       plugins: [
         new DefinePlugin({
-          'process.env': {}
+          'process.env': {},
+          SPEC_PATTERN: specPattern.toString()
         })
       ],
       resolve: {

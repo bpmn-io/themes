@@ -18,11 +18,19 @@
 .c4-ui .djs-parent {
   --font-family: var(--font-sans);
 
+  /* diagram-js and its extensions are laid out for the browser's `normal` line
+     height, not the design system's 1.5 */
+  line-height: normal;
+
   /* only deviations from the token defaults belong here */
 
   --palette-entry-color: var(--neutral-foreground-strong);
   --palette-entry-hover-color: var(--neutral-foreground-strong);
   --palette-background-color: var(--background);
+
+  /* the shortcut sits on the tooltip rather than varying it, so it needs a
+     wider step than `--bio-surface-inverted-subtle` gives a hover */
+  --palette-tooltip-shortcut-background-color: color-mix(in oklab, var(--foreground) 70%, var(--background));
 
   /*
    * Selection affordances — the selection/hover outline, bendpoints, resizers,
@@ -57,8 +65,10 @@
   /* drilldown — supplied by bpmn-js, so there is no token default to inherit */
   --breadcrumbs-font-family: var(--font-family);
   --breadcrumbs-item-color: var(--primary-action-default);
-  --drilldown-fill-color: var(--primary-action-foreground);
-  --drilldown-background-color: var(--primary-action-default);
+
+  /* bpmn-js fills it with `--bio-primary`, near-black here and lost against the
+     black element strokes */
+  --drilldown-background-color: var(--bio-canvas-accent);
 }
 
 /**
@@ -195,24 +205,16 @@
   color: var(--foreground);
 }
 
-.c4-ui .bjs-breadcrumbs li:not(:first-child)::before {
-  content: "›";
-  color: var(--breadcrumbs-arrow-color);
-  font-size: 1.25em;
-}
-
-.c4-ui .bjs-breadcrumbs li:not(:last-of-type) a:focus-visible,
+/* the design system focus ring is 2px, bpmn-js draws 1px */
+.c4-ui .bjs-breadcrumbs a.bjs-crumb:focus-visible,
 .c4-ui .bjs-drilldown:focus-visible {
-  outline: 2px solid var(--popup-focus-outline-color);
+  outline: 2px solid var(--bio-focus);
   outline-offset: 2px;
 }
 
+/* `rounded-lg` rounds this 20px button almost into a circle */
 .c4-ui .bjs-drilldown {
-  border-radius: var(--bio-radius-lg);
-}
-
-.c4-ui .bjs-drilldown:hover {
-  background-color: var(--primary-action-hover);
+  border-radius: var(--bio-radius-sm);
 }
 
 /* element-template entry icons keep their aspect ratio */

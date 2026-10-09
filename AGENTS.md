@@ -31,10 +31,7 @@ neutral; brand-specific mappings live here.
 Bind to a named token, not to an alpha mix of one — a mix hides that the design
 system already has a step, and does not flip with dark mode. Mix only where the
 design system has nothing to point at: focus-ring alpha, the inverted surface
-(there is no "on inverted" scale), and shadow colour (`--shadow-*` are whole
-box-shadow values, not the colour our libraries take). Names encode role, not
-hue: `primary` is the highest-emphasis action, `accent` the brand scale,
-`neutral` the grayscale chrome.
+(there is no "on inverted" scale), shadow color, etc.
 
 Check how a name is declared before pointing at it. Colours and shadows are
 variables; radius is not — `--radius-*` lives in `@theme inline` and resolves

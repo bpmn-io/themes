@@ -1,0 +1,10 @@
+/**
+ * Camunda Design System adapter for bpmn-js-token-simulation.
+ *
+ * Load after the token simulation stylesheet and assets/tokens.css.
+ */
+
+/* the near-black primary does not read as "active" on the black diagram */
+.c4-ui .bts-container {
+  --token-simulation-primary: var(--info-action-default);
+}
