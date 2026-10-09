@@ -55,6 +55,50 @@ describe('form-js playground', function() {
     );
   });
 
+  it('should keep a read-only selection visible', async function() {
+
+    // given
+    playground = await createFormPlayground(this, 'form-viewer-readonly');
+
+    await playground.form.importSchema({
+      type: 'default',
+      components: [
+        {
+          type: 'radio',
+          key: 'plan',
+          label: 'Plan',
+          readonly: true,
+          values: [ { label: 'Free', value: 'free' }, { label: 'Pro', value: 'pro' } ]
+        },
+        {
+          type: 'checkbox',
+          key: 'newsletter',
+          label: 'Newsletter',
+          readonly: true
+        }
+      ]
+    }, { plan: 'pro', newsletter: true });
+
+    const radio = playground.root.querySelector('.fjs-form-field-radio .fjs-input:checked');
+    const checkbox = playground.root.querySelector('.fjs-form-field-checkbox .fjs-input:checked');
+
+    // when
+    const probe = document.createElement('div');
+    probe.style.color = 'var(--bio-text-subtlest)';
+    radio.closest('.fjs-container').appendChild(probe);
+    const expected = getComputedStyle(probe).color;
+    probe.remove();
+
+    // then
+    // form-js fades read-only checkables to 40%, so a light accent (such as the
+    // input border color) leaves the selected answer looking unchecked
+    expect(radio).to.exist;
+    expect(checkbox).to.exist;
+    expect(getComputedStyle(radio).accentColor).to.equal(expected);
+    expect(getComputedStyle(checkbox).accentColor).to.equal(expected);
+  });
+
+
   it('should theme the editor', async function() {
     playground = await createFormPlayground(this, 'form-editor', {
       variant: 'editor',

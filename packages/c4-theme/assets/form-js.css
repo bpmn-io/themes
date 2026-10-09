@@ -16,7 +16,6 @@
 
   --color-background-pre: var(--neutral-background-medium);
 
-  --color-accent-readonly: var(--input);
   --color-datepicker-focused-day: var(--primary-action-default);
 
   /* form-js outlines inputs with 2px, the C4 require 3px */
