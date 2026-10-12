@@ -6,6 +6,8 @@ All notable changes to [@bpmn-io/c4-theme](https://github.com/bpmn-io/themes) ar
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.2.0
+
 * `FEAT`: bind the `--bio-*-marker` tokens
 * `FIX`: keep read-only checkbox, checklist and radio selections visible ([#19](https://github.com/bpmn-io/themes/pull/19))
 
