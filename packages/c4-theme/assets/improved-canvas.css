@@ -12,6 +12,21 @@
   /* the near-black primary disappears against the black element strokes */
   --context-pad-entry-call-to-action-background-color: var(--bio-canvas-accent);
   --context-pad-entry-call-to-action-hover-background-color: color-mix(in oklab, var(--bio-canvas-accent) 88%, var(--foreground));
+
+  /* a popover on the white canvas, bordered like the design system's menus */
+  --context-pad-background-color: var(--neutral-background-subtle);
+  --context-pad-box-shadow: 0 0 0 1px var(--border), var(--shadow-lg);
+}
+
+/* the canvas is the white working area inside the grey app shell; improved-canvas paints it grey */
+.c4-ui .djs-container.bio-improved-canvas,
+.c4-ui .dmn-drd-container.bio-improved-canvas {
+  background-color: var(--neutral-background-subtle);
+}
+
+/* improved-canvas forces `#a8a8a8 !important` on the grid dots */
+.c4-ui .bio-improved-canvas defs pattern circle {
+  fill: var(--neutral-border-strong) !important;
 }
 
 /* the design system's neutral backgrounds stop at `strong`, still too light to
@@ -19,4 +34,8 @@
 .c4-ui .bio-improved-canvas .djs-append-indicator {
   --bio-neutral-subtle: color-mix(in oklab, var(--neutral-background-strong) 87%, var(--foreground));
   --bio-neutral-subtle-hover: color-mix(in oklab, var(--neutral-background-strong) 80%, var(--foreground));
+}
+
+.c4-ui .bio-improved-canvas .djs-create-pad .djs-create-pad-entries {
+  background-color: var(--context-pad-background-color);
 }

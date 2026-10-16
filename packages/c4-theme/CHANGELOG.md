@@ -6,6 +6,12 @@ All notable changes to [@bpmn-io/c4-theme](https://github.com/bpmn-io/themes) ar
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.3.1
+
+* `FIX`: make the canvas white with matching grid dots, and the context and append pads white, outlined like the design system menus ([#20](https://github.com/bpmn-io/themes/pull/20))
+
+## 0.3.0
+
 * `FEAT`: theme dmn-js ([#13](https://github.com/bpmn-io/themes/pull/13))
 * `DEPS`: align with `@camunda/design-system@0.63.0` ([#16](https://github.com/bpmn-io/themes/pull/16))
 * `FIX`: improve the contrast of the drill-down badge, palette tooltip, breadcrumbs and subtle text ([#16](https://github.com/bpmn-io/themes/pull/16))
