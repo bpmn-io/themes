@@ -12,6 +12,9 @@
   /* the near-black primary disappears against the black element strokes */
   --context-pad-entry-call-to-action-background-color: var(--bio-canvas-accent);
   --context-pad-entry-call-to-action-hover-background-color: color-mix(in oklab, var(--bio-canvas-accent) 88%, var(--foreground));
+
+  /* a popover on the white canvas */
+  --context-pad-background-color: var(--neutral-background-subtle);
 }
 
 /* the design system's neutral backgrounds stop at `strong`, still too light to
@@ -19,4 +22,8 @@
 .c4-ui .bio-improved-canvas .djs-append-indicator {
   --bio-neutral-subtle: color-mix(in oklab, var(--neutral-background-strong) 87%, var(--foreground));
   --bio-neutral-subtle-hover: color-mix(in oklab, var(--neutral-background-strong) 80%, var(--foreground));
+}
+
+.c4-ui .bio-improved-canvas .djs-create-pad .djs-create-pad-entries {
+  background-color: var(--context-pad-background-color);
 }
