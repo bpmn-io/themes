@@ -24,12 +24,15 @@
 
   /* only deviations from the token defaults belong here */
 
+  --canvas-fill-color: var(--neutral-background-subtle);
+  --context-pad-entry-background-color: var(--neutral-background-subtle);
+
   --palette-entry-color: var(--neutral-foreground-strong);
   --palette-entry-hover-color: var(--neutral-foreground-strong);
   --palette-background-color: var(--background);
 
-  /* the palette shares the canvas background, so its outline has to carry it;
-     the design system's 20% `--border` is lost against the canvas */
+  /* the design system's 20% `--border` is lost against the canvas, so the
+     palette outline needs the strong border */
   --palette-border-color: var(--neutral-border-strong);
 
   /* the shortcut sits on the tooltip rather than varying it, so it needs a
