@@ -1,5 +1,6 @@
 /**
- * Camunda Design System adapter for @bpmn-io/form-js (viewer + editor).
+ * Camunda Design System adapter for @bpmn-io/form-js (viewer + editor) and
+ * @camunda/form-playground.
  *
  * Load after form-js.css / form-js-editor.css and assets/tokens.css. It carries
  * only the deviations the `--bio-*` bindings do not already reproduce.
@@ -147,6 +148,13 @@
   --color-dragula-border: var(--ring);
   --color-dragula-mirror-background: var(--popover);
   --color-dragula-error-background: var(--danger-background-subtle);
+}
+
+/* @camunda/form-playground sets IBM Plex on its root; the palette and the data
+   editors read it */
+.c4-ui .cfp-root {
+  --font-family: var(--font-sans);
+  --font-family-monospace: var(--font-mono);
 }
 
 /* the palette declares its own variables, so this has to match that element
