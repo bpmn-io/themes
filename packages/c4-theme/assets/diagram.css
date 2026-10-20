@@ -50,6 +50,8 @@
    * let the upstream blue show through.
    */
 
+  --hover-tooltip-font-family: var(--font-family);
+
   /* a bordered, shadowed popover rather than diagram-js's borderless card */
   --popup-font-family: var(--font-family);
   --popup-header-font-weight: 600;

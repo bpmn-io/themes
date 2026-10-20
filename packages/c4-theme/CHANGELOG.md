@@ -9,6 +9,8 @@ ___Note:__ Yet to be released changes appear here._
 ## 0.3.1
 
 * `FIX`: make the canvas white with matching grid dots, and the context and append pads white, outlined like the design system menus ([#20](https://github.com/bpmn-io/themes/pull/20))
+* `FIX`: use the design system font in hover tooltips ([#20](https://github.com/bpmn-io/themes/pull/20))
+* `FIX`: use the design system fonts in `@camunda/form-playground` ([#20](https://github.com/bpmn-io/themes/pull/20))
 
 ## 0.3.0
 
