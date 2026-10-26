@@ -6,6 +6,8 @@ All notable changes to [@bpmn-io/c4-theme](https://github.com/bpmn-io/themes) ar
 
 ___Note:__ Yet to be released changes appear here._
 
+* `FIX`: keep the list Create button readable on hover ([#21](https://github.com/bpmn-io/themes/pull/21))
+
 ## 0.3.1
 
 * `FIX`: make the canvas white with matching grid dots, and the context and append pads white, outlined like the design system menus ([#20](https://github.com/bpmn-io/themes/pull/20))

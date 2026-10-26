@@ -263,6 +263,11 @@
   background-color: var(--arrow-hover-background-color);
 }
 
+.c4-ui .bio-properties-panel-list-entry-header-buttons {
+  --list-entry-add-entry-background-color: var(--neutral-background-strong);
+  --list-entry-add-entry-fill-color: var(--foreground);
+}
+
 /* the label is part of the ghost button, so it takes the same colours as the
    glyph rather than the accent fill the core tokens assume */
 .c4-ui .bio-properties-panel-group-header.empty .bio-properties-panel-add-entry-label,
