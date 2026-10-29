@@ -112,6 +112,38 @@ const templates = [
         }
       }
     ]
+  },
+  {
+    $schema: 'https://unpkg.com/@camunda/zeebe-element-templates-json-schema/resources/schema.json',
+    name: 'Incompatible worker',
+    id: 'io.bpmn-io.c4-theme.incompatible',
+    version: 1,
+    engines: {
+      camunda: '^8.99'
+    },
+    appliesTo: [
+      'bpmn:ServiceTask'
+    ],
+    elementType: {
+      value: 'bpmn:ServiceTask'
+    },
+    properties: []
+  },
+  {
+    $schema: 'https://unpkg.com/@camunda/zeebe-element-templates-json-schema/resources/schema.json',
+    name: 'Deprecated worker',
+    id: 'io.bpmn-io.c4-theme.deprecated',
+    version: 1,
+    deprecated: {
+      message: 'This template is deprecated.'
+    },
+    appliesTo: [
+      'bpmn:ServiceTask'
+    ],
+    elementType: {
+      value: 'bpmn:ServiceTask'
+    },
+    properties: []
   }
 ];
 
@@ -214,6 +246,8 @@ export async function createBpmnPlayground(context, name, options = {}) {
   const elementRegistry = modeler.get('elementRegistry');
   const selection = modeler.get('selection');
   const task = elementRegistry.get(selectedElementId);
+
+  modeler.get('elementTemplates').setEngines({ camunda: '8.5' });
   modeler.get('elementTemplatesLoader').setTemplates(templates);
   selection.select(task);
   canvas.zoom('fit-viewport');

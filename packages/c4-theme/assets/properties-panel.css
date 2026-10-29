@@ -93,6 +93,18 @@
 
   --feel-active-color: var(--primary-action-default);
   --feel-hover-background-color: var(--neutral-background-medium);
+
+  --incompatible-template-background-color: var(--warning-background-subtle);
+  --incompatible-template-hover-background-color: var(--warning-background-strong);
+  --incompatible-template-fill-color: var(--warning-foreground-strong);
+  --incompatible-template-label-color: var(--warning-foreground-strong);
+
+  --deprecated-template-background-color: var(--neutral-background-medium);
+  --deprecated-template-hover-background-color: var(--neutral-background-strong);
+
+  --unknown-template-background-color: var(--danger-background-subtle);
+  --unknown-template-hover-background-color: var(--danger-background-strong);
+  --error-badge-color: var(--danger-foreground-strong);
 }
 
 .c4-ui .bio-properties-panel-input,
@@ -322,6 +334,12 @@
 
 .c4-ui .bio-properties-panel-select-template-button svg {
   fill: currentColor;
+}
+
+.c4-ui .bio-properties-panel-deprecated-template-button
+  .bio-properties-panel-group-header-button {
+  color: var(--neutral-foreground-strong);
+  fill: var(--neutral-foreground-strong);
 }
 
 .c4-ui .bio-properties-panel-applied-template-button.open {
