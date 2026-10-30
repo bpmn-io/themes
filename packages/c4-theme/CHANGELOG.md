@@ -6,6 +6,11 @@ All notable changes to [@bpmn-io/c4-theme](https://github.com/bpmn-io/themes) ar
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.3.3
+
+`FIX`: style badges ([#22](https://github.com/bpmn-io/themes/pull/22))
+`FIX`: style template state header buttons ([#22](https://github.com/bpmn-io/themes/pull/22))
+
 ## 0.3.2
 
 * `FIX`: keep the list Create button readable on hover ([#21](https://github.com/bpmn-io/themes/pull/21))
