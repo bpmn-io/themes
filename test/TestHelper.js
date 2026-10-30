@@ -373,6 +373,7 @@ export async function createBpmnPlayground(context, name, options = {}) {
 
       return updatedTask;
     },
+    'set-diagnostics': (diagnostics) => eventBus.fire('propertiesPanel.setDiagnostics', { diagnostics }),
     'show-task-definition-tooltip': () => {
       const tooltipWrapper = root.querySelector(
         '[data-group-id="group-taskDefinition"] .bio-properties-panel-tooltip-wrapper'

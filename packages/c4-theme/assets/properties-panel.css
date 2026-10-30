@@ -94,6 +94,15 @@
   --feel-active-color: var(--primary-action-default);
   --feel-hover-background-color: var(--neutral-background-medium);
 
+  --warning-badge-background-color: var(--warning-background-subtle);
+  --warning-badge-hover-background-color: var(--warning-background-strong);
+  --warning-badge-color: var(--warning-foreground-strong);
+  --error-badge-background-color: var(--danger-background-subtle);
+  --error-badge-hover-background-color: var(--danger-background-strong);
+  --error-badge-color: var(--danger-foreground-strong);
+  --dot-color-warning: var(--warning-action-default);
+  --dot-color-error: var(--danger-foreground-subtle);
+
   --incompatible-template-background-color: var(--warning-background-subtle);
   --incompatible-template-hover-background-color: var(--warning-background-strong);
   --incompatible-template-fill-color: var(--warning-foreground-strong);
