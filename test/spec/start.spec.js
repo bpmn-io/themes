@@ -33,6 +33,13 @@ describe('theme playground', function() {
       minimap: true
     });
 
+    // flag an execution listener and a header so their list badges show the
+    // error and warning states
+    playground.setup['set-diagnostics']({
+      'ServiceTask_1-executionListener-0': [ { severity: 'error', message: 'Example error.' } ],
+      'ServiceTask_1-header-0': [ { severity: 'warning', message: 'Example warning.' } ]
+    });
+
     // the minimap mounts collapsed, so open it to expose the themed surface
     playground.setup.minimap();
   });

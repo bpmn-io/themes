@@ -8,6 +8,13 @@
     <bpmn:serviceTask id="ServiceTask_1" name="Example worker">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="io.bpmn-io.example" />
+        <zeebe:taskHeaders>
+          <zeebe:header key="region" value="eu" />
+        </zeebe:taskHeaders>
+        <zeebe:executionListeners>
+          <zeebe:executionListener eventType="start" type="do-this" />
+          <zeebe:executionListener eventType="end" type="do-that" />
+        </zeebe:executionListeners>
         <zeebe:properties>
           <zeebe:property name="camundaModeler:exampleOutputJson" value="{&#34;order&#34;: { &#34;id&#34;: &#34;123&#34; }, &#34;approved&#34;: true}" />
         </zeebe:properties>
