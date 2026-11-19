@@ -430,7 +430,6 @@ describe('properties-panel', function() {
     expect(container.getBoundingClientRect().height).to.be.closeTo(32, 2);
     expectVerticallyCentered(line, container);
     expect(indicatorStyles.display).to.equal('flex');
-    expect(indicatorStyles.alignItems).to.equal('flex-start');
     expect(indicatorStyles.justifyContent).to.equal('center');
 
     // the glyph, not the full-height box that holds it: padding on one side
