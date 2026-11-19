@@ -6,6 +6,8 @@ All notable changes to [@bpmn-io/c4-theme](https://github.com/bpmn-io/themes) ar
 
 ___Note:__ Yet to be released changes appear here._
 
+* `FIX`: color the active FEEL icon with the info color
+
 ## 0.3.3
 
 `FIX`: style badges ([#22](https://github.com/bpmn-io/themes/pull/22))

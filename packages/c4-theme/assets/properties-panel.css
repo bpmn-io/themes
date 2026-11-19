@@ -91,7 +91,7 @@
   --side-line-extension-background-color: var(--neutral-border-subtle);
   --list-entry-dot-background-color: var(--neutral-foreground-subtle);
 
-  --feel-active-color: var(--primary-action-default);
+  --feel-active-color: var(--info-foreground-subtle);
   --feel-hover-background-color: var(--neutral-background-medium);
 
   --warning-badge-background-color: var(--warning-background-subtle);
