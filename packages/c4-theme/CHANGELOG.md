@@ -6,6 +6,8 @@ All notable changes to [@bpmn-io/c4-theme](https://github.com/bpmn-io/themes) ar
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.3.5
+
 * `FIX`: outline properties panel groups, menus and form editor panels with opaque borders (`--neutral-border-strong`, `--neutral-border-subtle`) instead of the faint decorative `--border`
 
 ## 0.3.4
