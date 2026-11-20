@@ -42,7 +42,7 @@
     "@bpmn-io/properties-panel": "^3.58.0",
     "@bpmn-io/release": "^0.5.1",
     "@bpmn-io/variable-resolver": "^3.3.0",
-    "@camunda/design-system": "^0.63.0",
+    "@camunda/design-system": "^1.4.0",
     "@camunda/example-data-properties-provider": "^1.5.0",
     "@camunda/improved-canvas": "^1.12.0",
     "@camunda/linting": "^4.0.0",
