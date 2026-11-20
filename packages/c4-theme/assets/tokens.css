@@ -43,7 +43,8 @@
   --bio-text-on-primary: var(--primary-action-foreground);
   --bio-text-on-inverted: var(--background);
 
-  --bio-border: var(--neutral-border-strong);
+  /* DEMO, do not merge: makes a linked theme obvious in a consumer */
+  --bio-border: var(--danger-action-default);
   --bio-border-subtle: var(--neutral-border-subtle);
   --bio-border-disabled: var(--border);
   --bio-border-input: var(--input);
