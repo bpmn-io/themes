@@ -43,8 +43,8 @@
   --bio-text-on-primary: var(--primary-action-foreground);
   --bio-text-on-inverted: var(--background);
 
-  --bio-border: var(--border);
-  --bio-border-subtle: var(--border);
+  --bio-border: var(--neutral-border-strong);
+  --bio-border-subtle: var(--neutral-border-subtle);
   --bio-border-disabled: var(--border);
   --bio-border-input: var(--input);
 
