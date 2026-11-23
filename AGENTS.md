@@ -1,6 +1,8 @@
 # AGENTS.md
 
-**Read and apply our central [`AGENTS.md`](https://raw.githubusercontent.com/bpmn-io/.github/refs/heads/main/AGENTS.md) first**, as if written here. The instructions below extend it and take precedence on conflict.
+**Read and apply our central [`BPMN_IO.instructions.md`](./.github/instructions/BPMN_IO.instructions.md) file before proceeding.** Treat its contents as if they were written directly in this file.
+
+Instructions below extend those guidelines and take precedence if there is any conflict.
 
 ## Theme architecture
 
